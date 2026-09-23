@@ -47,3 +47,4 @@ const createMenu = async () => {
         container.replaceChildren(errorElement);
     }
 }
+createMenu();
