@@ -1,0 +1,163 @@
+.site-footer {
+    width: 100%;
+    margin-top: auto;
+    font-family: 'Assistant', system-ui, -apple-system, sans-serif;
+    direction: rtl;
+}
+
+/* 1. באנר כתום עליון */
+.footer-cta {
+    background-color: #e85a2b;
+    color: #ffffff;
+    text-align: center;
+    padding: 55px 20px 45px;
+}
+
+.footer-cta h2 {
+    font-size: 2.3rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.footer-cta p {
+    font-size: 1.15rem;
+    margin-bottom: 28px;
+    opacity: 0.95;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.btn-cta-white {
+    background-color: #ffffff;
+    color: #e25828;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 11px 32px;
+    border-radius: 50px;
+    text-decoration: none;
+    border: 2px solid #ffffff;
+    transition: all 0.25s ease;
+}
+
+.btn-cta-white:hover {
+    background-color: #f8f8f8;
+    transform: translateY(-2px);
+}
+
+.btn-cta-outline {
+    background-color: transparent;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.05rem;
+    padding: 11px 32px;
+    border-radius: 50px;
+    text-decoration: none;
+    border: 2px solid #ffffff;
+    transition: all 0.25s ease;
+}
+
+.btn-cta-outline:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+/* 2. חלק ניווט מרכזי (2 עמודות ממורכזות) */
+.footer-main {
+    background-color: #2a2c32;
+    color: #ffffff;
+    padding: 50px 20px 45px;
+}
+
+.footer-nav-container {
+    max-width: 650px; /* תוחם את 2 העמודות כך שלא יתפזרו לקצוות המסך */
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    gap: 60px;
+}
+
+.footer-col {
+    text-align: right;
+}
+
+.footer-col h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-col li {
+    margin-bottom: 12px;
+}
+
+.footer-col a {
+    color: #e0e0e5;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.2s ease;
+}
+
+.footer-col a:hover {
+    color: #e25828;
+}
+
+/* 3. שורת זכויות יוצרים תחתית */
+.footer-bottom {
+    background-color: #212328;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 18px 20px;
+}
+
+.footer-bottom-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.price-note {
+    color: #a0a5b0;
+    font-size: 0.88rem;
+}
+
+.copyright {
+    color: #e25828; /* טקסט כתום כפי שמופיע בדוגמה */
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+/* התאמה למסכים קטנים */
+@media (max-width: 600px) {
+    .footer-nav-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 30px;
+    }
+
+    .footer-col {
+        text-align: center;
+    }
+
+    .footer-bottom-container {
+        flex-direction: column;
+        text-align: center;
+    }
+}
