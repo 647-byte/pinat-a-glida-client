@@ -1,0 +1,150 @@
+@import url('./header.css');
+@import url(./footer.css);
+/* רקע כללי של אזור התוכן */
+body {
+    background-color: #faf7f2; /* גוון שמנת/אוף-ווייט רך כמו בתמונות */
+    direction: rtl;
+    font-family: 'Assistant', system-ui, -apple-system, sans-serif;
+}
+
+/* רשת המוצרים (Grid של 4 עמודות) */
+#container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 0 20px 60px;
+}
+
+/* כרטיס מוצר בודד */
+.product-card {
+    background-color: #ffffff;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* תמונת המוצר */
+.product-image {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    background-color: #fcfcfc;
+}
+
+/* מעטפת התוכן */
+.product-info {
+    padding: 18px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    text-align: center;
+}
+
+/* שם המוצר */
+.product-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #1e1f23;
+    margin: 0 0 6px 0;
+}
+
+/* תיאור המוצר */
+.product-desc {
+    font-size: 0.88rem;
+    color: #707075;
+    margin: 0 0 20px 0;
+    line-height: 1.4;
+    flex-grow: 1;
+}
+
+/* שורה תחתונה: מחיר + כפתור */
+.product-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+    margin-top: auto;
+}
+
+/* אזור המחיר */
+.product-price-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: right;
+}
+
+.price-label {
+    font-size: 0.75rem;
+    color: #8e8e93;
+    margin-bottom: 2px;
+}
+
+.price-value {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #e85a2b; /* כתום כהה בולט למחיר */
+    line-height: 1;
+}
+
+/* כפתור "לבחירה" / "הוסף" */
+.btn-select {
+    background-color: #f29d4b; /* כתום-זהב רך של הכפתורים בדוגמה */
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+    padding: 8px 24px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.btn-select:hover:not(:disabled) {
+    background-color: #e08c3a;
+    transform: scale(1.03);
+}
+
+.btn-select:disabled {
+    background-color: #e0e0e0;
+    color: #999999;
+    cursor: not-allowed;
+}
+
+.error-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #d9534f;
+    font-size: 1.1rem;
+    padding: 40px 0;
+}
+
+/* התאמה לרשת רספונסיבית */
+@media (max-width: 1024px) {
+    #container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    #container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    #container {
+        grid-template-columns: 1fr;
+    }
+}
