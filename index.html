@@ -10,104 +10,122 @@
 </head>
 
 <body>
-    <section>
+    <section class="hero-section">
         <video src="assets/pinata-glida.mp4" autoplay muted loop playsinline></video>
     </section>
-    <section>
-        <div>
-            <h2>המוצרים הכי פופולריים שלנו</h2>
-            <p>גלו את הפינוקים האהובים ביותר</p>
+    <section class="home-section popular-section">
+        <div class="section-header">
+            <h2 class="section-title">המוצרים הכי פופולריים שלנו</h2>
+            <p class="section-subtitle">גלו את הפינוקים האהובים ביותר</p>
+        </div>
+        <div class="products-grid" id="popularProductsContainer">
+        </div>
+        <div class="center-btn-wrapper">
+            <a href="menu.html" class="btn-orange-large">לתפריט המלא</a>
         </div>
     </section>
-    <section>
-        <div>
-            <h2>החוויה שלנו</h2>
-            <p>מה שהופך אותנו למיוחדים</p>
+    <section class="home-section experience-section">
+        <div class="section-header">
+            <h2 class="section-title">החוויה שלנו</h2>
+            <p class="section-subtitle">מה שהופך אותנו למיוחדים</p>
         </div>
-        <div>
-            <div>
+        <div class="experience-grid">
+            <div class="exp-card">
+                <div class="exp-icon-wrap">
+                    <span class="exp-icon">🍃</span>
+                </div>
                 <h3>טריות בכל יום</h3>
                 <p>חומרי גלם באיכות הגבוהה ביותר</p>
             </div>
-            <div>
+            <div class="exp-card">
+                <div class="exp-icon-wrap">
+                    <span class="exp-icon">🎖️</span>
+                </div>
                 <h3>שירות עם חיוך</h3>
                 <p>אצלנו כל פינוק מוגש באהבה</p>
             </div>
-            <div>
+            <div class="exp-card">
+                <div class="exp-icon-wrap">
+                    <span class="exp-icon">❤️</span>
+                </div>
                 <h3>כשרות מהדרין</h3>
                 <p>בהשגחת הרב לנדא</p>
             </div>
-            <div>
+            <div class="exp-card">
+                <div class="exp-icon-wrap">
+                    <span class="exp-icon">👥</span>
+                </div>
                 <h3>אווירה משפחתית</h3>
                 <p>פינוק באווירה חמה ונקיים</p>
             </div>
         </div>
     </section>
-    <section>
-        <div>
-            <div>
-                <h2>הסניפים שלנו</h2>
-                <p>בואו לבקר אותנו באחד מהסניפים</p>
-            </div>
-            <div>
+    <section class="home-section branches-section">
+        <div class="section-header">
+            <h2 class="section-title">הסניפים שלנו</h2>
+            <p class="section-subtitle">בואו לבקר אותנו באחד מהסניפים</p>
+        </div>
+        <div class="branches-grid">
+            <div class="branch-card">
                 <h3>בית שמש</h3>
-                <p>שד' האמוראים 2</p>
+                <p class="branch-address">שד' האמוראים 2</p>
                 <div>073-8500597</div>
-                <div>10:00-23:00 🕐 </div>
+                <div class="branch-hours-pill">10:00-23:00 🕐 </div>
             </div>
-            <div>
+            <div class="branch-card">
                 <h3>מודיעין עילית</h3>
-                <p>שד' יחזקאל 2</p>
+                <p class="branch-address">שד' יחזקאל 2</p>
                 <div>073-8500597</div>
-                <div>10:00-23:00 🕐 </div>
+                <div class="branch-hours-pill">10:00-23:00 🕐 </div>
             </div>
-            <div>
+            <div class="branch-card">
                 <h3>בני ברק</h3>
-                <p>השומר 12</p>
+                <p class="branch-address">השומר 12</p>
                 <div>03-578-2468</div>
-                <div>10:00-23:00 🕐 </div>
+                <div class="branch-hours-pill">10:00-23:00 🕐 </div>
             </div>
-            <div>
+            <div class="branch-card">
                 <h3>בני ברק</h3>
-                <p>רבי עקיבא 76</p>
+                <p class="branch-address">רבי עקיבא 76</p>
                 <div>03-579-6515</div>
-                <div>10:00-23:00 🕐 </div>
+                <div class="branch-hours-pill">10:00-23:00 🕐 </div>
             </div>
-            <div>
+            <div class="branch-card">
                 <h3>אלעד</h3>
-                <p>יהודה הנשיא 94</p>
+                <p class="branch-address">יהודה הנשיא 94</p>
                 <div>03-932-9555</div>
-                <div>10:00-23:00 🕐 </div>
+                <div class="branch-hours-pill">10:00-23:00 🕐 </div>
             </div>
-            <div>
+            <div class="branch-card">
                 <h3>בני ברק</h3>
-                <p>השומר 107</p>
+                <p class="branch-address">השומר 107</p>
                 <div>073-8500597</div>
-                <div>10:00-23:00 🕐 </div>
+                <div class="branch-hours-pill">10:00-23:00 🕐 </div>
             </div>
         </div>
         <div class="center-btn-wrapper">
-            <a href="">לכל הסניפים</a>
+            <a href="" class="btn-orange-large">לכל הסניפים</a>
         </div>
     </section>
-    <section>
-        <img src="" alt="">
-        <div>
-            <h2>הסיפור שלנו</h2>
-            <p>פינתה היא רשת גלידריות ופינוקים מוכרת ואהובה, שהפכה לשם נרדף לחוויה, טעם ואיכות בקרב לקוחותיה.</p>
-            <p>עם 6 סניפים מצליחים – 3 בבני ברק, סניף באלעד, סניף בספר ובבית שמש, פינתה מספקת מגוון עשיר ומיוחד של
-                פינוקים טעימים:</p>
-            <ul>
-                <li>גלידות במגוון טעמים</li>
-                <li>קרפים מושחתים וווופל בלגי חלומי</li>
-                <li>פיצות אישיות וסלטים טריים בהרכבה אישית</li>
-                <li>שייקים מרעננים, פסטות ורביולי ביתיים</li>
-            </ul>
-            <a href="">אודות פינתה</a>
+    <section class="home-section story-section">
+        <div class="story-container">
+            <div class="story-content">
+                <h2 class="section-title align-right">הסיפור שלנו</h2>
+                <p>פינתה היא רשת גלידריות ופינוקים מוכרת ואהובה, שהפכה לשם נרדף לחוויה, טעם ואיכות בקרב לקוחותיה.</p>
+                <p>עם 6 סניפים מצליחים – 3 בבני ברק, סניף באלעד, סניף בספר ובבית שמש, פינתה מספקת מגוון עשיר ומיוחד של
+                    פינוקים טעימים:</p>
+                <ul class="story-list">
+                    <li>גלידות במגוון טעמים</li>
+                    <li>קרפים מושחתים וווופל בלגי חלומי</li>
+                    <li>פיצות אישיות וסלטים טריים בהרכבה אישית</li>
+                    <li>שייקים מרעננים, פסטות ורביולי ביתיים</li>
+                </ul>
+                <a href="" class="btn-orange-medium">אודות פינתה</a>
+            </div>
+            <div class="story-image-wrapper">
+                <img src="assets/images/dessert.jpg" alt="קינוח מבית פינתה">
+            </div>
         </div>
-    </section>
-    <section>
-
     </section>
 </body>
 

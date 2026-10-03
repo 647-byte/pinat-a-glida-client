@@ -1,2 +1,311 @@
 @import url('./header.css');
 @import url(./footer.css);
+@import url('./productCard.css');
+:root {
+  /* צבעי מותג מדויקים */
+  --primary-orange: #E25828;
+  --primary-orange-hover: #C9471A;
+  --select-btn-orange: #F29E58;
+  --select-btn-orange-hover: #E3893C;
+  
+  /* רקעים עם גוון חם ועומק */
+  --bg-page: #FAF7F2;
+  --bg-yellow-section: linear-gradient(180deg, #FFF7E8 0%, #FDE1A3 100%);
+  --bg-branch-card: #EFF4F8;
+  --bg-story-section: #FAF5EE;
+  --bg-pill-hours: #F3E0C4;
+  --text-pill-hours: #593E1B;
+  
+  /* צבעי טקסט */
+  --text-dark: #1E1F23;
+  --text-muted: #6B6C72;
+
+  /* פינות מעוגלות מקוריות */
+  --radius-card: 20px;
+  --radius-pill: 50px;
+
+  /* צללים מרוככים רב-שכבתיים (מעניקים את העומק) */
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.02);
+  --shadow-hover: 0 20px 40px rgba(0, 0, 0, 0.1);
+  --shadow-orange-btn: 0 8px 22px rgba(226, 88, 40, 0.28);
+  --shadow-select-btn: 0 6px 16px rgba(242, 158, 88, 0.3);
+}
+
+body {
+  font-family: 'Rubik', sans-serif;
+  margin: 0;
+  padding: 0;
+  direction: rtl;
+  color: var(--text-dark);
+  background-color: #FFFFFF;
+}
+
+/* ==========================================
+   1. Hero Video
+   ========================================== */
+.hero-section {
+  width: 100%;
+  max-height: 550px;
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-section video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ==========================================
+   מבנה סקשנים וכותרות
+   ========================================== */
+.home-section {
+  padding: 50px 20px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.section-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  color: var(--text-dark);
+}
+
+.section-title.align-right {
+  text-align: right;
+}
+
+.section-subtitle {
+  font-size: 1rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.center-btn-wrapper {
+  text-align: center;
+  margin-top: 35px;
+}
+
+/* כפתור כתום גדול */
+.btn-orange-large, .btn-orange-medium {
+  display: inline-block;
+  background-color: var(--primary-orange);
+  color: #FFFFFF;
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-orange-btn);
+  transition: all 0.25s ease;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-orange-large:hover, .btn-orange-medium:hover {
+  background-color: var(--primary-orange-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(226, 88, 40, 0.4);
+}
+
+.btn-orange-large {
+  padding: 12px 36px;
+  font-size: 1.1rem;
+}
+
+.btn-orange-medium {
+  padding: 10px 28px;
+  font-size: 1rem;
+}
+
+/* ==========================================
+   2. גריד מוצרים פופולריים & כרטיס מוצר
+   ========================================== */
+.products-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+/* ==========================================
+   3. החוויה שלנו (רקע צהוב)
+   ========================================== */
+.experience-section {
+  background: var(--bg-yellow-section);
+}
+
+.experience-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.exp-card {
+  background: #FFFFFF;
+  border-radius: var(--radius-card);
+  padding: 30px 20px;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+}
+
+.exp-icon-wrap {
+  font-size: 2.2rem;
+  margin-bottom: 12px;
+}
+
+.exp-card h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 8px 0;
+}
+
+.exp-card p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ==========================================
+   4. הסניפים שלנו
+   ========================================== */
+.branches-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+/* כרטיס סניף בעל נפח, צל ורקע תכלכל-אפרפר מובלט */
+.branch-card {
+  background-color: var(--bg-branch-card); /* #EFF4F8 */
+  border-radius: var(--radius-card);
+  padding: 28px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.branch-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+.branch-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+}
+
+.branch-address {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0 0 14px 0;
+}
+
+.branch-hours-pill {
+  width: 80%;
+  background: #F2DBB9;
+  color: #5A4021;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 6px 0;
+  border-radius: var(--radius-pill);
+}
+
+/* ==========================================
+   5. הסיפור שלנו
+   ========================================== */
+/* רקע שמנת עשיר בעל גוון חם ומדורג */
+.story-section {
+  background: linear-gradient(180deg, #FAF5EE 0%, #F5EDE0 100%);
+  padding: 70px 20px;
+}
+
+/* רשימת תבליטים עם נקודות כתומות מובלטות */
+.story-list {
+  padding-right: 20px;
+  margin: 20px 0 30px 0;
+}
+
+.story-list li {
+  margin-bottom: 10px;
+  color: var(--text-dark);
+  font-size: 1rem;
+}
+
+.story-list li::marker {
+  color: var(--primary-orange);
+  font-size: 1.2rem;
+}
+
+.story-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  flex-direction: row-reverse;
+}
+
+.story-content {
+  flex: 1;
+}
+
+.story-content p {
+  line-height: 1.6;
+  color: var(--text-dark);
+  font-size: 1rem;
+}
+
+.story-image-wrapper {
+  flex: 1;
+}
+
+.story-image-wrapper img {
+  width: 100%;
+  max-height: 380px;
+  object-fit: cover;
+  border-radius: 24px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+.error-message, .no-products-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 20px;
+  font-size: 1.1rem;
+  color: #d9534f;
+}
+/* ==========================================
+   רספונסיביות למובייל ולטאבלט
+   ========================================== */
+@media (max-width: 1024px) {
+  .products-grid, .experience-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .branches-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .story-container {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  .products-grid, .experience-grid, .branches-grid {
+    grid-template-columns: 1fr;
+  }
+  .section-title {
+    font-size: 1.7rem;
+  }
+}
