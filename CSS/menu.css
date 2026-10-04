@@ -17,7 +17,7 @@ body {
     padding: 0 20px 60px;
 }
 
-.error-message {
+.message {
     grid-column: 1 / -1;
     text-align: center;
     color: #d9534f;

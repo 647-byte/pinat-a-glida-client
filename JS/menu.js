@@ -1,18 +1,21 @@
 import createHeader from './header.js'
 import createFooter from './footer.js';
 import createProductCard from './productCard.js';
+import { getAllProducts } from '../services/productService.js';
 createHeader();
 createFooter();
-import { SERVER_URL } from "../config.js";
 const createMenu = async () => {
     const container = document.getElementById('container');
     try {
-        const response = await fetch(`${SERVER_URL}/products`);
-        if (!response.ok) {
-            throw new Error(`שגיאה בשרת: ${response.status}`);
-        }
-        const products = await response.json();
+        const products = await getAllProducts();
         container.replaceChildren();
+        if (products.length === 0) {
+            const emptyElement = document.createElement('p');
+            emptyElement.textContent = 'אין כרגע מוצרים מוצגים בתפריט.';
+            emptyElement.classList.add('message');
+            container.appendChild(emptyElement);
+            return;
+        }
         products.forEach((product) => {
             const cardElement = createProductCard(product);
             container.appendChild(cardElement);
@@ -21,7 +24,7 @@ const createMenu = async () => {
     catch (err) {
         const errorElement = document.createElement('p');
         errorElement.textContent = 'ארעה שגיאה בטעינת המוצרים, אנא נסו שוב מאוחר יותר.';
-        errorElement.classList.add('error-message');
+        errorElement.classList.add('message');
         container.replaceChildren(errorElement);
     }
 }
