@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>לוח בקרה</title>
+    <link rel="stylesheet" href="../../CSS/Admin/index.css">
+</head>
+
+<body>
+    <main class="dashboard-main container">
+        <section class="welcome-banner">
+            <h1>שלום מנהל</h1>
+            <p>ברוך הבא ללוח הבקרה. הנה סקירה מהירה של מצב החנות והפעולות הנפוצות:</p>
+        </section>
+        <!-- 1. כרטיסי מטריקות וסקור מהיר (3 כרטיסיות) -->
+        <section class="metrics-grid">
+            <div class="metric-card warning">
+                <div class="metric-header">
+                    <span class="metric-title">מוצרים שאינם במלאי</span>
+                    <span class="metric-icon">⚠️</span>
+                </div>
+                <div class="metric-value" id="out-of-stock-count">0</div>
+            </div>
+
+            <div class="metric-card info">
+                <div class="metric-header">
+                    <span class="metric-title">מוצרים בתפריט</span>
+                    <span class="metric-icon">🍦</span>
+                </div>
+                <div class="metric-value" id="active-products-count">0</div>
+            </div>
+
+            <div class="metric-card success">
+                <div class="metric-header">
+                    <span class="metric-title">הזמנות פתוחות</span>
+                    <span class="metric-icon">📦</span>
+                </div>
+                <div class="metric-value" id="open-orders-count">0</div>
+            </div>
+        </section>
+        <!-- 2. כפתורי/כרטיסי פעולות מהירות (3 כרטיסים) -->
+        <section class="actions-section">
+            <h2 class="section-title">פעולות מהירות</h2>
+            <div class="actions-grid">
+                <a href="admin-orders.html" class="action-card">
+                    <div class="action-icon-wrapper orders-bg">
+                        <span class="action-icon">📦</span>
+                    </div>
+                    <div class="action-content">
+                        <h3>ניהול הזמנות</h3>
+                        <p>צפייה בכל ההזמנות הנכנסות, עדכון סטטוסים וניהול קבלות.</p>
+                    </div>
+                    <span class="action-arrow">←</span>
+                </a>
+                <a href="admin-products.html" class="action-card">
+                    <div class="action-icon-wrapper products-bg">
+                        <span class="action-icon">🍦</span>
+                    </div>
+                    <div class="action-content">
+                        <h3>ניהול מוצרים</h3>
+                        <p>עריכת מוצרים קיימים, שינוי מחירים, חידוש מלאי ומחיקה.</p>
+                    </div>
+                    <span class="action-arrow">←</span>
+                </a>
+                <a href="admin-add-product.html" class="action-card">
+                    <div class="action-icon-wrapper add-bg">
+                        <span class="action-icon">➕</span>
+                    </div>
+                    <div class="action-content">
+                        <h3>הוספת מוצר חדש</h3>
+                        <p>העלאת טעם או פריט חדש לתפריט כולל תמונה, מחיר ותיאור.</p>
+                    </div>
+                    <span class="action-arrow">←</span>
+                </a>
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>
