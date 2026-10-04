@@ -1,0 +1,127 @@
+/* ==========================================
+   Header ניהול - תואם שפת מותג "פינתה גלידה"
+   ========================================== */
+.admin-site-header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #f0e6dd;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(45, 37, 34, 0.05);
+}
+
+/* סרגל עליון (Top Bar) */
+.admin-top-bar {
+    background-color: #2d2522; /* כהה ומובדל - נותן תחושת פאנל ניהול */
+    color: #faf6f0;
+    padding: 8px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.top-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.user-welcome {
+    font-weight: 500;
+    color: #f5e6d8;
+}
+
+.btn-view-site {
+    color: #ffffff;
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.12);
+    padding: 4px 12px;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+}
+
+.btn-view-site:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.btn-logout {
+    background-color: #e0693b;
+    color: #ffffff;
+    border: none;
+    padding: 4px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-logout:hover {
+    background-color: #c85628;
+}
+
+/* סרגל ניווט מרכזי (Main Nav) */
+.admin-main-nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.admin-main-nav .header-logo {
+    height: 48px;
+    width: auto;
+    display: block;
+}
+
+.admin-main-nav .nav-list {
+    display: flex;
+    list-style: none;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+}
+
+.admin-main-nav .nav-list a {
+    text-decoration: none;
+    color: #2d2522;
+    font-weight: 500;
+    font-size: 1rem;
+    padding: 8px 16px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.admin-main-nav .nav-list a:hover {
+    background-color: #faf6f0;
+    color: #e0693b;
+}
+
+.admin-main-nav .nav-list a.active {
+    background-color: #fff3ec;
+    color: #e0693b;
+    font-weight: 700;
+}
+
+/* כפתור הוספת מוצר (CTA) */
+.btn-add-product {
+    text-decoration: none;
+    background-color: #e0693b;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 12px rgba(224, 105, 59, 0.25);
+    transition: all 0.2s ease;
+}
+
+.btn-add-product:hover {
+    background-color: #c85628;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(224, 105, 59, 0.35);
+}
