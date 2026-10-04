@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>אזור ניהול - פינתה</title>
+    <script type="module" src="../js/admin.js"></script>
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+
+<body>
+    <main class="admin-restricted-container">
+        <div class="restricted-card" id="restricted-card">
+            <div class="lock-icon-circle">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#E0533C" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+            </div>
+
+            <h2>גישה מוגבלת</h2>
+            <p>דף זה מיועד למנהלים בלבד</p>
+
+            <button id="show-login-btn" class="btn-admin-primary">התחבר כמנהל</button>
+        </div>
+    </main>
+</body>
+
+</html>

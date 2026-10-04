@@ -131,6 +131,18 @@
     flex-wrap: wrap;
     gap: 15px;
 }
+.admin-lock-btn {
+  color: #777;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.admin-lock-btn:hover {
+  color: #E25828; /* צבע הכתום של המותג */
+}
 
 .price-note {
     color: #a0a5b0;

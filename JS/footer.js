@@ -83,7 +83,35 @@ const createFooterBottom = () => {
     const copyright = document.createElement('span');
     copyright.textContent = '© כל הזכויות שמורות לפינתה';
     copyright.classList.add('copyright');
-    container.append(priceNote, copyright);
+    const adminLink = document.createElement('a');
+    adminLink.href = '/HTML/admin.html';
+    adminLink.classList.add('admin-lock-btn');
+    adminLink.setAttribute('aria-label', 'כניסת מנהל');
+
+    // 2. יצירת אייקון ה-SVG של המנעול באמצעות createElementNS
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('width', '16');
+    svg.setAttribute('height', '16');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '2');
+
+    const rect = document.createElementNS(svgNS, 'rect');
+    rect.setAttribute('x', '3');
+    rect.setAttribute('y', '11');
+    rect.setAttribute('width', '18');
+    rect.setAttribute('height', '11');
+    rect.setAttribute('rx', '2');
+    rect.setAttribute('ry', '2');
+
+    const path = document.createElementNS(svgNS, 'path');
+    path.setAttribute('d', 'M7 11V7a5 5 0 0 1 10 0v4');
+
+    svg.append(rect, path);
+    adminLink.appendChild(svg);
+    container.append(priceNote, copyright, adminLink);
     bottomBar.appendChild(container);
     return bottomBar;
 };

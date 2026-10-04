@@ -1,0 +1,87 @@
+@import url('./header.css');
+@import url('./footer.css');
+
+/* איפוס בסיסי */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #FAF6F0; /* רקע שמנת-אופווייט חמים */
+    font-family: 'Assistant', 'Heebo', system-ui, -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* המכולה המרכזית - תופסת כ-82% מגובה ה-Viewport כדי לדחוק את הפוטר למטה */
+.admin-restricted-container {
+    min-height: 82vh; 
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+}
+
+/* הכרטיס המרכזי הלבן */
+.restricted-card {
+    background-color: #ffffff;
+    width: 100%;
+    max-width: 400px;
+    padding: 44px 32px 36px 32px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.07), 0 5px 15px rgba(0, 0, 0, 0.03);
+}
+
+/* עיגול האייקון הוורדרד */
+.lock-icon-circle {
+    width: 68px;
+    height: 68px;
+    background-color: #FCEBEB;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px auto;
+}
+
+/* כותרת */
+.restricted-card h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #222222;
+    margin-bottom: 8px;
+}
+
+/* טקסט הסבר */
+.restricted-card p {
+    font-size: 0.9rem;
+    color: #888888;
+    margin-bottom: 28px;
+}
+
+/* כפתור "התחבר כמנהל" */
+.btn-admin-primary {
+    width: 100%;
+    background-color: #E25828;
+    color: #ffffff;
+    border: none;
+    padding: 13px 0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-admin-primary:hover {
+    background-color: #c9491e;
+}
+
+.btn-admin-primary:active {
+    transform: scale(0.99);
+}
