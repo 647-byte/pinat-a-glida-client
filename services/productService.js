@@ -18,18 +18,18 @@ const getAllProducts = async () => {
 //     });
 //     return await handleResponse(response);
 // };
-// export const deleteProduct = async (id) => {
-//     const response = await fetch(`${URL}/${id}`, {
-//         method: 'DELETE'
-//     });
-//     return await handleResponse(response);
-// };
-// export const updateQuantity = async (id, { quantity, isAvailable }) => {
-//     const response = await fetch(`${URL}/${id}/quantity`, { // התאימי לנתיב הראוטר המדויק אצלך
-//         method: 'PATCH',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify({ quantity, isAvailable })
-//     });
-//     return await handleResponse(response);
-// };
-export {getAllProducts}
+const deleteProduct = async (id) => {
+    const response = await fetch(`${URL}/${id}`, {
+        method: 'DELETE'
+    });
+    return await handleResponse(response);
+};
+const updateQuantity = async (id, { quantity, isAvailable }) => {
+    const response = await fetch(`${URL}/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ quantity, isAvailable })
+    });
+    return await handleResponse(response);
+};
+export {getAllProducts,deleteProduct,updateQuantity}
