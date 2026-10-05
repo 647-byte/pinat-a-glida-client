@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ניהול מוצרים - פינתה גלידה</title> 
+    <link rel="stylesheet" href="../CSS/admin-products.css">
+</head>
+<body>
+    <main class="container">
+    <section class="page-header">
+            <div class="header-titles">
+                <div class="title-with-badge">
+                    <h1>ניהול מוצרים</h1>
+                    <span class="badge-count" id="products-count">0 מוצרים</span>
+                </div>
+                <p>צפייה, עריכה וניהול זמינות המוצרים בתפריט</p>
+            </div>
+            <a href="" class="btn-add-product">➕ הוספת מוצר חדש</a>
+        </section>
+        <!-- סרגל חיפוש וסינון -->
+        <section class="toolbar-section">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="🔍 חפש לפי שם מוצר...">
+            </div>
+            <div class="filter-box">
+                <label for="stock-filter">סטטוס מלאי:</label>
+                <select id="stock-filter">
+                    <option value="all">הכל</option>
+                    <option value="inStock">זמין במלאי</option>
+                    <option value="outOfStock">אזל המלאי</option>
+                </select>
+            </div>
+        </section>
+        <!-- טבלת מוצרים -->
+        <section class="table-container">
+            <table class="products-table">
+                <thead>
+                    <tr>
+                        <th>תמונה</th>
+                        <th>שם המוצר</th>
+                        <th>מחיר</th>
+                        <th>מלאי</th>
+                        <th>פעולות</th>
+                    </tr>
+                </thead>
+                <tbody id="products-tbody">
+                    <!-- התיאורים והשורות יוזרקו דינמית דרך ה-JS -->
+                </tbody>
+            </table>
+            <!-- הודעת תוצאות ריקות (מוסתר כברירת מחדל) -->
+            <div id="empty-state" class="empty-state hidden">
+                <p>"לא נמצאו מוצרים התואמים את החיפוש"</p>
+                <button id="reset-filters-btn" class="btn-secondary">ניקוי מסננים</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- מודאל אישור מחיקה (מוסתר כברירת מחדל) -->
+    <div id="delete-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h3>אישור מחיקה</h3>
+            <p id="delete-modal-text">האם ברצונך למחוק מוצר זה?</p>
+            <div class="modal-actions">
+                <button id="cancel-delete-btn" class="btn-cancel">ביטול</button>
+                <button id="confirm-delete-btn" class="btn-confirm-delete">מחק</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

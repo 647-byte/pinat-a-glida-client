@@ -1,0 +1,286 @@
+@import url('./admin-header.css');
+
+/* ==========================================
+   עיצוב דף ניהול מוצרים - פינתה גלידה
+   ========================================== */
+
+body {
+    background-color: #faf6f0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    color: #2d2522;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* Page Header */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.title-with-badge {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.title-with-badge h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #2d2522;
+}
+
+.badge-count {
+    background-color: #f0e6dd;
+    color: #2d2522;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.page-header p {
+    margin: 4px 0 0 0;
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* Toolbar & Filters (מעודכן ומיותר מול ה-Header) */
+.toolbar-section {
+    background-color: #ffffff;
+    padding: 16px 24px;
+    border-radius: 16px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-end; /* יישור קו תחתון אחיד בין קלט החיפוש לסלקט */
+    justify-content: flex-start;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    margin-bottom: 24px;
+}
+
+.search-box {
+    flex: 0 1 360px; /* רוחב מבוקר במקום להתפרס על כל המסך */
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.search-box label,
+.filter-box label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #666;
+}
+
+.search-box input {
+    width: 100%;
+    height: 40px;
+    padding: 0 14px;
+    border: 1px solid #e0d8d0;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    outline: none;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.search-box input:focus,
+.filter-box select:focus {
+    border-color: #e0693b;
+}
+
+.filter-box {
+    flex: 0 1 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filter-box select {
+    width: 100%;
+    height: 40px;
+    padding: 0 12px;
+    border: 1px solid #e0d8d0;
+    border-radius: 10px;
+    background-color: #fff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+/* Products Table */
+.table-container {
+    background-color: #ffffff;
+    border-radius: 16px;
+    padding: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.products-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: right;
+}
+
+.products-table th,
+.products-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #f5efe8;
+    vertical-align: middle;
+}
+
+.products-table th {
+    background-color: #faf6f0;
+    color: #666;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.product-thumb {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.badge-category {
+    background-color: #fff3ec;
+    color: #e0693b;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+/* Buttons & Toggles */
+.btn-stock-toggle {
+    border: 1px solid #e0d8d0;
+    background-color: #fff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-stock-toggle.in-stock {
+    color: #2e7d32;
+    background-color: #e8f5e9;
+    border-color: #a5d6a7;
+}
+
+.btn-stock-toggle.out-of-stock {
+    color: #c62828;
+    background-color: #ffebee;
+    border-color: #ef9a9a;
+}
+
+.btn-stock-toggle.readonly {
+    cursor: not-allowed;
+    opacity: 0.85;
+    border-style: dashed;
+}
+
+.actions-cell {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-action {
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: none;
+    border: none;
+    font-family: inherit;
+}
+
+.btn-edit {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.btn-delete {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.btn-secondary {
+    background-color: #f5f5f5;
+    color: #333;
+    border: 1px solid #e0d8d0;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-secondary:hover {
+    background-color: #eee;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 24px;
+    border-radius: 16px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.btn-cancel {
+    background: #eee;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.btn-confirm-delete {
+    background: #e0693b;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #777;
+}
