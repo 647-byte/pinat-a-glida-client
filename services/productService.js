@@ -6,18 +6,31 @@ const getAllProducts = async () => {
     return await handleResponse(response);
 };
 // ///-------------לבדוק כשאני אצטרך את זה האם הקוד אכן טוב לי ומתאים
-// export const getProductById = async (id) => {
-//     const response = await fetch(`${URL}/${id}`);
-//     return await handleResponse(response);
-// };
-// export const addProduct = async (productData) => {
-//     const response = await fetch(   URL, {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify(productData)
-//     });
-//     return await handleResponse(response);
-// };
+const getProductById = async (id) => {
+    const response = await fetch(`${URL}/${id}`);
+    return await handleResponse(response);
+};
+const addProduct = async (productData) => {
+    const response = await fetch(URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(productData)
+    });
+    return await handleResponse(response);
+};
+// עדכון updateProduct
+const updateProduct = async (id, productData) => {
+    const response = await fetch(`${URL}/${id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(productData)
+    });
+    return await handleResponse(response);
+};
 const deleteProduct = async (id) => {
     const response = await fetch(`${URL}/${id}`, {
         method: 'DELETE'
@@ -32,4 +45,4 @@ const updateQuantity = async (id, { quantity, isAvailable }) => {
     });
     return await handleResponse(response);
 };
-export {getAllProducts,deleteProduct,updateQuantity}
+export {getAllProducts,getProductById,addProduct,updateProduct,deleteProduct,updateQuantity}
