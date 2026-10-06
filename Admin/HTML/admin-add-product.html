@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="document-title">הוספת מוצר חדש - פינתה גלידה</title>
+    <link rel="stylesheet" href="../CSS/admin-add-product.css">
+    <script src="../JS/admin-add-product.js" type="module"></script>
+</head>
+
+<body>
+    <main class="container">
+        <!-- סרגל עליון -->
+        <div class="top-nav">
+            <a href="admin-products.html" class="btn-back">➔ חזרה לרשימת המוצרים</a>
+        </div>
+        <header class="page-header">
+            <h1 id="page-title">הוספת מוצר חדש</h1>
+            <p id="page-subtitle">מלא את הפרטים ליצירת מוצר חדש בתפריט</p>
+        </header>
+        <form id="product-form" class="form-grid" novalidate>
+            <!-- טור מרכזי: פרטי המוצר -->
+            <section class="form-main-card">
+                <h2>פרטי המוצר</h2>
+                <!-- שם המוצר -->
+                <div class="form-group">
+                    <label for="name">שם המוצר <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" placeholder="למשל: גלידת פיסטוק קראנץ'" required>
+                    <span class="error-message" id="error-name"></span>
+                </div>
+                <!-- קטגוריה ומחיר בשורה אחת -->
+                <div class="form-group">
+                    <label for="price">מחיר (₪) <span class="required">*</span></label>
+                    <input type="number" id="price" name="price" step="0.5" min="0" placeholder="0.00" required>
+                    <span class="error-message" id="error-price"></span>
+                </div>
+                <!-- תיאור המוצר -->
+                <div class="form-group">
+                    <label for="description">תיאור המוצר / רכיבים</label>
+                    <textarea id="description" name="description" rows="3"
+                        placeholder="ספר בקצרה על המוצר, טעמים או רכיבים בולטים..."></textarea>
+                </div>
+                <!-- ניהול מלאי וזמינות -->
+                <div class="inventory-section">
+                    <h3>ניהול מלאי וזמינות</h3>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="hasQuantity" name="hasQuantity">
+                        <label for="hasQuantity">מוצר זה מנוהל לפי כמות מדודה (יחידות)</label>
+                    </div>
+                    <!-- שדה כמות -->
+                    <div class="form-group hidden" id="quantity-container">
+                        <label for="quantity">כמות במלאי</label>
+                        <input type="number" id="quantity" name="quantity" min="0" value="0">
+                    </div>
+                    <!-- שדה זמינות ידני -->
+                    <div class="checkbox-group" id="availability-container">
+                        <input type="checkbox" id="isAvailable" name="isAvailable" checked>
+                        <label for="isAvailable">זמין למכירה בתפריט</label>
+                    </div>
+                    <!-- מוצר פופולרי -->
+                    <div class="checkbox-group highlight-box">
+                        <input type="checkbox" id="isPopular" name="isPopular">
+                        <label for="isPopular">⭐ סמן כמוצר מומלץ / פופולרי</label>
+                    </div>
+                </div>
+                <!-- כפתורי פעולה -->
+                <div class="form-actions">
+                    <button type="submit" id="submit-btn" class="btn-primary">✨ שמירת מוצר</button>
+                    <a href="admin-products.html" class="btn-secondary">ביטול</a>
+                </div>
+            </section>
+            <!-- טור משני: תמונה ותצוגה מקדימה -->
+            <aside class="form-sidebar">
+                <!-- תמונת המוצר - Drag & Drop Zone -->
+                <div class="sidebar-card">
+                    <h2>תמונת המוצר</h2>
+                    <div class="form-group">
+                        <label>העלאת תמונה <span class="required">*</span></label>
+
+                        <!-- אזור גרירה מעוצב -->
+                        <div class="drop-zone" id="drop-zone">
+                            <input type="file" id="error-imageUrl" name="imageUrl" accept="image/*" class="file-input" required>
+
+                            <div class="drop-zone-content">
+                                <div class="upload-icon">📁</div>
+                                <p class="drop-zone-title"><strong>גרור לכאן תמונה</strong> או <span
+                                        class="highlight">לחץ לבחירה</span></p>
+                                <span class="drop-zone-hint">פורמטים נתמכים: PNG, JPG, WEBP</span>
+                            </div>
+
+                            <div class="image-thumb-preview">
+                                <img id="thumb-img" src="../../assets/images/pinata-logo3.png" alt="תצוגה מקדימה">
+                            </div>
+                        </div>
+
+                        <span class="error-message" id="error-image"></span>
+                    </div>
+                </div>
+                <!-- תצוגה מקדימה בלייב של הכרטיס -->
+                <div class="sidebar-card">
+                    <h2>תצוגה מקדימה בלייב</h2>
+                    <p class="preview-note">כך הכרטיס ייראה ללקוח באתר:</p>
+                    <div id="card-preview-wrapper"></div>
+                </div>
+            </aside>
+        </form>
+    </main>
+</body>
+
+</html>

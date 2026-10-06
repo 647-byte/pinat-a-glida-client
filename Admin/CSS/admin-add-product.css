@@ -1,0 +1,274 @@
+@import url('./admin-header.css');
+@import url('../../CSS/productCard.css');
+body {
+    background-color: #faf6f0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    color: #2d2522;
+}
+.container {
+    max-width: 1050px;
+    margin: 20px auto 50px auto;
+    padding: 0 20px;
+}
+.top-nav {
+    margin-bottom: 12px;
+}
+.btn-back {
+    color: #e0693b;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: opacity 0.2s;
+}
+.btn-back:hover {
+    opacity: 0.8;
+}
+.page-header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #2d2522;
+}
+.page-header p {
+    margin: 4px 0 20px 0;
+    color: #666;
+}
+/* Grid Layout */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+    align-items: start;
+}
+@media (max-width: 850px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* Cards Design */
+.form-main-card,
+.sidebar-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    border: 1px solid #f0e8e0;
+}
+.sidebar-card {
+    margin-bottom: 20px;
+}
+h2 {
+    font-size: 1.15rem;
+    margin-top: 0;
+    margin-bottom: 18px;
+    color: #2d2522;
+    border-bottom: 2px solid #f8f2eb;
+    padding-bottom: 8px;
+}
+h3 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+/* Form Inputs */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+.form-row {
+    display: flex;
+    gap: 16px;
+}
+.form-row .form-group {
+    flex: 1;
+}
+label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #444;
+}
+.required {
+    color: #e0693b;
+}
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #e0d8d0;
+    border-radius: 10px;
+    font-size: 0.92rem;
+    font-family: inherit;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s;
+}
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: #e0693b;
+}
+.error-message {
+    color: #d32f2f;
+    font-size: 0.78rem;
+    min-height: 14px;
+}
+/* Inventory Section */
+.inventory-section {
+    background-color: #faf6f0;
+    padding: 16px;
+    border-radius: 12px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+.checkbox-group label {
+    cursor: pointer;
+}
+.highlight-box {
+    background-color: #fff8f3;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px dashed #f5a663;
+    margin-top: 10px;
+}
+/* Image Preview */
+.image-thumb-preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #faf6f0;
+    border-radius: 12px;
+    padding: 12px;
+    margin-top: 10px;
+}
+.image-thumb-preview img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    border-radius: 8px;
+}
+.preview-note {
+    font-size: 0.82rem;
+    color: #777;
+    margin-bottom: 12px;
+}
+/* Actions */
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+.btn-primary {
+    background-color: #e0693b;
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.btn-primary:hover {
+    background-color: #c8562a;
+}
+.btn-secondary {
+    background-color: #f0e8e0;
+    color: #333;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: inline-block;
+}
+.hidden {
+    display: none !important;
+}
+/* אזור גרירת תמונה (Drop Zone) */
+.drop-zone {
+    position: relative;
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    background-color: #f8fafc;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.drop-zone:hover {
+    border-color: #ff6b35;
+    background-color: #fff8f5;
+}
+
+/* אפקט כשהמשתמש גורר קובץ מעל האזור */
+.drop-zone.dragover {
+    border-color: #ff6b35;
+    background-color: #ffe6dc;
+    transform: scale(1.01);
+}
+
+/* ה-Input המקורי מוסתר ומתוח על כל השטח כדי שכל לחיצה תפתח דיאלוג קבצים */
+.file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.drop-zone-content {
+    margin-bottom: 12px;
+    pointer-events: none; /* מאפשר ללחיצה לעבור דרכו ל-input */
+}
+
+.upload-icon {
+    font-size: 2rem;
+    margin-bottom: 6px;
+}
+
+.drop-zone-title {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #334155;
+}
+
+.drop-zone-title .highlight {
+    color: #ff6b35;
+    text-decoration: underline;
+}
+
+.drop-zone-hint {
+    display: block;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-top: 4px;
+}
+
+.image-thumb-preview {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-thumb-preview img {
+    max-width: 100%;
+    max-height: 140px;
+    border-radius: 8px;
+    object-fit: contain;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
