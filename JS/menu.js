@@ -16,10 +16,12 @@ const createMenu = async () => {
             container.appendChild(emptyElement);
             return;
         }
+        const fragment=document.createDocumentFragment();
         products.forEach((product) => {
             const cardElement = createProductCard(product);
-            container.appendChild(cardElement);
+            fragment.appendChild(cardElement);
         });
+        container.appendChild(fragment);
     }
     catch (err) {
         const errorElement = document.createElement('p');

@@ -1,6 +1,6 @@
 import { getAllProducts, updateQuantity, deleteProduct } from '../../services/productService.js';
-import { SERVER_URL } from '../../config.js'
 import createAdminHeader from './admin-header.js';
+import { getImageUrl } from './utils/formatters.js';
 let products = [];
 let productIdToDelete = null;
 // 1. טעינת מוצרים מהשרת
@@ -22,17 +22,7 @@ const createProductRow = (product) => {
     // תמונה
     const tdImg = document.createElement('td');
     const img = document.createElement('img');
-
-    // 1. הגדרת המשתנה עם let
-    let imageSrc = product.imageUrl || '/assets/images/pinta-logo3.png';
-
-    // 2. בדיקה והוספת כתובת השרת במידת הצורך
-    if (imageSrc.startsWith('/uploads') || imageSrc.startsWith('uploads')) {
-        const cleanPath = imageSrc.startsWith('/') ? imageSrc : `/${imageSrc}`;
-        imageSrc = `${SERVER_URL}${cleanPath}`;
-    }
-
-    img.src = imageSrc;
+    img.src = getImageUrl(product.imageUrl);
     img.alt = product.name || 'מוצר';
     img.className = 'product-thumb';
     tdImg.appendChild(img);
@@ -58,7 +48,7 @@ const createProductRow = (product) => {
         // מוצר ללא כמות מדודה (כמו גלידה): כפתור לחיץ לשינוי זמינות מהיר
         stockBtn.className = `btn-stock-toggle ${isAvailable ? 'in-stock' : 'out-of-stock'}`;
         stockBtn.textContent = isAvailable ? '🟢 במלאי' : '🟠 אזל המלאי';
-        stockBtn.addEventListener('click', () => handleToggleStock(product,stockBtn));
+        stockBtn.addEventListener('click', () => handleToggleStock(product, stockBtn));
     }
     tdStock.appendChild(stockBtn);
     // פעולות (עריכה / מחיקה)
@@ -97,9 +87,11 @@ const renderProducts = () => {
         emptyState.classList.remove('hidden');
     } else {
         emptyState.classList.add('hidden');
+        const fragment = document.createDocumentFragment();
         filtered.forEach(product => {
-            tbody.appendChild(createProductRow(product));
+            fragment.appendChild(createProductRow(product));
         });
+        tbody.appendChild(fragment);
     }
 };
 // 4. עדכון זמינות מלאי דרך שירות ה-API
@@ -121,7 +113,7 @@ const handleToggleStock = async (product, stockBtn) => {
         stockBtn.className = `btn-stock-toggle ${newStatus ? 'in-stock' : 'out-of-stock'}`;
         stockBtn.textContent = newStatus ? '🟢 במלאי' : '🟠 אזל המלאי';
     } catch (error) {
-        
+
     }
 };
 // 5. ניהול ומחיקת מוצר דרך שירות ה-API

@@ -81,7 +81,12 @@ const loadExistingProduct = async (id) => {
     } catch (error) {
     }
 };
+const clearErrors = () => {
+    const errorElements = form.querySelectorAll('[id^="error-"]');
+    errorElements.forEach(el => { el.textContent = ''; });
+};
 const validateForm = () => {
+    clearErrors();
     let isValid = true;
     const el = form.elements;
     if (!el.name.value.trim()) {
@@ -141,17 +146,9 @@ const handleSubmit = async (event) => {
         ui.submitBtn.textContent = productId ? '💾 עדכון מוצר' : '✨ שמירת מוצר';
     }
 };
-// 7. אתחול והאזנה לאירועים מרכזיים (Event Delegation)
-createAdminHeader();
-const urlParams = new URLSearchParams(window.location.search);
-productId = urlParams.get('id');
-if (productId) {
-    loadExistingProduct(productId);
-} else {
-    updateLivePreview();
-}
 // ניהול אירועי Drag & Drop לריבוע העלאת התמונה
-if (dropZone) {
+const setupDragAndDrop = () => {
+    if (!dropZone) return;
     // 1. כשהעכבר נכנס לאזור הגרירה (dragenter) או זז מעליו (dragover)
     ['dragenter', 'dragover'].forEach(eventName => {
         dropZone.addEventListener(eventName, (e) => {
@@ -190,8 +187,16 @@ form.elements.imageUrl.addEventListener('change', (e) => {
         handleFileSelection(e.target.files[0]);
     }
 });
-
-// 2. עדכון בתוך אירוע ה-drop ב-dropZone
+// 7. אתחול והאזנה לאירועים מרכזיים (Event Delegation)
+createAdminHeader();
+const urlParams = new URLSearchParams(window.location.search);
+productId = urlParams.get('id');
+if (productId) {
+    loadExistingProduct(productId);
+} else {
+    updateLivePreview();
+}
+setupDragAndDrop();
 // האזנה מרוכזת לאירוע input על הטופס כולו!
 form.addEventListener('input', (event) => {
     // א. עדכון הכרטיס בלייב
@@ -203,7 +208,6 @@ form.addEventListener('input', (event) => {
         errorElement.textContent = ''; // הסרת השגיאה מיד ברגע שהתחיל להקליד!
     }
 });
-form.elements.imageUrl.addEventListener('change', updateLivePreview);
 // האזנה לשינוי במתג המלאי
 form.elements.hasQuantity.addEventListener('change', () => {
     toggleInventoryFields();
