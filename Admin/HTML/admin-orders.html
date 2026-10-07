@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ניהול הזמנות - פינתה גלידה</title>
+    <link rel="stylesheet" href="../CSS/admin-orders.css">
+</head>
+
+<body>
+    <main class="container">
+        <!-- כותרת העמוד -->
+        <section class="page-header">
+            <div class="header-titles">
+                <div class="title-with-badge">
+                    <h1>ניהול הזמנות</h1>
+                    <span class="badge-count" id="orders-count">0 הזמנות</span>
+                </div>
+                <p>צפייה, מעקב ועדכון סטטוס הזמנות נכנסות בזמן אמת</p>
+            </div>
+        </section>
+        <!-- סרגל חיפוש וסינון -->
+        <section class="toolbar-section">
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="🔍 חפש לפי שם לקוח, טלפון או מזהה...">
+            </div>
+            <div class="filter-box">
+                <label for="status-filter">סינון לפי סטטוס:</label>
+                <select id="status-filter">
+                    <option value="all">כל ההזמנות</option>
+                    <option value="pending">🟡 ממתין לטיפול</option>
+                    <option value="preparing">🟠 בהכנה</option>
+                    <option value="on_the_way">🔵 בדרך ללקוח</option>
+                    <option value="delivered">🟢 נמסר</option>
+                </select>
+            </div>
+        </section>
+        <!-- טבלת הזמנות -->
+        <section class="table-container">
+            <table class="products-table orders-table">
+                <thead>
+                    <tr>
+                        <th>מזהה ותאריך</th>
+                        <th>לקוח</th>
+                        <th>כמות פריטים</th>
+                        <th>סה"כ לתשלום</th>
+                        <th>סטטוס הזמנה</th>
+                        <th>פעולות</th>
+                    </tr>
+                </thead>
+                <tbody id="orders-tbody">
+                    <!-- יוזרק דינמית דרך ה-Template -->
+                </tbody>
+            </table>
+            <div id="empty-state" class="empty-state hidden">
+                <p>לא נמצאו הזמנות התואמות את החיפוש</p>
+                <button id="reset-filters-btn" class="btn-secondary">ניקוי מסננים</button>
+            </div>
+        </section>
+    </main>
+    <!-- מודאל פירוט הזמנה מלאה -->
+    <div id="order-details-modal" class="modal-overlay hidden">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="modal-order-title">פרטי הזמנה</h3>
+                <button id="close-modal-btn" class="btn-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="customer-info-box" id="modal-customer-info"></div>
+                <h4>פריטים בהזמנה:</h4>
+                <div class="order-items-list" id="modal-items-list"></div>
+                <div class="modal-total-summary">
+                    <span>סה"כ לתשלום:</span>
+                    <strong id="modal-total-price">₪0</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 1. תבנית לשורת הזמנה בטבלה הראשית -->
+    <template id="order-row-template">
+        <tr>
+            <td class="order-id-cell">
+                <strong class="order-short-id"></strong>
+                <span class="order-date"></span>
+            </td>
+            <td class="customer-cell">
+                <div class="customer-name"></div>
+                <div class="customer-phone"></div>
+            </td>
+            <td class="items-count-cell"></td>
+            <td class="total-price-cell"></td>
+            <td>
+                <select class="status-select" data-action="change-status">
+                    <option value="pending">🟡 ממתין לטיפול</option>
+                    <option value="preparing">🟠 בהכנה</option>
+                    <option value="on_the_way">🔵 בדרך ללקוח</option>
+                    <option value="delivered">🟢 נמסר</option>
+                </select>
+            </td>
+            <td class="actions-cell">
+                <button class="btn-action btn-edit" data-action="view-details">👁️ פרטים</button>
+            </td>
+        </tr>
+    </template>
+</body>
+
+</html>
