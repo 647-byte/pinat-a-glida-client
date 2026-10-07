@@ -1,6 +1,6 @@
 import createAdminHeader from './admin-header.js';
 import { getAllProducts } from '../../services/productService.js';
-//import { getAllOrders } from '../../services/orderService.js';
+import { getAllOrders } from '../../services/orderService.js';
 createAdminHeader();
 const initDashboard = async () => {
     // 2. תפיסת אלמנטים מה-DOM
@@ -14,7 +14,7 @@ const initDashboard = async () => {
     try {
         // 3. שליפת נתוני מוצרים והזמנות במקביל
         const products = await getAllProducts();
-        // const orders = await getAllOrders();
+        const orders = await getAllOrders();
         // --- א. עיבוד נתוני מוצרים ---
         if (Array.isArray(products)) {
             // מוצרים שאזלו מהמלאי (לפי כמות או לפי סטטוס זמינות)
@@ -26,17 +26,17 @@ const initDashboard = async () => {
             if (activeProductsEl) activeProductsEl.textContent = '0';
         }
         // --- ב. עיבוד נתוני הזמנות ---
-        // if (Array.isArray(orders)) {
-        //     // סינון הזמנות שעדיין פתוחות / ממתינות לטיפול
-        //     const openOrdersCount = orders.filter(order => 
-        //         order.status === 'pending' || 
-        //         order.status === 'preparing' || 
-        //         order.status === 'on_the_way'
-        //     ).length;
-        //     if (openOrdersEl) openOrdersEl.textContent = openOrdersCount;
-        // } else {
-        //     if (openOrdersEl) openOrdersEl.textContent = '0';
-        // }
+        if (Array.isArray(orders)) {
+            // סינון הזמנות שעדיין פתוחות / ממתינות לטיפול
+            const openOrdersCount = orders.filter(order => 
+                order.status === 'pending' || 
+                order.status === 'preparing' || 
+                order.status === 'on_the_way'
+            ).length;
+            if (openOrdersEl) openOrdersEl.textContent = openOrdersCount;
+        } else {
+            if (openOrdersEl) openOrdersEl.textContent = '0';
+        }
     } catch (error) {
     }
 };
