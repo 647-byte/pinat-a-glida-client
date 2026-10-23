@@ -10,6 +10,7 @@
 import createHeader from './header.js';
 import createFooter from './footer.js';
 import { getProductById } from '../services/productService.js';
+import { addToCart } from '../services/cartService.js';
 import { getFlavorLimit, calcUnitPrice } from './utils/productPricing.js';
 
 createHeader();
@@ -39,6 +40,8 @@ const groupInputs = new Map();
 const hints = new Map();
 /** @type {HTMLElement} Displays the total price. */
 let totalElement;
+/** @type {HTMLElement} Displays success or error feedback under the button. */
+let statusElement;
 
 // ---------------------------------------------------------------------------
 // Messages
@@ -54,6 +57,16 @@ const showMessage = (text) => {
     message.className = 'message';
     message.textContent = text;
     container.replaceChildren(message);
+};
+
+/**
+ * Shows feedback under the add-to-cart button.
+ * @param {string} text - The message to display.
+ * @param {boolean} isError - True for an error (red), false for success (green).
+ */
+const showStatus = (text, isError) => {
+    statusElement.textContent = text;
+    statusElement.classList.toggle('error', isError);
 };
 
 // ---------------------------------------------------------------------------
@@ -189,7 +202,8 @@ const createQuantityField = () => {
 };
 
 /**
- * Builds the summary area: the total price.
+ * Builds the summary area: total price, add-to-cart button and status line.
+ * The button is disabled when the product is unavailable.
  * @returns {HTMLDivElement} The summary area.
  */
 const createSummary = () => {
@@ -199,7 +213,14 @@ const createSummary = () => {
     totalLabel.textContent = 'סה"כ: ';
     totalElement = document.createElement('strong');
     totalElement.className = 'product-total';
-    summary.append(totalLabel, totalElement);
+    const button = document.createElement('button');
+    button.type = 'submit';
+    button.className = 'btn-add-cart';
+    button.textContent = product.isAvailable ? 'הוספה לעגלה' : 'המוצר אזל';
+    button.disabled = !product.isAvailable;
+    statusElement = document.createElement('p');
+    statusElement.className = 'form-status';
+    summary.append(totalLabel, totalElement, button, statusElement);
     return summary;
 };
 
@@ -256,6 +277,39 @@ const trimFlavors = () => {
 };
 
 // ---------------------------------------------------------------------------
+// Events
+// ---------------------------------------------------------------------------
+
+/**
+ * Handles the form submit: checks that every required group has a selection,
+ * builds the cart item and stores it.
+ * @param {SubmitEvent} event - The submit event.
+ */
+const handleSubmit = (event) => {
+    event.preventDefault();
+    const missing = product.options.find(group => group.isMust && selections.get(group._id).size === 0);
+    if (missing) {
+        showStatus(`יש לבחור ${missing.title}`, true);
+        return;
+    }
+    const options = product.options
+        .filter(group => selections.get(group._id).size > 0)
+        .map(group => ({ optionId: group._id, selectedChoices: [...selections.get(group._id)] }));
+    addToCart({
+        productId: product._id,
+        quantity,
+        size: selectedSize ? { name: selectedSize.name } : undefined,
+        options,
+        display: {
+            name: product.name,
+            imageUrl: product.imageUrl,
+            unitPrice: calcUnitPrice(product, selectedSize, selections)
+        }
+    });
+    showStatus('המוצר נוסף לעגלה 🎉', false);
+};
+
+// ---------------------------------------------------------------------------
 // Entry point
 // ---------------------------------------------------------------------------
 
@@ -270,6 +324,7 @@ const renderProduct = () => {
     if (product.size.length > 0) form.append(createSizesFieldset());
     product.options.forEach(group => form.append(createGroupFieldset(group)));
     form.append(createQuantityField(), createSummary());
+    form.addEventListener('submit', handleSubmit);
     container.replaceChildren(createImage(), form);
     refresh();
 };
