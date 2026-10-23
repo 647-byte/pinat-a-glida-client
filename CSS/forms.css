@@ -1,0 +1,101 @@
+/* ===== Shared form styles - login, registration and checkout ===== */
+
+/* Login page layout: two cards side by side */
+.auth-page {
+    max-width: 1000px;
+    margin: 32px auto 60px;
+    padding: 0 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+/* Card */
+.form-card {
+    padding: 28px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+.form-card h1,
+.form-card h2 {
+    margin: 0 0 20px;
+    color: #E25828;
+    text-align: center;
+}
+
+/* Form layout */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* Fields */
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-weight: 700;
+    color: #1E1F23;
+}
+.form-field input,
+.form-field textarea {
+    padding: 10px 14px;
+    font: inherit;
+    font-weight: 400;
+    background: #fffaf5;
+    border: 2px solid #f0e2d3;
+    border-radius: 12px;
+}
+.form-field textarea { resize: vertical; }
+.form-field input:focus,
+.form-field textarea:focus {
+    outline: none;
+    background: #fff;
+    border-color: #E25828;
+}
+.form-field input:user-invalid,
+.form-field textarea:user-invalid {
+    border-color: #c62828;
+}
+
+/* Submit button and status line */
+.form-submit {
+    margin-top: 6px;
+    padding: 12px;
+    font: inherit;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(to left, #e8673a, #f2b766);
+    border: none;
+    border-radius: 999px;
+    box-shadow: 0 8px 22px rgba(226, 88, 40, 0.28);
+    cursor: pointer;
+}
+.form-submit:disabled {
+    background: #ccc;
+    box-shadow: none;
+    cursor: wait;
+}
+.form-status {
+    min-height: 1.2em;
+    margin: 0;
+    font-weight: 700;
+    color: #c62828;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .auth-page,
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
