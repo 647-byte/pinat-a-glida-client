@@ -92,6 +92,7 @@
     color: #c62828;
     text-align: center;
 }
+.form-status.success { color: #1e6b34; }
 
 @media (max-width: 768px) {
     .auth-page,
