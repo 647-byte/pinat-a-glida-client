@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>השלמת הזמנה - פינתה גלידה</title>
+    <script src="../JS/order.js" type="module"></script>
+    <link rel="icon" type="ico" href="../favicon.ico">
+    <link rel="stylesheet" href="../CSS/menu.css">
+    <link rel="stylesheet" href="../CSS/forms.css">
+</head>
+<body>
+    <main class="order-page">
+        <h1 class="order-title">השלמת הזמנה</h1>
+        <div class="order-layout">
+            <section class="form-card" aria-labelledby="details-title">
+                <h2 id="details-title">פרטי משלוח</h2>
+                <form id="order-form" class="form">
+                    <div class="form-row">
+                        <label class="form-field">שם פרטי
+                            <input type="text" name="firstName" required autocomplete="given-name">
+                        </label>
+                        <label class="form-field">שם משפחה
+                            <input type="text" name="lastName" required autocomplete="family-name">
+                        </label>
+                    </div>
+                    <label class="form-field">טלפון
+                        <input type="tel" name="phone" required pattern="0\d{8,9}" title="מספר טלפון ישראלי, ספרות בלבד, למשל 0501234567" autocomplete="tel">
+                    </label>
+                    <label class="form-field">עיר
+                        <input type="text" name="city" required autocomplete="address-level2">
+                    </label>
+                    <div class="form-row">
+                        <label class="form-field">רחוב
+                            <input type="text" name="street" required autocomplete="address-line1">
+                        </label>
+                        <label class="form-field">מספר בית
+                            <input type="text" name="numberHouse" required>
+                        </label>
+                    </div>
+                    <label class="form-field">הערות להזמנה (לא חובה)
+                        <textarea name="comments" rows="3" maxlength="300"></textarea>
+                    </label>
+                    <button type="submit" class="form-submit">שליחת הזמנה</button>
+                    <p class="form-status" role="alert"></p>
+                </form>
+            </section>
+            <aside class="form-card order-summary" aria-labelledby="summary-title">
+                <h2 id="summary-title">סיכום הזמנה</h2>
+                <div id="order-items" class="order-items"></div>
+                <p class="order-total">סה"כ משוער: <strong id="order-total">₪0</strong></p>
+                <a href="cart.html" class="order-edit-link">עריכת הסל</a>
+            </aside>
+        </div>
+    </main>
+</body>
+</html>
