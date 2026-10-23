@@ -12,6 +12,7 @@ import { getCart, getCartTotal, clearCart, toOrderItems } from '../services/cart
 import { requireLogin, getUser, logout } from '../services/authService.js';
 import { createOrder } from '../services/orderService.js';
 import { ApiError } from '../services/apiClient.js';
+import { formatOrderNumber } from './utils/orderFormat.js';
 
 createHeader();
 createFooter();
@@ -85,7 +86,8 @@ const buildOrder = () => {
 
 /**
  * Replaces the checkout layout with an order confirmation that shows the
- * order number and the final price calculated by the server.
+ * order number and the final price calculated by the server, with links
+ * to track the order or keep shopping.
  * @param {Object} order - The order returned by the server.
  */
 const showConfirmation = (order) => {
@@ -94,14 +96,18 @@ const showConfirmation = (order) => {
     const title = document.createElement('h2');
     title.textContent = 'ההזמנה התקבלה! 🎉';
     const number = document.createElement('p');
-    number.textContent = `מספר הזמנה: ${order._id.slice(-6).toUpperCase()}`;
+    number.textContent = `מספר הזמנה: ${formatOrderNumber(order._id)}`;
     const total = document.createElement('p');
     total.textContent = `סכום לתשלום: ₪${order.totalPrice}`;
+    const trackLink = document.createElement('a');
+    trackLink.href = 'account.html';
+    trackLink.className = 'order-edit-link';
+    trackLink.textContent = 'מעקב אחרי ההזמנה באזור האישי';
     const backLink = document.createElement('a');
     backLink.href = 'menu.html';
     backLink.className = 'order-back-link';
     backLink.textContent = 'חזרה לתפריט';
-    section.append(title, number, total, backLink);
+    section.append(title, number, total, trackLink, backLink);
     document.querySelector('.order-layout').replaceWith(section);
 };
 
