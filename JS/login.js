@@ -1,25 +1,26 @@
 /**
- * @file Customer login and registration page (HTML/login.html).
- * Field validation is done by HTML attributes; this script submits the
- * forms, shows server errors and, on success, returns the user to the page
- * given in the `redirect` query parameter (the menu by default).
+ * @file Login and registration page (HTML/login.html), shared by customers
+ * and admins. Field validation is done by HTML attributes; this script
+ * submits the forms, shows server errors and, on success, opens the page
+ * given in the `redirect` query parameter, or the default page for the
+ * user's role (the admin dashboard for admins, the menu for customers).
  */
 import createHeader from './header.js';
 import createFooter from './footer.js';
-import { login, register } from '../services/authService.js';
+import { login, register, getHomeUrl } from '../services/authService.js';
 import { ApiError } from '../services/apiClient.js';
 
 createHeader();
 createFooter();
 
 /**
- * Page to open after signing in. Only plain page names in this folder
- * (e.g. "order.html") are accepted, so the parameter cannot send users
- * to another site.
+ * Page requested in the `redirect` query parameter, or null. Only plain
+ * page names in this folder (e.g. "order.html") are accepted, so the
+ * parameter cannot send users to another site.
  */
 const redirectTarget = (() => {
     const requested = new URLSearchParams(window.location.search).get('redirect');
-    return requested && /^[\w-]+\.html$/.test(requested) ? requested : 'menu.html';
+    return requested && /^[\w-]+\.html$/.test(requested) ? requested : null;
 })();
 
 /**
@@ -37,7 +38,7 @@ const handleForm = (form, action) => {
         status.textContent = '';
         try {
             await action(Object.fromEntries(new FormData(form)));
-            window.location.href = redirectTarget;
+            window.location.href = redirectTarget || getHomeUrl();
         } catch (err) {
             status.textContent = err instanceof ApiError ? err.message : 'לא ניתן להתחבר לשרת. נסו שוב מאוחר יותר.';
             button.disabled = false;
