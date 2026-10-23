@@ -19,14 +19,20 @@ const createProductCard = (product) => {
     priceTitle.textContent = 'החל מ-'
     priceTitle.classList.add('price-label');
     const price = document.createElement('span');
-    price.textContent = `₪${product.price}`;
+    const minPrice = product.size?.length ? Math.min(...product.size.map(s => s.price)) : product.price;
+    price.textContent = `₪${minPrice}`;
     price.classList.add('price-value');
     div1.append(priceTitle, price);
     const div2 = document.createElement('div');
     div2.classList.add('product-actions');
     const buttonChoose = document.createElement('button');
     buttonChoose.textContent = 'לבחירה';
-    buttonChoose.disabled = !product.description;
+    buttonChoose.disabled = product.isAvailable === false;
+    if (product.isAvailable === false) buttonChoose.textContent = 'אזל';
+    const base = window.location.pathname.includes('/HTML/') ? '' : 'HTML/';
+    buttonChoose.addEventListener('click', () => {
+        window.location.href = `${base}product.html?id=${product._id}`;
+    });
     buttonChoose.classList.add('btn-select');
     div2.append(div1, buttonChoose);
     contentDiv.append(nameProduct, desciptionProduct, div2);

@@ -1,0 +1,203 @@
+/* ===== דף מוצר - עמודה אחת במרכז, בסגנון האתר ===== */
+.product-page {
+    max-width: 900px;
+    margin: 0 auto 60px;
+    padding: 0 16px;
+}
+
+/* תמונה בראש הדף על רקע מדורג */
+.product-image-wrap {
+    display: flex;
+    justify-content: center;
+    height: 380px;
+    margin: 24px 0 0;
+    background: linear-gradient(135deg, #f3d6ab, #fff6ec);
+    border-radius: 24px;
+    overflow: hidden;
+}
+.product-image-wrap img {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+/* כותרת ותיאור */
+.product-form {
+    margin-top: 32px;
+    text-align: center;
+}
+.product-form h1 {
+    margin: 0 0 8px;
+    font-size: 2.2rem;
+    color: #e35f2f;
+}
+.product-description {
+    margin: 0 0 32px;
+    font-size: 1.05rem;
+    color: #333;
+}
+
+/* קבוצת אפשרויות */
+.option-group {
+    border: none;
+    padding: 0;
+    margin: 0 0 32px;
+}
+.option-group legend {
+    margin: 0 auto 12px;
+    font-weight: 700;
+    font-size: 1.15rem;
+}
+.group-hint {
+    max-width: 600px;
+    margin: 0 auto 16px;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    color: #1d4f91;
+    background: #eef5ff;
+    border: 1px solid #c5dbf7;
+    border-radius: 14px;
+}
+
+/* בחירה (טעמים / תוספות) - כפתור עגול */
+.choice {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 4px;
+    padding: 8px 18px;
+    background: #fffaf5;
+    border: 2px solid #f0e2d3;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+}
+.choice input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.choice:hover { border-color: #f2b766; }
+.choice:has(input:checked) {
+    background: #fff1e8;
+    border-color: #e35f2f;
+    color: #e35f2f;
+    font-weight: 700;
+}
+.choice:has(input:disabled) {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+.choice:has(input:focus-visible) {
+    outline: 2px solid #e35f2f;
+    outline-offset: 2px;
+}
+
+/* גדלים - קוביות עם אייקון, מחיר ושם, כמו בתמונה */
+.size-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 24px;
+    max-width: 640px;
+    margin: 0 auto;
+}
+.size-card {
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+    padding: 20px 12px;
+    background: transparent;
+    border: 2px solid transparent;
+    border-radius: 18px;
+}
+.size-card::before {
+    content: "🍨";
+    font-size: 2.2rem;
+    margin-bottom: 6px;
+}
+.size-card:hover { background: #fffaf5; border-color: #f0e2d3; }
+.size-card:has(input:checked) {
+    background: #fff7f1;
+    border-color: #e35f2f;
+}
+.size-price {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: #e35f2f;
+}
+.size-name {
+    font-weight: 700;
+    color: #222;
+}
+
+/* כמות */
+.quantity-field {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 24px;
+    font-weight: 700;
+}
+.quantity-field input {
+    width: 70px;
+    padding: 6px 8px;
+    text-align: center;
+    border: 2px solid #f0e2d3;
+    border-radius: 10px;
+    font-size: 1rem;
+}
+
+/* סיכום וכפתור */
+.product-summary {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding-top: 24px;
+    border-top: 1px solid #f0e2d3;
+}
+.product-total {
+    font-size: 2rem;
+    color: #e35f2f;
+}
+.btn-add-cart {
+    padding: 14px 40px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    background: linear-gradient(to left, #e8673a, #f2b766);
+    border: none;
+    border-radius: 999px;
+    box-shadow: 0 6px 16px rgba(227, 95, 47, 0.3);
+    cursor: pointer;
+    transition: transform 0.15s;
+}
+.btn-add-cart:hover { transform: translateY(-2px); }
+.btn-add-cart:disabled {
+    background: #ccc;
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+}
+.form-status {
+    width: 100%;
+    margin: 4px 0 0;
+    color: #2e7d32;
+    font-weight: 700;
+}
+.form-status.error { color: #c62828; }
+
+.message {
+    margin-top: 40px;
+    text-align: center;
+}
+
+/* מסכים קטנים */
+@media (max-width: 768px) {
+    .product-image-wrap { height: 240px; }
+    .product-form h1 { font-size: 1.7rem; }
+    .size-cards { gap: 12px; }
+}
