@@ -284,7 +284,9 @@ const trimFlavors = () => {
 
 /**
  * Handles the form submit: checks that every required group has a selection,
- * builds the cart item and stores it.
+ * builds the cart item and stores it. Besides the selections sent to the
+ * server, the item keeps display-only data (name, image, unit price and
+ * human-readable selection lines) for the cart page.
  * @param {SubmitEvent} event - The submit event.
  */
 const handleSubmit = (event) => {
@@ -294,18 +296,20 @@ const handleSubmit = (event) => {
         showStatus(`יש לבחור ${missing.title}`, true);
         return;
     }
-    const options = product.options
-        .filter(group => selections.get(group._id).size > 0)
-        .map(group => ({ optionId: group._id, selectedChoices: [...selections.get(group._id)] }));
+    const chosenGroups = product.options.filter(group => selections.get(group._id).size > 0);
     addToCart({
         productId: product._id,
         quantity,
         size: selectedSize ? { name: selectedSize.name } : undefined,
-        options,
+        options: chosenGroups.map(group => ({
+            optionId: group._id,
+            selectedChoices: [...selections.get(group._id)]
+        })),
         display: {
             name: product.name,
             imageUrl: product.imageUrl,
-            unitPrice: calcUnitPrice(product, selectedSize, selections)
+            unitPrice: calcUnitPrice(product, selectedSize, selections),
+            details: chosenGroups.map(group => `${group.title}: ${[...selections.get(group._id)].join(', ')}`)
         }
     });
     showStatus('המוצר נוסף לעגלה 🎉', false);
