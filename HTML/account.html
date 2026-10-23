@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>האזור האישי - פינתה גלידה</title>
+    <script src="../JS/account.js" type="module"></script>
+    <link rel="icon" type="ico" href="../favicon.ico">
+    <link rel="stylesheet" href="../CSS/menu.css">
+    <link rel="stylesheet" href="../CSS/forms.css">
+</head>
+<body>
+    <main class="account-page">
+        <div class="account-head">
+            <div>
+                <h1 class="account-title">האזור האישי</h1>
+                <p id="account-greeting" class="account-greeting"></p>
+            </div>
+            <button type="button" id="logout-btn" class="account-logout">התנתקות</button>
+        </div>
+        <div class="account-layout">
+            <section class="form-card" aria-labelledby="orders-title">
+                <h2 id="orders-title">ההזמנות שלי</h2>
+                <div id="orders-list" class="orders-list" aria-live="polite"></div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>
