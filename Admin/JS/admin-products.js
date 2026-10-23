@@ -1,5 +1,5 @@
 import { getAllProducts, updateQuantity, deleteProduct } from '../../services/productService.js';
-import createAdminHeader from './admin-header.js';
+import initAdminPage from './adminPage.js';
 import { getImageUrl } from './utils/formatters.js';
 let products = [];
 let productIdToDelete = null;
@@ -138,17 +138,18 @@ const handleConfirmDelete = async () => {
     }
 };
 // 6. אתחול העמוד
-createAdminHeader();
-loadProducts();
-// אירועי סינון וחיפוש
-document.getElementById('search-input').addEventListener('input', renderProducts);
-document.getElementById('stock-filter').addEventListener('change', renderProducts);
-// ניקוי מסננים
-document.getElementById('reset-filters-btn').addEventListener('click', () => {
-    document.getElementById('search-input').value = '';
-    document.getElementById('stock-filter').value = 'all';
-    renderProducts();
-});
-// אירועי מודאל מחיקה
-document.getElementById('cancel-delete-btn').addEventListener('click', closeDeleteModal);
-document.getElementById('confirm-delete-btn').addEventListener('click', handleConfirmDelete);
+if (initAdminPage()) {
+    loadProducts();
+    // אירועי סינון וחיפוש
+    document.getElementById('search-input').addEventListener('input', renderProducts);
+    document.getElementById('stock-filter').addEventListener('change', renderProducts);
+    // ניקוי מסננים
+    document.getElementById('reset-filters-btn').addEventListener('click', () => {
+        document.getElementById('search-input').value = '';
+        document.getElementById('stock-filter').value = 'all';
+        renderProducts();
+    });
+    // אירועי מודאל מחיקה
+    document.getElementById('cancel-delete-btn').addEventListener('click', closeDeleteModal);
+    document.getElementById('confirm-delete-btn').addEventListener('click', handleConfirmDelete);
+}

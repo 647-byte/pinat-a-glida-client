@@ -1,7 +1,7 @@
 import createProductCard from '../../JS/productCard.js';
 import { getProductById, addProduct, updateProduct } from '../../services/productService.js';
 import uploadImage from '../../services/uploadService.js';
-import createAdminHeader from './admin-header.js';
+import initAdminPage from './adminPage.js';
 import { createSizeRow } from './add-product-components.js';
 import { setupOptionModal } from './optionModal.js';
 import { initProductOptionsManager } from './productOptionsManager.js';
@@ -174,31 +174,32 @@ const toggleSizesSection = () => {
 hasSizesCheckbox.addEventListener('change', toggleSizesSection);
 addSizeBtn.addEventListener('click', () => sizesListContainer.appendChild(createSizeRow()));
 // 7. אתחול והאזנה לאירועים מרכזיים (Event Delegation)
-createAdminHeader();
-const urlParams = new URLSearchParams(window.location.search);
-productId = urlParams.get('id');
-if (productId) {
-    loadExistingProduct(productId);
-} else {
-    optionsManager.loadOptionGroups();
-    updateLivePreview();
-}
-// האזנה מרוכזת לאירוע input על הטופס כולו!
-form.addEventListener('input', (event) => {
-    // א. עדכון הכרטיס בלייב
-    updateLivePreview();
-    // ב. ניקוי שגיאה בזמן הקלדה: מוצאים את אלמנט השגיאה של השדה שכרגע מקלידים בו
-    const fieldName = event.target.name;
-    const errorElement = document.getElementById(`error-${fieldName}`);
-    if (errorElement) {
-        errorElement.textContent = ''; // הסרת השגיאה מיד ברגע שהתחיל להקליד!
+if (initAdminPage()) {
+    const urlParams = new URLSearchParams(window.location.search);
+    productId = urlParams.get('id');
+    if (productId) {
+        loadExistingProduct(productId);
+    } else {
+        optionsManager.loadOptionGroups();
+        updateLivePreview();
     }
-});
-// האזנה לשינוי במתג המלאי
-form.elements.hasQuantity.addEventListener('change', () => {
-    toggleInventoryFields();
-    updateLivePreview();
-});
-setupOptionModal((newGroup) => optionsManager.loadOptionGroups([newGroup._id]));
-// הגשת הטופס
-form.addEventListener('submit', handleSubmit);
+    // האזנה מרוכזת לאירוע input על הטופס כולו!
+    form.addEventListener('input', (event) => {
+        // א. עדכון הכרטיס בלייב
+        updateLivePreview();
+        // ב. ניקוי שגיאה בזמן הקלדה: מוצאים את אלמנט השגיאה של השדה שכרגע מקלידים בו
+        const fieldName = event.target.name;
+        const errorElement = document.getElementById(`error-${fieldName}`);
+        if (errorElement) {
+            errorElement.textContent = ''; // הסרת השגיאה מיד ברגע שהתחיל להקליד!
+        }
+    });
+    // האזנה לשינוי במתג המלאי
+    form.elements.hasQuantity.addEventListener('change', () => {
+        toggleInventoryFields();
+        updateLivePreview();
+    });
+    setupOptionModal((newGroup) => optionsManager.loadOptionGroups([newGroup._id]));
+    // הגשת הטופס
+    form.addEventListener('submit', handleSubmit);
+}

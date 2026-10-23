@@ -1,7 +1,6 @@
-import createAdminHeader from './admin-header.js';
+import initAdminPage from './adminPage.js';
 import { getAllProducts } from '../../services/productService.js';
 import { getAllOrders } from '../../services/orderService.js';
-createAdminHeader();
 const initDashboard = async () => {
     // 2. תפיסת אלמנטים מה-DOM
     const outOfStockEl = document.getElementById('out-of-stock-count');
@@ -40,4 +39,4 @@ const initDashboard = async () => {
     } catch (error) {
     }
 };
-initDashboard();
+if (initAdminPage()) initDashboard();

@@ -1,5 +1,5 @@
 import { getAllOrders, updateOrderStatus } from '../../services/orderService.js';
-import createAdminHeader from './admin-header.js';
+import initAdminPage from './adminPage.js';
 import { openOrderModal, setupOrderModal } from './orderModal.js';
 import { formatDate } from './utils/formatters.js';
 let orders = [];
@@ -100,15 +100,16 @@ const handleTableEvent = async (event) => {
     }
 };
 // --- 6. אתחול העמוד ---
-createAdminHeader();
-setupOrderModal();
-loadOrders();
-tbody.addEventListener('click', handleTableEvent);
-tbody.addEventListener('change', handleTableEvent);
-document.getElementById('search-input').addEventListener('input', renderOrders);
-document.getElementById('status-filter').addEventListener('change', renderOrders);
-document.getElementById('reset-filters-btn').addEventListener('click', () => {
-    document.getElementById('search-input').value = '';
-    document.getElementById('status-filter').value = 'all';
-    renderOrders();
-});
+if (initAdminPage()) {
+    setupOrderModal();
+    loadOrders();
+    tbody.addEventListener('click', handleTableEvent);
+    tbody.addEventListener('change', handleTableEvent);
+    document.getElementById('search-input').addEventListener('input', renderOrders);
+    document.getElementById('status-filter').addEventListener('change', renderOrders);
+    document.getElementById('reset-filters-btn').addEventListener('click', () => {
+        document.getElementById('search-input').value = '';
+        document.getElementById('status-filter').value = 'all';
+        renderOrders();
+    });
+}
