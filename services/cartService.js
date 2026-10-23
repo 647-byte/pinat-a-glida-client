@@ -48,4 +48,12 @@ const addToCart = (item) => {
  */
 const getCartCount = () => getCart().reduce((sum, item) => sum + (item.quantity || 0), 0);
 
-export { CART_KEY, CART_UPDATED_EVENT, getCart, addToCart, getCartCount };
+/**
+ * Returns the estimated cart total, based on the unit prices stored when
+ * each item was added. The server recalculates the final price on checkout.
+ * @returns {number} Estimated total; 0 when the cart is empty.
+ */
+const getCartTotal = () =>
+    getCart().reduce((sum, item) => sum + (item.display?.unitPrice || 0) * (item.quantity || 0), 0);
+
+export { CART_KEY, CART_UPDATED_EVENT, getCart, addToCart, getCartCount, getCartTotal };
