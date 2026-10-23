@@ -5,6 +5,14 @@ const getAllProducts = async () => {
     const response = await fetch(URL);
     return await handleResponse(response);
 };
+/**
+ * Fetches the popular products shown on the home page.
+ * @returns {Promise<Array<Object>>} The popular products.
+ */
+const getPopularProducts = async () => {
+    const response = await fetch(`${URL}/popular`);
+    return await handleResponse(response);
+};
 const getProductById = async (id) => {
     const response = await fetch(`${URL}/${id}`);
     return await handleResponse(response);
@@ -44,4 +52,4 @@ const updateQuantity = async (id, { quantity, isAvailable }) => {
     });
     return await handleResponse(response);
 };
-export {getAllProducts,getProductById,addProduct,updateProduct,deleteProduct,updateQuantity}
+export { getAllProducts, getPopularProducts, getProductById, addProduct, updateProduct, deleteProduct, updateQuantity };

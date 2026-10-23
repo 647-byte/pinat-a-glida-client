@@ -1,4 +1,4 @@
-import { SERVER_URL } from '../config.js';
+import { getPopularProducts } from '../services/productService.js';
 import createHeader from './header.js'
 import createFooter from './footer.js';
 import createProductCard from './productCard.js';
@@ -7,15 +7,15 @@ createHeader();
 createFooter();
 createCartButton();              
 
+/**
+ * Loads the popular products into the home page. When the site is closed,
+ * the closed notice replaces the page (see closedNotice.js).
+ */
 const loadPopularProducts = async () => {
     const container = document.getElementById('popularProductsContainer');
     if (!container) return;
     try {
-        const response = await fetch(`${SERVER_URL}/products/popular`);
-        if (!response.ok) {
-            throw new Error(`שגיאה בשרת: ${response.status}`);
-        }
-        const products = await response.json();
+        const products = await getPopularProducts();
         renderProductsList(products, container);
     } catch (err) {
         const errorElement = document.createElement('p');
