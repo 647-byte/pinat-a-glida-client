@@ -11,7 +11,8 @@ const adminPath = (path) => new URL(path, import.meta.url).href;
 const NAV_ITEMS = [
     { text: 'ראשי', page: 'index.html' },
     { text: 'ניהול הזמנות', page: 'admin-orders.html' },
-    { text: 'ניהול מוצרים', page: 'admin-products.html' }
+    { text: 'ניהול מוצרים', page: 'admin-products.html' },
+    { text: 'ניהול משתמשים', page: 'admin-users.html' }
 ];
 /**
  * Builds the logout button: removes the session and returns to the customer site.
