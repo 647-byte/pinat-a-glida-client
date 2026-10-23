@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ניהול משתמשים - פינתה גלידה</title>
+    <link rel="icon" type="ico" href="../../favicon.ico">
+    <link rel="stylesheet" href="../CSS/admin-products.css">
+    <link rel="stylesheet" href="../CSS/admin-users.css">
+</head>
+<body>
+    <main class="container">
+        <section class="page-header">
+            <div class="header-titles">
+                <div class="title-with-badge">
+                    <h1>ניהול משתמשים</h1>
+                    <span class="badge-count" id="users-count">0 משתמשים</span>
+                </div>
+                <p>צפייה בכל המשתמשים, שינוי תפקיד ומחיקה</p>
+            </div>
+        </section>
+        <section class="toolbar-section" aria-label="חיפוש וסינון">
+            <div class="search-box">
+                <label for="search-input">חיפוש</label>
+                <input type="search" id="search-input" placeholder="🔍 שם, אימייל או טלפון...">
+            </div>
+            <div class="filter-box">
+                <label for="role-filter">תפקיד</label>
+                <select id="role-filter">
+                    <option value="all">כל המשתמשים</option>
+                    <option value="customer">לקוחות</option>
+                    <option value="admin">מנהלים</option>
+                </select>
+            </div>
+        </section>
+        <p id="page-status" class="page-status" role="status"></p>
+        <section class="table-container">
+            <table class="products-table">
+                <thead>
+                    <tr>
+                        <th scope="col">שם</th>
+                        <th scope="col">אימייל</th>
+                        <th scope="col">טלפון</th>
+                        <th scope="col">תאריך הצטרפות</th>
+                        <th scope="col">תפקיד</th>
+                        <th scope="col">פעולות</th>
+                    </tr>
+                </thead>
+                <tbody id="users-tbody"></tbody>
+            </table>
+            <div id="empty-state" class="empty-state hidden">
+                <p>לא נמצאו משתמשים התואמים את החיפוש</p>
+                <button type="button" id="reset-filters-btn" class="btn-secondary">ניקוי מסננים</button>
+            </div>
+        </section>
+    </main>
+    <div id="delete-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="delete-modal-title">
+        <div class="modal-content">
+            <h3 id="delete-modal-title">אישור מחיקה</h3>
+            <p id="delete-modal-text"></p>
+            <div class="modal-actions">
+                <button type="button" id="cancel-delete-btn" class="btn-cancel">ביטול</button>
+                <button type="button" id="confirm-delete-btn" class="btn-confirm-delete">מחק</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

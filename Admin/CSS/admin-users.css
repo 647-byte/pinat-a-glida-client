@@ -1,0 +1,60 @@
+/* ===== Admin users page - additions to admin-products.css ===== */
+
+/* Status line for loading, success and error messages */
+.page-status {
+    min-height: 1.4em;
+    margin: 0 0 12px;
+    font-weight: 600;
+    color: #2e7d32;
+}
+.page-status.error {
+    color: #c62828;
+}
+
+/* "You" tag on the signed-in admin's row */
+.self-tag {
+    margin-inline-start: 8px;
+    padding: 2px 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #e0693b;
+    background-color: #fff3ec;
+    border-radius: 10px;
+}
+
+/* Email and phone are left-to-right text inside a right-to-left table */
+.ltr-cell {
+    direction: ltr;
+    text-align: right;
+}
+
+/* Role select, highlighted for admins */
+.role-select {
+    height: 34px;
+    padding: 0 10px;
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background-color: #fff;
+    border: 1px solid #e0d8d0;
+    border-radius: 20px;
+    cursor: pointer;
+}
+.role-select[data-role="admin"] {
+    color: #e0693b;
+    background-color: #fff3ec;
+    border-color: #f5c3a8;
+}
+
+/* Disabled controls on the signed-in admin's row */
+.role-select:disabled,
+.btn-action:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+}
+
+/* Small screens: scroll the table sideways instead of squeezing it */
+@media (max-width: 768px) {
+    .toolbar-section { flex-wrap: wrap; }
+    .table-container { overflow-x: auto; }
+}
