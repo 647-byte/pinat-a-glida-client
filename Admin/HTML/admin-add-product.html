@@ -65,6 +65,28 @@
                         <label for="isPopular">⭐ סמן כמוצר מומלץ / פופולרי</label>
                     </div>
                 </div>
+                <!-- ניהול גדלים מותנה -->
+                <div class="inventory-section">
+                    <div class="checkbox-group highlight-box">
+                        <input type="checkbox" id="hasSizes" name="hasSizes">
+                        <label for="hasSizes"><strong>למוצר זה יש גדלים משתנים (כמו קטן, בינוני, ענק)</strong></label>
+                    </div>
+
+                    <div id="sizes-section-wrapper" class="hidden">
+                        <p class="section-subtitle">הגדר גדלים, מחירים ומקסימום בחירות:</p>
+                        <div id="sizes-list" class="sizes-container"></div>
+                        <button type="button" id="add-size-btn" class="btn-secondary">+ הוסף גודל</button>
+                    </div>
+                </div>
+                <!-- קבוצות אפשרויות ותוספות -->
+                <div class="inventory-section">
+                    <div class="section-header-row">
+                        <h3>קבוצות אפשרויות ותוספות</h3>
+                        <button type="button" id="open-option-modal-btn" class="btn-secondary">+ צור קבוצת
+                            תוספות</button>
+                    </div>
+                    <div id="option-groups-container" class="checkbox-grid"></div>
+                </div>
                 <!-- כפתורי פעולה -->
                 <div class="form-actions">
                     <button type="submit" id="submit-btn" class="btn-primary">✨ שמירת מוצר</button>
@@ -81,7 +103,8 @@
 
                         <!-- אזור גרירה מעוצב -->
                         <div class="drop-zone" id="drop-zone">
-                            <input type="file" id="error-imageUrl" name="imageUrl" accept="image/*" class="file-input" required>
+                            <input type="file" name="imageUrl" accept="image/*" class="file-input"
+                                required>
 
                             <div class="drop-zone-content">
                                 <div class="upload-icon">📁</div>
@@ -106,6 +129,40 @@
                 </div>
             </aside>
         </form>
+        <!-- מודאל יצירת קבוצת אפשרויות חדשה -->
+        <div id="option-group-modal" class="modal hidden">
+            <div class="modal-content">
+                <h3>יצירת קבוצת תוספות חדשה</h3>
+                <form id="option-group-form">
+                    <div class="form-group">
+                        <label for="modal-group-title">שם הקבוצה (למשל: שוקולדים, תוספות)</label>
+                        <input type="text" id="modal-group-title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modal-group-max">מקסימום בחירות מותרות</label>
+                        <input type="number" id="modal-group-max" min="1" value="1" required>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="modal-group-must">
+                        <label for="modal-group-must">חובה לבחור לפחות פריט אחד מקבוצה זו</label>
+                    </div>
+
+                    <!-- אזור בחירות דינמי -->
+                    <div class="form-group">
+                        <label>רשימת בחירות (אפשרויות בתוך הקבוצה)</label>
+                        <div id="modal-choices-list" class="choices-container">
+                            <!-- שורות קלט דינמיות יתווספו לכאן -->
+                        </div>
+                        <button type="button" id="modal-add-choice-btn" class="btn-secondary">+ הוסף בחירה</button>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button type="submit" class="btn-primary">שמור קבוצה</button>
+                        <button type="button" id="close-option-modal-btn" class="btn-secondary">ביטול</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </main>
 </body>
 

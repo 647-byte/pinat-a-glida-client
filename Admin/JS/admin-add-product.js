@@ -2,21 +2,14 @@ import createProductCard from '../../JS/productCard.js';
 import { getProductById, addProduct, updateProduct } from '../../services/productService.js';
 import uploadImage from '../../services/uploadService.js';
 import createAdminHeader from './admin-header.js';
+import { createSizeRow } from './add-product-components.js';
+import { setupOptionModal } from './optionModal.js';
+import { initProductOptionsManager } from './productOptionsManager.js';
+import { initImageManager } from './utils/imageManager.js';
 let productId = null;
 let existingImageUrl = null;
 let isSubmitting = false; // הגנה מפני לחיצות כפולות
 let currentObjectUrl = null;
-const dropZone = document.getElementById('drop-zone');
-// פונקציה חדשה: מופעלת אך ורק כשנבחר/נזרק קובץ חדש
-const handleFileSelection = (file) => {
-    if (file) {
-        if (currentObjectUrl) {
-            URL.revokeObjectURL(currentObjectUrl); // שחרור ה-Blob הישן מהזיכרון
-        }
-        currentObjectUrl = URL.createObjectURL(file);
-    }
-    updateLivePreview();
-};
 // 1. נגישות מרכזית לטופס ולרכיבי ה-UI המבניים בלבד
 const form = document.getElementById('product-form');
 const ui = {
@@ -28,8 +21,10 @@ const ui = {
     quantityContainer: document.getElementById('quantity-container'),
     availabilityContainer: document.getElementById('availability-container')
 };
-// 2. עדכון תצוגה מקדימה בלייב בלחיצה/הקלדה (גישה ישר דרך form.elements)
-const updateLivePreview = () => {
+// אתחול המנהלים המודולריים
+const optionsManager = initProductOptionsManager();
+// עדכון פונקציית התצוגה המקדימה כך שתקבל את ה-URL מהמנהל של התמונות
+const updateLivePreview = (currentObjectUrl = null) => {
     const defaultImage = '../../assets/images/pinata-logo3.png';
     // שימוש ב-currentObjectUrl הקיים במקום יצירת קישור זמני חדש בכל הקלדה
     const finalImage = currentObjectUrl || existingImageUrl || defaultImage;
@@ -46,6 +41,7 @@ const updateLivePreview = () => {
     };
     ui.previewWrapper.replaceChildren(createProductCard(tempProduct));
 };
+const imageManager = initImageManager(form, updateLivePreview);
 // 3. תצוגה מותנית של שדות המלאי
 const toggleInventoryFields = () => {
     const isQuantityManaged = form.elements.hasQuantity.checked;
@@ -77,6 +73,19 @@ const loadExistingProduct = async (id) => {
             el.isAvailable.checked = product.isAvailable ?? true;
         }
         toggleInventoryFields();
+        // טעינת גדלים קיימים אם יש למוצר
+        if (product.size && product.size.length > 0) {
+            optionsManager.hasSizesCheckbox.checked = true;
+            optionsManager.toggleSizesSection();
+            optionsManager.sizesListContainer.textContent = '';
+            product.size.forEach(s => {
+                optionsManager.sizesListContainer.appendChild(createSizeRow(s.name, s.price, s.maxChoices));
+            });
+        }
+
+        // טעינת קבוצות האפשרויות וסימון מה ששייך למוצר
+        const selectedOptionIds = product.options ? product.options.map(opt => typeof opt === 'object' ? opt._id : opt) : [];
+        await optionsManager.loadOptionGroups(selectedOptionIds);
         updateLivePreview();
     } catch (error) {
     }
@@ -122,6 +131,7 @@ const handleSubmit = async (event) => {
         // 2. בניית אובייקט ה-JSON הנקי
         const isQuantityManaged = form.elements.hasQuantity.checked;
         const rawQuantity = form.elements.quantity.value;
+        // 3. הוספתם לאובייקט ה-productData שנשלח לשרת
         const productData = {
             name: form.elements.name.value.trim(),
             price: Number(form.elements.price.value),
@@ -131,62 +141,38 @@ const handleSubmit = async (event) => {
             quantity: isQuantityManaged && rawQuantity !== '' ? Number(rawQuantity) : null,
             isAvailable: isQuantityManaged
                 ? (Number(rawQuantity) > 0)
-                : form.elements.isAvailable.checked
+                : form.elements.isAvailable.checked,
+            size: optionsManager.collectSizesData(),         // קריאה לפונקציה מהמודול
+            options: optionsManager.collectSelectedOptions() // קריאה לפונקציה מהמודול
         };
-        // 3. שמירת המוצר דרך ה-Service
-        if (productId) {
-            await updateProduct(productId, productData);
-        } else {
-            await addProduct(productData);
-        }
-        window.location.href = 'admin-products.html';
-    } catch (error) {
-        isSubmitting = false;
-        ui.submitBtn.disabled = false;
-        ui.submitBtn.textContent = productId ? '💾 עדכון מוצר' : '✨ שמירת מוצר';
+    // 3. שמירת המוצר דרך ה-Service
+    if (productId) {
+        await updateProduct(productId, productData);
+    } else {
+        await addProduct(productData);
+    }
+    window.location.href = 'admin-products.html';
+} catch (error) {
+    isSubmitting = false;
+    ui.submitBtn.disabled = false;
+    ui.submitBtn.textContent = productId ? '💾 עדכון מוצר' : '✨ שמירת מוצר';
+}
+};
+const hasSizesCheckbox = document.getElementById('hasSizes');
+const sizesSectionWrapper = document.getElementById('sizes-section-wrapper');
+const sizesListContainer = document.getElementById('sizes-list');
+const addSizeBtn = document.getElementById('add-size-btn');
+const optionGroupsContainer = document.getElementById('option-groups-container');
+// פונקציית הצגה/הסתרת אזור הגדלים
+const toggleSizesSection = () => {
+    const hasSizes = hasSizesCheckbox.checked;
+    sizesSectionWrapper.classList.toggle('hidden', !hasSizes);
+    if (hasSizes && sizesListContainer.children.length === 0) {
+        sizesListContainer.appendChild(createSizeRow());
     }
 };
-// ניהול אירועי Drag & Drop לריבוע העלאת התמונה
-const setupDragAndDrop = () => {
-    if (!dropZone) return;
-    // 1. כשהעכבר נכנס לאזור הגרירה (dragenter) או זז מעליו (dragover)
-    ['dragenter', 'dragover'].forEach(eventName => {
-        dropZone.addEventListener(eventName, (e) => {
-            e.preventDefault(); // "דפדפן יקר, אל תפתח את התמונה בלשונית חדשה!"
-            e.stopPropagation(); // עורר עצירה של האירוע שלא יעלה לאלמנטים אבות
-            dropZone.classList.add('dragover'); // הוספת מחלקת CSS (למשל: מסגרת כתומה/בולטת)
-        });
-    });
-
-    // 2. כשהעכבר יוצא מאזור הגרירה (dragleave) או כשהמשתמש משחרר את הקובץ (drop)
-    ['dragleave', 'drop'].forEach(eventName => {
-        dropZone.addEventListener(eventName, (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            dropZone.classList.remove('dragover'); // הסרת העיצוב הבולט (החזרה למצב רגיל)
-        });
-    });
-    dropZone.addEventListener('drop', (e) => {
-        // 1. שליפת הקבצים שהמשתמש גלל מתוך אירוע הגרירה
-        const droppedFiles = e.dataTransfer.files;
-        // 2. בדיקה שבכלל נגרר קובץ תקין (ולא סתם טקסט)
-        if (droppedFiles && droppedFiles.length > 0) {
-            // 3. הצעד הקריטי: עדכון ה-Input המוסתר של הטופס!
-            form.elements.imageUrl.files = droppedFiles;
-            // 4. עדכון התצוגה המקדימה
-            handleFileSelection(droppedFiles[0]);
-            // 5. ניקוי הודעת שגיאה אם הייתה
-            const errorElement = document.getElementById('error-imageUrl');
-            if (errorElement) errorElement.textContent = '';
-        }
-    });
-}
-// 1. האזנה לשינוי בקובץ ה-Input
-form.elements.imageUrl.addEventListener('change', (e) => {
-    if (e.target.files && e.target.files[0]) {
-        handleFileSelection(e.target.files[0]);
-    }
-});
+hasSizesCheckbox.addEventListener('change', toggleSizesSection);
+addSizeBtn.addEventListener('click', () => sizesListContainer.appendChild(createSizeRow()));
 // 7. אתחול והאזנה לאירועים מרכזיים (Event Delegation)
 createAdminHeader();
 const urlParams = new URLSearchParams(window.location.search);
@@ -194,9 +180,9 @@ productId = urlParams.get('id');
 if (productId) {
     loadExistingProduct(productId);
 } else {
+    optionsManager.loadOptionGroups();
     updateLivePreview();
 }
-setupDragAndDrop();
 // האזנה מרוכזת לאירוע input על הטופס כולו!
 form.addEventListener('input', (event) => {
     // א. עדכון הכרטיס בלייב
@@ -213,5 +199,6 @@ form.elements.hasQuantity.addEventListener('change', () => {
     toggleInventoryFields();
     updateLivePreview();
 });
+setupOptionModal((newGroup) => optionsManager.loadOptionGroups([newGroup._id]));
 // הגשת הטופס
 form.addEventListener('submit', handleSubmit);
