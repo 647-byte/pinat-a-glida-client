@@ -1,5 +1,5 @@
 import listenForSiteClosed from './components/closedNotice.js';
-import { isLoggedIn } from '../services/authService.js';
+import { isLoggedIn, isAdmin } from '../services/authService.js';
 
 const createTopBar = () => {
     const topBar = document.createElement('div');
@@ -27,14 +27,18 @@ const createTopBar = () => {
  */
 const sitePath = (path) => new URL(path, import.meta.url).href;
 /**
- * Builds the account link: "login / register" for guests, or a link to
- * the account page for signed-in users.
+ * Builds the account link, which depends on the role in the token:
+ * "login / register" for guests, the admin dashboard for admins, and the
+ * account page for customers.
  * @returns {HTMLAnchorElement} The account link.
  */
 const createAccountLink = () => {
     const link = document.createElement('a');
     link.className = 'account-link';
-    if (isLoggedIn()) {
+    if (isAdmin()) {
+        link.textContent = '⚙️ ניהול';
+        link.href = sitePath('../Admin/HTML/index.html');
+    } else if (isLoggedIn()) {
         link.textContent = '👤 האזור האישי';
         link.href = sitePath('../HTML/account.html');
     } else {
