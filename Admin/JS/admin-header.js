@@ -1,3 +1,25 @@
+import { getUser, logout, SITE_HOME_URL } from '../../services/authService.js';
+/**
+ * Builds the logout button: removes the session and returns to the customer site.
+ * @returns {HTMLButtonElement} The logout button.
+ */
+const createLogoutButton = () => {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'btn-logout';
+    button.textContent = '🚪 התנתקות';
+    button.addEventListener('click', () => {
+        logout();
+        window.location.href = SITE_HOME_URL;
+    });
+    return button;
+};
+
+/**
+ * Builds the top bar: a greeting with the admin's name, a link that opens
+ * the customer site in a new tab, and the logout button.
+ * @returns {HTMLDivElement} The top bar.
+ */
 const createAdminTopBar = () => {
     const topBar = document.createElement('div');
     topBar.className = 'admin-top-bar';
@@ -6,21 +28,18 @@ const createAdminTopBar = () => {
     topBarRight.className = 'top-bar-right';
     const userSpan = document.createElement('span');
     userSpan.className = 'user-welcome';
-    userSpan.textContent = 'שלום מנהל מערכת';
+    userSpan.textContent = `שלום ${getUser()?.name || 'מנהל מערכת'}`;
     topBarRight.append(userSpan);
     // צד שמאל: מעבר לאתר לקוחות + כפתור התנתקות
     const topBarLeft = document.createElement('div');
     topBarLeft.className = 'top-bar-left';
     const viewSiteLink = document.createElement('a');
-    viewSiteLink.href = '../index.html';
+    viewSiteLink.href = SITE_HOME_URL;
     viewSiteLink.target = '_blank';
+    viewSiteLink.rel = 'noopener';
     viewSiteLink.className = 'btn-view-site';
     viewSiteLink.textContent = 'תצוגת אתר לקוחות';
-    const logoutBtn = document.createElement('button');
-    logoutBtn.className = 'btn-logout';
-    logoutBtn.textContent = '🚪 התנתקות';
-//לכתוב מאזין לאירוע התנתקות
-    topBarLeft.append(viewSiteLink, logoutBtn);
+    topBarLeft.append(viewSiteLink, createLogoutButton());
     topBar.append(topBarRight, topBarLeft);
     return topBar;
 };
