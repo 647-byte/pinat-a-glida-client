@@ -10,7 +10,7 @@
 import createHeader from './header.js';
 import createFooter from './footer.js';
 import { getProductById } from '../services/productService.js';
-import { calcUnitPrice } from './utils/productPricing.js';
+import { getFlavorLimit, calcUnitPrice } from './utils/productPricing.js';
 
 createHeader();
 createFooter();
@@ -21,6 +21,10 @@ const MAX_QUANTITY = 20;
 /** Root element the whole page is rendered into. */
 const container = document.getElementById('product-container');
 
+// ---------------------------------------------------------------------------
+// Page state
+// ---------------------------------------------------------------------------
+
 /** @type {Object} The product loaded from the server, with populated option groups. */
 let product;
 /** @type {Object|null} The selected size, or null when the product has no sizes. */
@@ -29,8 +33,16 @@ let selectedSize = null;
 let quantity = 1;
 /** @type {Map<string, Set<string>>} Option group id to the choices selected in it. */
 const selections = new Map();
+/** @type {Map<string, HTMLInputElement[]>} Option group id to its checkbox inputs. */
+const groupInputs = new Map();
+/** @type {Map<string, HTMLParagraphElement>} Option group id to its hint element. */
+const hints = new Map();
 /** @type {HTMLElement} Displays the total price. */
 let totalElement;
+
+// ---------------------------------------------------------------------------
+// Messages
+// ---------------------------------------------------------------------------
 
 /**
  * Replaces the whole page content with a single message.
@@ -44,6 +56,9 @@ const showMessage = (text) => {
     container.replaceChildren(message);
 };
 
+// ---------------------------------------------------------------------------
+// Building the page
+// ---------------------------------------------------------------------------
 
 /**
  * Builds the product image block.
@@ -95,6 +110,7 @@ const createSizesFieldset = () => {
         input.checked = index === 0;
         input.addEventListener('change', () => {
             selectedSize = size;
+            trimFlavors();
             refresh();
         });
         const price = document.createElement('span');
@@ -108,6 +124,45 @@ const createSizesFieldset = () => {
     });
     fieldset.append(legend, cards);
     selectedSize = product.size[0];
+    return fieldset;
+};
+
+/**
+ * Builds one option group: a checkbox per choice and a hint line.
+ * Registers the group in `selections`, `groupInputs` and `hints`.
+ * @param {Object} group - Option group from the server.
+ * @returns {HTMLFieldSetElement} The group fieldset.
+ */
+const createGroupFieldset = (group) => {
+    selections.set(group._id, new Set());
+    const fieldset = document.createElement('fieldset');
+    fieldset.className = 'option-group';
+    const legend = document.createElement('legend');
+    legend.textContent = group.isMust ? `${group.title} *` : group.title;
+    const hint = document.createElement('p');
+    hint.className = 'group-hint';
+    hints.set(group._id, hint);
+    fieldset.append(legend, hint);
+
+    const inputs = group.choices.map(choice => {
+        const label = document.createElement('label');
+        label.className = 'choice';
+        const input = document.createElement('input');
+        input.type = 'checkbox';
+        input.value = choice;
+        input.addEventListener('change', () => {
+            const chosen = selections.get(group._id);
+            if (input.checked) chosen.add(choice);
+            else chosen.delete(choice);
+            refresh();
+        });
+        const text = document.createElement('span');
+        text.textContent = choice;
+        label.append(input, text);
+        fieldset.append(label);
+        return input;
+    });
+    groupInputs.set(group._id, inputs);
     return fieldset;
 };
 
@@ -134,7 +189,7 @@ const createQuantityField = () => {
 };
 
 /**
-  * Builds the summary area: the total price.
+ * Builds the summary area: the total price.
  * @returns {HTMLDivElement} The summary area.
  */
 const createSummary = () => {
@@ -148,6 +203,28 @@ const createSummary = () => {
     return summary;
 };
 
+// ---------------------------------------------------------------------------
+// Keeping the screen in sync with the state
+// ---------------------------------------------------------------------------
+
+/**
+ * Updates each option group's hint and disables flavor checkboxes
+ * once the size limit is reached.
+ */
+const refreshOptions = () => {
+    product.options.forEach(group => {
+        const chosen = selections.get(group._id);
+        const limit = getFlavorLimit(group, selectedSize);
+        let hint = limit ? `ניתן לבחור עד ${limit}` : `${group.maxChoices} כלולים במחיר`;
+        if (!limit && group.pricePer > 0) hint += `, כל בחירה נוספת ₪${group.pricePer}`;
+        hint += ` (נבחרו ${chosen.size})`;
+        hints.get(group._id).textContent = hint;
+        groupInputs.get(group._id).forEach(input => {
+            input.disabled = Boolean(limit) && !input.checked && chosen.size >= limit;
+        });
+    });
+};
+
 /**
  * Updates the displayed total (unit price times quantity).
  */
@@ -159,8 +236,28 @@ const refreshTotal = () => {
  * Re-syncs the whole screen with the current state. Called after every change.
  */
 const refresh = () => {
+    refreshOptions();
     refreshTotal();
 };
+
+/**
+ * Clears flavor selections that exceed the limit of a newly selected size,
+ * both in the state and on screen.
+ */
+const trimFlavors = () => {
+    product.options.forEach(group => {
+        const limit = getFlavorLimit(group, selectedSize);
+        const chosen = selections.get(group._id);
+        if (limit && chosen.size > limit) {
+            chosen.clear();
+            groupInputs.get(group._id).forEach(input => { input.checked = false; });
+        }
+    });
+};
+
+// ---------------------------------------------------------------------------
+// Entry point
+// ---------------------------------------------------------------------------
 
 /**
  * Builds the whole page for the loaded product and syncs it with the initial state.
@@ -171,6 +268,7 @@ const renderProduct = () => {
     form.noValidate = true;
     form.append(...createHeading());
     if (product.size.length > 0) form.append(createSizesFieldset());
+    product.options.forEach(group => form.append(createGroupFieldset(group)));
     form.append(createQuantityField(), createSummary());
     container.replaceChildren(createImage(), form);
     refresh();
