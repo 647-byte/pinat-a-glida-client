@@ -5,7 +5,6 @@ const getAllProducts = async () => {
     const response = await fetch(URL);
     return await handleResponse(response);
 };
-// ///-------------לבדוק כשאני אצטרך את זה האם הקוד אכן טוב לי ומתאים
 const getProductById = async (id) => {
     const response = await fetch(`${URL}/${id}`);
     return await handleResponse(response);
