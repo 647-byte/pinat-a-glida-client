@@ -1,3 +1,4 @@
+import { isLoggedIn } from '../services/authService.js';
 const createTopBar = () => {
     const topBar = document.createElement('div');
     topBar.className = 'top-bar';
@@ -23,6 +24,23 @@ const createTopBar = () => {
  * @returns {string} Absolute URL.
  */
 const sitePath = (path) => new URL(path, import.meta.url).href;
+/**
+ * Builds the account link: "login / register" for guests, or a link to
+ * the account page for signed-in users.
+ * @returns {HTMLAnchorElement} The account link.
+ */
+const createAccountLink = () => {
+    const link = document.createElement('a');
+    link.className = 'account-link';
+    if (isLoggedIn()) {
+        link.textContent = '👤 האזור האישי';
+        link.href = sitePath('../HTML/account.html');
+    } else {
+        link.textContent = 'התחברות / הרשמה';
+        link.href = sitePath('../HTML/login.html');
+    }
+    return link;
+};
 /**
  * Builds the main navigation bar: logo, page links and the online order button.
  * All links are resolved with sitePath, so they work from every page.
@@ -61,7 +79,7 @@ const createMainNav = () => {
     orderButton.href = sitePath('../HTML/menu.html');
     orderButton.className = 'btn-order';
     orderButton.textContent = 'הזמנה אונליין';
-    mainNav.append(linkLogo, navList, orderButton);
+    mainNav.append(linkLogo, navList, createAccountLink(), orderButton);
     return mainNav;
 };
 const createHeader = () => {

@@ -129,3 +129,12 @@ html, body {
         font-size: 14px;
     }
 }
+
+/* Account link (login / account page) */
+.account-link {
+    font-weight: 700;
+    color: #E25828;
+    text-decoration: none;
+    white-space: nowrap;
+}
+.account-link:hover { text-decoration: underline; }
