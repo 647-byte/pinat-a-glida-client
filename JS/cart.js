@@ -7,6 +7,7 @@
 import createHeader from './header.js';
 import createFooter from './footer.js';
 import { getCart, getCartTotal } from '../services/cartService.js';
+import createCartItem from './components/cartItem.js';
 
 createHeader();
 createFooter();
@@ -56,9 +57,7 @@ const renderCart = () => {
         showEmptyCart();
         return;
     }
-    const summary = document.createElement('p');
-    summary.textContent = `בסל ${cart.length} פריטים`;
-    itemsContainer.replaceChildren(summary);
+    itemsContainer.replaceChildren(...cart.map(item => createCartItem(item)));
 };
 
 renderCart();
