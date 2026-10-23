@@ -1,5 +1,19 @@
 import { getUser, logout, SITE_HOME_URL } from '../../services/authService.js';
 /**
+ * Resolves a path relative to this file (Admin/JS/admin-header.js), so the
+ * links work from every admin page.
+ * @param {string} path - Path relative to the Admin/JS folder.
+ * @returns {string} Absolute URL.
+ */
+const adminPath = (path) => new URL(path, import.meta.url).href;
+
+/** Admin navigation links: label and page file name in Admin/HTML. */
+const NAV_ITEMS = [
+    { text: 'ראשי', page: 'index.html' },
+    { text: 'ניהול הזמנות', page: 'admin-orders.html' },
+    { text: 'ניהול מוצרים', page: 'admin-products.html' }
+];
+/**
  * Builds the logout button: removes the session and returns to the customer site.
  * @returns {HTMLButtonElement} The logout button.
  */
@@ -43,43 +57,43 @@ const createAdminTopBar = () => {
     topBar.append(topBarRight, topBarLeft);
     return topBar;
 };
-// 2. יצירת סרגל ניווט מרכזי
+/**
+ * Builds the main admin navigation: logo (to the dashboard), page links
+ * with the current page highlighted, and the add-product button.
+ * @returns {HTMLElement} The nav element.
+ */
 const createAdminMainNav = () => {
     const mainNav = document.createElement('nav');
     mainNav.className = 'admin-main-nav';
     // לוגו פאנל הניהול
     const linkLogo = document.createElement('a');
     linkLogo.className = 'logo-link';
-    linkLogo.href = '';
+    linkLogo.href = adminPath('../HTML/index.html');
     const logoImg = document.createElement('img');
-    logoImg.src = '/assets/images/pinata-logo3.png';
+    logoImg.src = adminPath('../../assets/images/pinata-logo3.png');
     logoImg.alt = 'פינת הגלידה - ניהול';
     logoImg.className = 'header-logo';
     linkLogo.append(logoImg);
     // רשימת קישורי הניווט הראשיים
     const navList = document.createElement('ul');
     navList.className = 'nav-list';
-    const navItems = [
-        { text: 'ראשי', href: 'index.html' },
-        { text: 'ניהול הזמנות', href: 'admin-orders.html' },
-        { text: 'ניהול מוצרים', href: 'admin-products.html' }
-    ];
     // זיהוי עמוד נוכחי לצורך הדגשת הקישור הפעיל
-    const currentPath = window.location.pathname.split('/').pop() || 'index.html';
-    navItems.forEach(item => {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    NAV_ITEMS.forEach(({ text, page }) => {
         const li = document.createElement('li');
         const a = document.createElement('a');
-        a.textContent = item.text;
-        a.href = item.href;
-        if (currentPath === item.href) {
+        a.textContent = text;
+        a.href = adminPath(`../HTML/${page}`);
+        if (currentPage === page) {
             a.className = 'active';
+            a.setAttribute('aria-current', 'page');
         }
         li.appendChild(a);
         navList.appendChild(li);
     });
-    // כפתור פעולה מהירה בולט (כמו כפתור "הזמנה אונליין" בלקוחות)
+    // כפתור פעולה מהירה בולט
     const addProductBtn = document.createElement('a');
-    addProductBtn.href = '';
+    addProductBtn.href = adminPath('../HTML/admin-add-product.html');
     addProductBtn.className = 'btn-add-product';
     addProductBtn.textContent = '➕ הוספת מוצר';
     mainNav.append(linkLogo, navList, addProductBtn);
