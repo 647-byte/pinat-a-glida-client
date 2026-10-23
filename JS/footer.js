@@ -72,6 +72,12 @@ const createFooterNav = () => {
 
     return footerMain;
 };
+/**
+ * Builds the footer's bottom bar: price note, copyright and a lock icon
+ * that links to the login page (admins sign in through the same form as
+ * customers and are sent to the dashboard by their role).
+ * @returns {HTMLDivElement} The bottom bar.
+ */
 const createFooterBottom = () => {
     const bottomBar = document.createElement('div');
     bottomBar.classList.add('footer-bottom');
@@ -84,7 +90,7 @@ const createFooterBottom = () => {
     copyright.textContent = '© כל הזכויות שמורות לפינתה';
     copyright.classList.add('copyright');
     const adminLink = document.createElement('a');
-    adminLink.href = '/HTML/admin.html';
+    adminLink.href = new URL('../HTML/login.html', import.meta.url).href;
     adminLink.classList.add('admin-lock-btn');
     adminLink.setAttribute('aria-label', 'כניסת מנהל');
 
