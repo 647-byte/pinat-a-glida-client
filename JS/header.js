@@ -1,4 +1,6 @@
+import listenForSiteClosed from './components/closedNotice.js';
 import { isLoggedIn } from '../services/authService.js';
+
 const createTopBar = () => {
     const topBar = document.createElement('div');
     topBar.className = 'top-bar';
@@ -82,13 +84,18 @@ const createMainNav = () => {
     mainNav.append(linkLogo, navList, createAccountLink(), orderButton);
     return mainNav;
 };
+/**
+ * Adds the site header to the top of the page and starts listening for
+ * the site-closed event, so every page that has a header reacts to it.
+ */
 const createHeader = () => {
     const header = document.createElement('header');
-    header.className = 'site-header'
+    header.className = 'site-header';
     const topBar = createTopBar();
     const mainNav = createMainNav();
     header.append(topBar, mainNav);
     // prepend מכניסה את האלמנט המבוקש הכי בתחילת ההורה
     document.body.prepend(header);
-}
+    listenForSiteClosed();
+};
 export default createHeader;
