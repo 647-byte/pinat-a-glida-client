@@ -67,4 +67,13 @@ const updateOrderStatus = async (id, statusOrder) => {
     return await handleResponse(response);
 };
 
-export { getAllOrders, getOrderById, getUserOrders, createOrder, updateOrderStatus };
+/**
+ * Fetches the signed-in customer's own orders.
+ * @returns {Promise<Array<Object>>} The customer's orders.
+ */
+const getMyOrders = async () => {
+    const response = await fetch(`${URL}/my`, { headers: getAuthHeaders() });
+    return await handleResponse(response);
+};
+
+export { getAllOrders, getOrderById, getUserOrders, getMyOrders, createOrder, updateOrderStatus };
