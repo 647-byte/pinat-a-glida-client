@@ -68,4 +68,29 @@ const removeFromCart = (index) => {
     return cart;
 };
 
-export { CART_KEY, CART_UPDATED_EVENT, getCart, addToCart, removeFromCart, getCartCount, getCartTotal };
+/**
+ * Removes all items from the cart and notifies listeners.
+ */
+const clearCart = () => {
+    localStorage.removeItem(CART_KEY);
+    window.dispatchEvent(new CustomEvent(CART_UPDATED_EVENT));
+};
+
+/**
+ * Converts cart items to the shape expected by POST /orders:
+ * selections only, without display data or prices.
+ * @param {Array<Object>} cart - Cart items.
+ * @returns {Array<Object>} Order items.
+ */
+const toOrderItems = (cart) => cart.map(({ productId, quantity, size, options }) => ({
+    productId,
+    quantity,
+    ...(size && { size }),
+    options
+}));
+
+export {
+    CART_KEY, CART_UPDATED_EVENT,
+    getCart, addToCart, removeFromCart, clearCart,
+    getCartCount, getCartTotal, toOrderItems
+};
