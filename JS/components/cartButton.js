@@ -1,12 +1,13 @@
 /**
  * @file Floating shopping-cart button.
  * A fixed button for customer pages that shows how many units are in the
- * cart and links to the cart page.
+ * cart, stays in sync whenever the cart changes (in this tab or another),
+ * and links to the cart page.
  *
  * Paths are resolved relative to this module, so the button works the same
  * from the site root (index.html) and from pages inside /HTML.
  */
-import { getCartCount } from '../../services/cartService.js';
+import { getCartCount, CART_KEY, CART_UPDATED_EVENT } from '../../services/cartService.js';
 
 /** Absolute URL of the cart page. */
 const CART_PAGE_URL = new URL('../../HTML/cart.html', import.meta.url).href;
@@ -38,8 +39,8 @@ const updateCount = (button, badge) => {
 };
 
 /**
- * Creates the floating cart button, appends it to the page and shows
- * the current cart count.
+ * Creates the floating cart button, appends it to the page and keeps its
+ * counter in sync with the cart.
  * @returns {HTMLAnchorElement} The button element.
  */
 const createCartButton = () => {
@@ -61,7 +62,14 @@ const createCartButton = () => {
     button.append(icon, badge);
     document.body.append(button);
 
-    updateCount(button, badge);
+    const refresh = () => updateCount(button, badge);
+    refresh();
+    window.addEventListener(CART_UPDATED_EVENT, refresh);
+    window.addEventListener('storage', (event) => {
+        if (event.key === CART_KEY || event.key === null) refresh();
+    });
+    window.addEventListener('pageshow', refresh);
+
     return button;
 };
 
