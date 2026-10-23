@@ -5,6 +5,9 @@
  */
 const CART_KEY = 'cart';
 
+/** Name of the window event dispatched whenever the cart changes. */
+const CART_UPDATED_EVENT = 'cart:updated';
+
 /**
  * Reads the cart from localStorage.
  * @returns {Array<Object>} The cart items, or an empty array if the cart is missing or unreadable.
@@ -18,11 +21,13 @@ const getCart = () => {
 };
 
 /**
- * Writes the cart to localStorage.
+ * Writes the cart to localStorage and notifies listeners on this page
+ * by dispatching CART_UPDATED_EVENT on `window`.
  * @param {Array<Object>} cart - The items to store.
  */
 const saveCart = (cart) => {
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    window.dispatchEvent(new CustomEvent(CART_UPDATED_EVENT));
 };
 
 /**
@@ -37,4 +42,10 @@ const addToCart = (item) => {
     return cart.length;
 };
 
-export { getCart, addToCart };
+/**
+ * Returns the total number of units in the cart (the sum of item quantities).
+ * @returns {number} Units in the cart; 0 when the cart is empty.
+ */
+const getCartCount = () => getCart().reduce((sum, item) => sum + (item.quantity || 0), 0);
+
+export { CART_KEY, CART_UPDATED_EVENT, getCart, addToCart, getCartCount };
