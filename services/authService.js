@@ -23,6 +23,14 @@ const saveSession = ({ token, user }) => {
 };
 
 /**
+ * Replaces the stored user, e.g. after a profile update.
+ * @param {Object} user - The updated user.
+ */
+const saveUser = (user) => {
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+};
+
+/**
  * Returns the stored JWT.
  * @returns {string|null} The token, or null when signed out.
  */
@@ -64,6 +72,23 @@ const logout = () => {
     localStorage.removeItem(USER_KEY);
 };
 
+/** Absolute URL of the login page, resolved relative to this module. */
+const LOGIN_PAGE_URL = new URL('../HTML/login.html', import.meta.url).href;
+
+/**
+ * Guards a page that requires a signed-in user. Guests are sent to the
+ * login page, which returns them to the given page after signing in.
+ * @param {string} returnPage - File name of the current page, e.g. 'account.html'.
+ * @returns {boolean} True when the user is signed in and may stay on the page.
+ */
+const requireLogin = (returnPage) => {
+    if (isLoggedIn()) return true;
+    const url = new URL(LOGIN_PAGE_URL);
+    url.searchParams.set('redirect', returnPage);
+    window.location.replace(url.href);
+    return false;
+};
+
 /**
  * Signs in with email and password and stores the session.
  * @param {string} email - The user's email.
@@ -99,4 +124,4 @@ const register = async (userData) => {
     return session.user;
 };
 
-export { getToken, getUser, isLoggedIn, getAuthHeaders, logout, login, register };
+export { getToken, getUser, saveUser, isLoggedIn, getAuthHeaders, logout, requireLogin, login, register };
