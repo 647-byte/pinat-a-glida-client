@@ -56,4 +56,16 @@ const getCartCount = () => getCart().reduce((sum, item) => sum + (item.quantity 
 const getCartTotal = () =>
     getCart().reduce((sum, item) => sum + (item.display?.unitPrice || 0) * (item.quantity || 0), 0);
 
-export { CART_KEY, CART_UPDATED_EVENT, getCart, addToCart, getCartCount, getCartTotal };
+/**
+ * Removes the item at the given position and notifies listeners.
+ * @param {number} index - Zero-based index of the item to remove.
+ * @returns {Array<Object>} The updated cart.
+ */
+const removeFromCart = (index) => {
+    const cart = getCart();
+    cart.splice(index, 1);
+    saveCart(cart);
+    return cart;
+};
+
+export { CART_KEY, CART_UPDATED_EVENT, getCart, addToCart, removeFromCart, getCartCount, getCartTotal };

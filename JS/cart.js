@@ -1,12 +1,13 @@
 /**
  * @file Cart page controller (HTML/cart.html).
  * Shows the items stored in the cart, their estimated total and the
- * navigation actions (back to the menu, proceed to checkout).
- * Cart data comes from cartService.
+ * navigation actions (back to the menu, proceed to checkout), and lets the
+ * customer remove items. Re-renders whenever the cart changes, including
+ * changes made in other tabs. Cart data comes from cartService.
  */
 import createHeader from './header.js';
 import createFooter from './footer.js';
-import { getCart, getCartTotal } from '../services/cartService.js';
+import { CART_KEY, CART_UPDATED_EVENT, getCart, getCartTotal, removeFromCart } from '../services/cartService.js';
 import createCartItem from './components/cartItem.js';
 
 createHeader();
@@ -46,8 +47,8 @@ checkoutButton.addEventListener('click', (event) => {
 });
 
 /**
- * Renders the cart: the item list (or an empty message), the estimated
- * total and the checkout availability.
+ * Renders the cart: the item list with remove buttons (or an empty message),
+ * the estimated total and the checkout availability.
  */
 const renderCart = () => {
     const cart = getCart();
@@ -57,7 +58,13 @@ const renderCart = () => {
         showEmptyCart();
         return;
     }
-    itemsContainer.replaceChildren(...cart.map(item => createCartItem(item)));
+    itemsContainer.replaceChildren(
+        ...cart.map((item, index) => createCartItem(item, { onRemove: () => removeFromCart(index) }))
+    );
 };
 
 renderCart();
+window.addEventListener(CART_UPDATED_EVENT, renderCart);
+window.addEventListener('storage', (event) => {
+    if (event.key === CART_KEY || event.key === null) renderCart();
+});
