@@ -10,6 +10,7 @@
 import createHeader from './header.js';
 import createFooter from './footer.js';
 import { getProductById } from '../services/productService.js';
+import { calcUnitPrice } from './utils/productPricing.js';
 
 createHeader();
 createFooter();
@@ -22,7 +23,14 @@ const container = document.getElementById('product-container');
 
 /** @type {Object} The product loaded from the server, with populated option groups. */
 let product;
-
+/** @type {Object|null} The selected size, or null when the product has no sizes. */
+let selectedSize = null;
+/** @type {number} The selected quantity. */
+let quantity = 1;
+/** @type {Map<string, Set<string>>} Option group id to the choices selected in it. */
+const selections = new Map();
+/** @type {HTMLElement} Displays the total price. */
+let totalElement;
 
 /**
  * Replaces the whole page content with a single message.
@@ -65,6 +73,94 @@ const createHeading = () => {
     return [title, description];
 };
 
+/**
+ * Builds the size picker: one radio card per size, showing its price and name.
+ * The first size is selected by default.
+ * @returns {HTMLFieldSetElement} The size fieldset.
+ */
+const createSizesFieldset = () => {
+    const fieldset = document.createElement('fieldset');
+    fieldset.className = 'option-group';
+    const legend = document.createElement('legend');
+    legend.textContent = 'בחירת גודל';
+    const cards = document.createElement('div');
+    cards.className = 'size-cards';
+    product.size.forEach((size, index) => {
+        const label = document.createElement('label');
+        label.className = 'choice size-card';
+        const input = document.createElement('input');
+        input.type = 'radio';
+        input.name = 'size';
+        input.value = size.name;
+        input.checked = index === 0;
+        input.addEventListener('change', () => {
+            selectedSize = size;
+            refresh();
+        });
+        const price = document.createElement('span');
+        price.className = 'size-price';
+        price.textContent = `₪${size.price}`;
+        const name = document.createElement('span');
+        name.className = 'size-name';
+        name.textContent = size.name;
+        label.append(input, price, name);
+        cards.append(label);
+    });
+    fieldset.append(legend, cards);
+    selectedSize = product.size[0];
+    return fieldset;
+};
+
+/**
+ * Builds the quantity input (1 to MAX_QUANTITY). Changes update `quantity`
+ * and the displayed total.
+ * @returns {HTMLLabelElement} The labelled quantity input.
+ */
+const createQuantityField = () => {
+    const label = document.createElement('label');
+    label.className = 'quantity-field';
+    label.textContent = 'כמות: ';
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.min = '1';
+    input.max = String(MAX_QUANTITY);
+    input.value = '1';
+    input.addEventListener('input', () => {
+        quantity = Math.min(MAX_QUANTITY, Math.max(1, parseInt(input.value) || 1));
+        refresh();
+    });
+    label.append(input);
+    return label;
+};
+
+/**
+  * Builds the summary area: the total price.
+ * @returns {HTMLDivElement} The summary area.
+ */
+const createSummary = () => {
+    const summary = document.createElement('div');
+    summary.className = 'product-summary';
+    const totalLabel = document.createElement('span');
+    totalLabel.textContent = 'סה"כ: ';
+    totalElement = document.createElement('strong');
+    totalElement.className = 'product-total';
+    summary.append(totalLabel, totalElement);
+    return summary;
+};
+
+/**
+ * Updates the displayed total (unit price times quantity).
+ */
+const refreshTotal = () => {
+    totalElement.textContent = `₪${calcUnitPrice(product, selectedSize, selections) * quantity}`;
+};
+
+/**
+ * Re-syncs the whole screen with the current state. Called after every change.
+ */
+const refresh = () => {
+    refreshTotal();
+};
 
 /**
  * Builds the whole page for the loaded product and syncs it with the initial state.
@@ -74,7 +170,10 @@ const renderProduct = () => {
     form.className = 'product-form';
     form.noValidate = true;
     form.append(...createHeading());
+    if (product.size.length > 0) form.append(createSizesFieldset());
+    form.append(createQuantityField(), createSummary());
     container.replaceChildren(createImage(), form);
+    refresh();
 };
 
 /**
