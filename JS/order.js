@@ -9,15 +9,12 @@ import createHeader from './header.js';
 import createFooter from './footer.js';
 import createCartItem from './components/cartItem.js';
 import { getCart, getCartTotal, clearCart, toOrderItems } from '../services/cartService.js';
-import { isLoggedIn, getUser, logout } from '../services/authService.js';
+import { requireLogin, getUser, logout } from '../services/authService.js';
 import { createOrder } from '../services/orderService.js';
 import { ApiError } from '../services/apiClient.js';
 
 createHeader();
 createFooter();
-
-/** Login page that returns to this page after signing in. */
-const LOGIN_URL = 'login.html?redirect=order.html';
 
 /** The delivery details form. */
 const form = document.getElementById('order-form');
@@ -30,15 +27,6 @@ const statusElement = form.querySelector('.form-status');
 /** The form's submit button. */
 const submitButton = form.querySelector('button[type="submit"]');
 
-/**
- * Sends guests to the login page and asks it to return here afterwards.
- * @returns {boolean} True when the user is signed in and may stay on the page.
- */
-const requireLogin = () => {
-    if (isLoggedIn()) return true;
-    window.location.replace(LOGIN_URL);
-    return false;
-};
 
 /**
  * Sends the customer back to the cart page when there is nothing to order.
@@ -125,7 +113,7 @@ const showConfirmation = (order) => {
 const handleOrderError = (err) => {
     if (err instanceof ApiError && err.status === 401) {
         logout();
-        window.location.replace(LOGIN_URL);
+        requireLogin('order.html');
         return;
     }
     statusElement.textContent = err instanceof ApiError
@@ -152,7 +140,7 @@ const handleSubmit = async (event) => {
     }
 };
 
-if (requireLogin() && requireItems()) {
+if (requireLogin('order.html') && requireItems()) {
     renderSummary();
     prefillForm();
     form.addEventListener('submit', handleSubmit);
