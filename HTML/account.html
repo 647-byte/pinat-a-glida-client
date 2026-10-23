@@ -19,6 +19,22 @@
             <button type="button" id="logout-btn" class="account-logout">התנתקות</button>
         </div>
         <div class="account-layout">
+            <section class="form-card" aria-labelledby="profile-title">
+                <h2 id="profile-title">הפרטים שלי</h2>
+                <form id="profile-form" class="form">
+                    <label class="form-field">שם מלא
+                        <input type="text" name="name" required minlength="2" autocomplete="name">
+                    </label>
+                    <label class="form-field">אימייל
+                        <input type="email" name="email" disabled>
+                    </label>
+                    <label class="form-field">טלפון
+                        <input type="tel" name="phone" pattern="0\d{8,9}" title="מספר טלפון ישראלי, ספרות בלבד, למשל 0501234567" autocomplete="tel">
+                    </label>
+                    <button type="submit" class="form-submit">שמירת שינויים</button>
+                    <p class="form-status" role="alert"></p>
+                </form>
+            </section>
             <section class="form-card" aria-labelledby="orders-title">
                 <h2 id="orders-title">ההזמנות שלי</h2>
                 <div id="orders-list" class="orders-list" aria-live="polite"></div>

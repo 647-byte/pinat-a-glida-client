@@ -1,13 +1,14 @@
 /**
  * @file Customer account page controller (HTML/account.html).
- * Requires a signed-in customer. Shows a greeting, the order history and
- * a logout button.
+ * Requires a signed-in customer. Shows a greeting, the profile with an
+ * edit form, the order history and a logout button.
  */
 import createHeader from './header.js';
 import createFooter from './footer.js';
 import createCartButton from './components/cartButton.js';
 import createOrderCard from './components/orderCard.js';
 import { requireLogin, getUser, logout } from '../services/authService.js';
+import { getMe, updateMe } from '../services/userService.js';
 import { getMyOrders } from '../services/orderService.js';
 import { ApiError } from '../services/apiClient.js';
 
@@ -22,6 +23,12 @@ const PAGE = 'account.html';
 const greetingElement = document.getElementById('account-greeting');
 /** Container of the order cards. */
 const ordersList = document.getElementById('orders-list');
+/** The profile edit form. */
+const profileForm = document.getElementById('profile-form');
+/** Status line of the profile form. */
+const profileStatus = profileForm.querySelector('.form-status');
+/** Submit button of the profile form. */
+const profileButton = profileForm.querySelector('button[type="submit"]');
 
 /**
  * Handles a failed request: an expired session sends the user to log in
@@ -55,6 +62,8 @@ const setupLogout = () => {
         window.location.href = '../index.html';
     });
 };
+
+/* ---------- Orders ---------- */
 
 /**
  * Replaces the order list with a message (loading, empty or error).
@@ -93,8 +102,66 @@ const loadOrders = async () => {
     }
 };
 
+/* ---------- Profile ---------- */
+
+/**
+ * Shows a message under the profile form, in green for success or red for errors.
+ * @param {string} text - The message.
+ * @param {boolean} [isSuccess=false] - Whether the message reports success.
+ */
+const setProfileStatus = (text, isSuccess = false) => {
+    profileStatus.textContent = text;
+    profileStatus.classList.toggle('success', isSuccess);
+};
+
+/**
+ * Fills the profile form with the user's details.
+ * @param {Object} user - The user ({ name, email, phone }).
+ */
+const fillProfile = (user) => {
+    profileForm.elements.name.value = user.name || '';
+    profileForm.elements.email.value = user.email || '';
+    profileForm.elements.phone.value = user.phone || '';
+};
+
+/**
+ * Shows the stored details immediately, then refreshes them from the server.
+ */
+const loadProfile = async () => {
+    fillProfile(getUser() || {});
+    try {
+        fillProfile(await getMe());
+    } catch (err) {
+        handleRequestError(err, setProfileStatus);
+    }
+};
+
+/**
+ * Saves the edited name and phone. HTML validation runs first, so this
+ * only fires for a valid form.
+ * @param {SubmitEvent} event - The submit event.
+ */
+const handleProfileSubmit = async (event) => {
+    event.preventDefault();
+    profileButton.disabled = true;
+    setProfileStatus('');
+    const { name, phone } = Object.fromEntries(new FormData(profileForm));
+    try {
+        const user = await updateMe({ name: name.trim(), ...(phone && { phone }) });
+        fillProfile(user);
+        showGreeting();
+        setProfileStatus('הפרטים נשמרו בהצלחה ✓', true);
+    } catch (err) {
+        handleRequestError(err, setProfileStatus);
+    } finally {
+        profileButton.disabled = false;
+    }
+};
+
 if (requireLogin(PAGE)) {
     showGreeting();
     setupLogout();
+    loadProfile();
     loadOrders();
+    profileForm.addEventListener('submit', handleProfileSubmit);
 }
