@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>התחברות - פינתה גלידה</title>
+    <script src="../JS/login.js" type="module"></script>
+    <link rel="icon" type="ico" href="../favicon.ico">
+    <link rel="stylesheet" href="../CSS/menu.css">
+</head>
+<body>
+    <main class="auth-page">
+        <section class="form-card" aria-labelledby="login-title">
+            <h1 id="login-title">התחברות</h1>
+            <form id="login-form" class="form">
+                <label class="form-field">אימייל
+                    <input type="email" name="email" required autocomplete="email">
+                </label>
+                <label class="form-field">סיסמה
+                    <input type="password" name="password" required autocomplete="current-password">
+                </label>
+                <button type="submit" class="form-submit">התחברות</button>
+                <p class="form-status" role="alert"></p>
+            </form>
+        </section>
+        <section class="form-card" aria-labelledby="register-title">
+            <h2 id="register-title">הרשמה</h2>
+            <form id="register-form" class="form">
+                <label class="form-field">שם מלא
+                    <input type="text" name="name" required minlength="2" autocomplete="name">
+                </label>
+                <label class="form-field">אימייל
+                    <input type="email" name="email" required autocomplete="email">
+                </label>
+                <label class="form-field">סיסמה (לפחות 6 תווים)
+                    <input type="password" name="password" required minlength="6" autocomplete="new-password">
+                </label>
+                <label class="form-field">טלפון (לא חובה)
+                    <input type="tel" name="phone" pattern="0\d{8,9}" title="מספר טלפון ישראלי, ספרות בלבד, למשל 0501234567" autocomplete="tel">
+                </label>
+                <button type="submit" class="form-submit">הרשמה</button>
+                <p class="form-status" role="alert"></p>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
