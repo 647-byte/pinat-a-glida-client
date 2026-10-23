@@ -1,7 +1,8 @@
 /**
  * @file Authentication for customers and admins.
  * Signs users in and up through the /users endpoints, keeps the JWT and the
- * signed-in user in localStorage, and builds the Authorization header that
+ * signed-in user in localStorage, reads the user's role from the token,
+ * guards pages by login and role, and builds the Authorization header that
  * protected requests need.
  */
 import { handleResponse } from './apiClient.js';
@@ -49,11 +50,48 @@ const getUser = () => {
 };
 
 /**
- * Tells whether a session is stored. The server still validates the token
- * on every protected request.
- * @returns {boolean} True when a token is stored.
+ * Decodes the payload of the stored JWT: { id, role, iat, exp }.
+ * The payload is readable by anyone and only the server can verify the
+ * signature, so the client uses it for display and navigation only.
+ * @returns {Object|null} The payload, or null when there is no valid token.
  */
-const isLoggedIn = () => Boolean(getToken());
+const getTokenPayload = () => {
+    const token = getToken();
+    if (!token) return null;
+    try {
+        const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+        return JSON.parse(atob(base64));
+    } catch {
+        return null;
+    }
+};
+
+/**
+ * Tells whether a valid, unexpired session is stored. An expired session
+ * is removed. The server still validates the token on every request.
+ * @returns {boolean} True when the user is signed in.
+ */
+const isLoggedIn = () => {
+    const payload = getTokenPayload();
+    if (!payload) return false;
+    if (payload.exp && payload.exp * 1000 <= Date.now()) {
+        logout();
+        return false;
+    }
+    return true;
+};
+
+/**
+ * Returns the signed-in user's role, as written in the token by the server.
+ * @returns {'customer'|'admin'|null} The role, or null when signed out.
+ */
+const getRole = () => (isLoggedIn() ? getTokenPayload().role : null);
+
+/**
+ * Tells whether the signed-in user is an admin.
+ * @returns {boolean} True for admins.
+ */
+const isAdmin = () => getRole() === 'admin';
 
 /**
  * Builds the Authorization header for protected requests.
@@ -74,6 +112,12 @@ const logout = () => {
 
 /** Absolute URL of the login page, resolved relative to this module. */
 const LOGIN_PAGE_URL = new URL('../HTML/login.html', import.meta.url).href;
+/** Absolute URL of the customer site's home page. */
+const SITE_HOME_URL = new URL('../index.html', import.meta.url).href;
+/** Absolute URL of the menu page, the default page for customers after signing in. */
+const MENU_PAGE_URL = new URL('../HTML/menu.html', import.meta.url).href;
+/** Absolute URL of the admin dashboard. */
+const ADMIN_HOME_URL = new URL('../Admin/HTML/index.html', import.meta.url).href;
 
 /**
  * Guards a page that requires a signed-in user. Guests are sent to the
@@ -88,6 +132,25 @@ const requireLogin = (returnPage) => {
     window.location.replace(url.href);
     return false;
 };
+
+/**
+ * Guards an admin page. Guests are sent to the login page; signed-in
+ * customers are sent to the customer site. This only controls what is
+ * displayed: the server rejects admin requests from non-admins anyway.
+ * @returns {boolean} True when the user is an admin and may stay on the page.
+ */
+const requireAdmin = () => {
+    if (isAdmin()) return true;
+    window.location.replace(isLoggedIn() ? SITE_HOME_URL : LOGIN_PAGE_URL);
+    return false;
+};
+
+/**
+ * Returns the default page for the signed-in user's role: the admin
+ * dashboard for admins and the menu for customers.
+ * @returns {string} Absolute URL.
+ */
+const getHomeUrl = () => (isAdmin() ? ADMIN_HOME_URL : MENU_PAGE_URL);
 
 /**
  * Signs in with email and password and stores the session.
@@ -124,4 +187,7 @@ const register = async (userData) => {
     return session.user;
 };
 
-export { getToken, getUser, saveUser, isLoggedIn, getAuthHeaders, logout, requireLogin, login, register };
+export {
+    getToken, getUser, saveUser, getRole, isLoggedIn, isAdmin, getAuthHeaders, logout,
+    requireLogin, requireAdmin, getHomeUrl, SITE_HOME_URL, login, register
+};
