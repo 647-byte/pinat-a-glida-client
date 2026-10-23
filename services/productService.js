@@ -1,5 +1,5 @@
 import { handleResponse } from './apiClient.js';
-import { SERVER_URL } from '../../config.js';
+import { SERVER_URL } from '../config.js';
 const URL=SERVER_URL+'/products';
 const getAllProducts = async () => {
     const response = await fetch(URL);

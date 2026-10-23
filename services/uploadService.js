@@ -1,5 +1,5 @@
 import { handleResponse } from './apiClient.js';
-import { SERVER_URL } from '../../config.js';
+import { SERVER_URL } from '../config.js';
 const URL = SERVER_URL + '/upload';
 const uploadImage = async (file) => {
     const formData = new FormData();
