@@ -2,8 +2,11 @@ import { SERVER_URL } from '../config.js';
 import createHeader from './header.js'
 import createFooter from './footer.js';
 import createProductCard from './productCard.js';
+import createCartButton from './components/cartButton.js';
 createHeader();
 createFooter();
+createCartButton();              
+
 const loadPopularProducts = async () => {
     const container = document.getElementById('popularProductsContainer');
     if (!container) return;

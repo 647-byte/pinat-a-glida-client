@@ -2,8 +2,11 @@ import createHeader from './header.js'
 import createFooter from './footer.js';
 import createProductCard from './productCard.js';
 import { getAllProducts } from '../services/productService.js';
+import createCartButton from './components/cartButton.js';   
 createHeader();
 createFooter();
+createCartButton();  
+                                       
 const createMenu = async () => {
     const container = document.getElementById('container');
     try {

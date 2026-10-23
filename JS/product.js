@@ -12,9 +12,11 @@ import createFooter from './footer.js';
 import { getProductById } from '../services/productService.js';
 import { addToCart } from '../services/cartService.js';
 import { getFlavorLimit, calcUnitPrice } from './utils/productPricing.js';
+import createCartButton from './components/cartButton.js';  
 
 createHeader();
 createFooter();
+createCartButton();                                        
 
 /** Maximum quantity of one configured item per cart entry. */
 const MAX_QUANTITY = 20;
