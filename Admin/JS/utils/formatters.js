@@ -1,5 +1,5 @@
 import {SERVER_URL} from '../../../config.js';
-const DEFAULT_IMAGE = '/assets/images/pinta-logo3.png';
+const DEFAULT_IMAGE = '/assets/images/pinata-logo3.png';
 const formatDate = (dateString) => {
     if (!dateString) return 'תאריך לא ידוע';
     return new Date(dateString).toLocaleString('he-IL', { dateStyle: 'short', timeStyle: 'short' });

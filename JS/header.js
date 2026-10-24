@@ -25,7 +25,8 @@ const createTopBar = () => {
  * @param {string} path - Path relative to the JS folder, e.g. '../HTML/menu.html'.
  * @returns {string} Absolute URL.
  */
-const sitePath = (path) => new URL(path, import.meta.url).href;
+const SITE_ROOT = new URL('../', import.meta.url);
+const sitePath = (path) => new URL(path, SITE_ROOT).href;
 /**
  * Builds the account link, which depends on the role in the token:
  * "login / register" for guests, the admin dashboard for admins, and the
@@ -37,13 +38,13 @@ const createAccountLink = () => {
     link.className = 'account-link';
     if (isAdmin()) {
         link.textContent = '⚙️ ניהול';
-        link.href = sitePath('../Admin/HTML/index.html');
+        link.href = sitePath('Admin/HTML/index.html');
     } else if (isLoggedIn()) {
         link.textContent = '👤 האזור האישי';
-        link.href = sitePath('../HTML/account.html');
+        link.href = sitePath('HTML/account.html');
     } else {
         link.textContent = 'התחברות / הרשמה';
-        link.href = sitePath('../HTML/login.html');
+        link.href = sitePath('HTML/login.html');
     }
     return link;
 };
@@ -57,32 +58,38 @@ const createMainNav = () => {
     mainNav.className = 'main-nav';
     const linkLogo = document.createElement('a');
     linkLogo.className = 'logo-link';
-    linkLogo.href = sitePath('../index.html');
+    linkLogo.href = sitePath('index.html');
     const logoImg = document.createElement('img');
-    logoImg.src = sitePath('../assets/images/pinata-logo3.png');
+    logoImg.src = sitePath('assets/images/pinata-logo3.png');
     logoImg.alt = 'פינת הגלידה';
     logoImg.className = 'header-logo';
     linkLogo.append(logoImg);
     const navList = document.createElement('ul');
     navList.className = 'nav-list';
     const navItems = [
-        { text: 'בית', href: '../index.html' },
-        { text: 'תפריט', href: '../HTML/menu.html' },
-        { text: 'אודות', href: '../HTML/about.html' },
-        { text: 'סניפים', href: '../HTML/branches.html' },
-        { text: 'אירועים', href: '../HTML/events.html' },
-        { text: 'צור קשר', href: '../HTML/contact.html' }
+        { text: 'בית', href: 'index.html' },
+        { text: 'תפריט', href: 'HTML/menu.html' },
+        { text: 'אודות', href: 'HTML/about.html' },
+        { text: 'סניפים', href: 'index.html#branches-section' },
+        { text: 'אירועים', href: '' },
+        { text: 'צור קשר', href: '' }
     ];
     navItems.forEach(item => {
         const li = document.createElement('li');
         const a = document.createElement('a');
         a.textContent = item.text;
-        a.href = sitePath(item.href);
+        // בדיקה: אם יש כתובת אמיתית משתמשים בה, אם היא ריקה - עוצרים את המעבר
+        if (item.href) {
+            a.href = sitePath(item.href);
+        } else {
+            a.href = '#';
+            a.addEventListener('click', (e) => e.preventDefault());
+        }
         li.appendChild(a);
         navList.appendChild(li);
     });
     const orderButton = document.createElement('a');
-    orderButton.href = sitePath('../HTML/menu.html');
+    orderButton.href = sitePath('HTML/menu.html');
     orderButton.className = 'btn-order';
     orderButton.textContent = 'הזמנה אונליין';
     mainNav.append(linkLogo, navList, createAccountLink(), orderButton);

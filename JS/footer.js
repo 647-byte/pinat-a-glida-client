@@ -1,3 +1,5 @@
+const SITE_ROOT = new URL('../', import.meta.url);
+const sitePath = (path) => new URL(path, SITE_ROOT).href;
 const createTopBanner = () => {
     const section = document.createElement('section');
     section.classList.add('footer-cta');
@@ -8,11 +10,11 @@ const createTopBanner = () => {
     const buttonsDiv = document.createElement('div');
     buttonsDiv.classList.add('cta-buttons');
     const onlineBtn = document.createElement('a');
-    onlineBtn.href = '';
+    onlineBtn.href = sitePath('HTML/menu.html');
     onlineBtn.textContent = 'הזמנה אונליין';
     onlineBtn.classList.add('btn-cta-white');
     const branchBtn = document.createElement('a');
-    branchBtn.href = '';
+    branchBtn.href = sitePath('index.html#branches-section');
     branchBtn.textContent = 'מצאו סניף קרוב';
     branchBtn.classList.add('btn-cta-outline');
     buttonsDiv.append(onlineBtn, branchBtn);
@@ -31,8 +33,8 @@ const createFooterNav = () => {
     const navList = document.createElement('ul');
     const navItems = [
         { text: 'בית', href: 'index.html' },
-        { text: 'תפריט', href: '' },
-        { text: 'אודות', href: '' },
+        { text: 'תפריט', href: 'HTML/menu.html' },
+        { text: 'אודות', href: 'HTML/about.html' },
         { text: 'סניפים', href: '' },
         { text: 'אירועים', href: '' },
         { text: 'צור קשר', href: '' },
@@ -42,7 +44,13 @@ const createFooterNav = () => {
         const li = document.createElement('li');
         const a = document.createElement('a');
         a.textContent = item.text;
-        a.href = item.href;
+        // בדיקה: אם יש כתובת אמיתית משתמשים בה, אם היא ריקה - עוצרים את המעבר
+        if (item.href) {
+            a.href = sitePath(item.href);
+        } else {
+            a.href = '#';
+            a.addEventListener('click', (e) => e.preventDefault());
+        }
         li.appendChild(a);
         navList.appendChild(li);
     });
@@ -62,7 +70,13 @@ const createFooterNav = () => {
         const li = document.createElement('li');
         const a = document.createElement('a');
         a.textContent = item.text;
-        a.href = item.href;
+        // בדיקה: אם יש כתובת אמיתית משתמשים בה, אם היא ריקה - עוצרים את המעבר
+        if (item.href) {
+            a.href = sitePath(item.href);
+        } else {
+            a.href = '#';
+            a.addEventListener('click', (e) => e.preventDefault());
+        }
         li.appendChild(a);
         extraList.appendChild(li);
     });
@@ -90,7 +104,7 @@ const createFooterBottom = () => {
     copyright.textContent = '© כל הזכויות שמורות לפינתה';
     copyright.classList.add('copyright');
     const adminLink = document.createElement('a');
-    adminLink.href = new URL('../HTML/login.html', import.meta.url).href;
+    adminLink.href = sitePath('HTML/login.html');
     adminLink.classList.add('admin-lock-btn');
     adminLink.setAttribute('aria-label', 'כניסת מנהל');
 
