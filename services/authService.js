@@ -8,7 +8,11 @@
 import { handleResponse } from './apiClient.js';
 import { SERVER_URL } from '../config.js';
 
-const URL = `${SERVER_URL}/users`;
+/**
+ * Base address of the /users endpoints. Not named URL, so it does not hide
+ * the browser's built-in URL class, which this file uses to build page addresses.
+ */
+const USERS_URL = `${SERVER_URL}/users`;
 /** localStorage key of the JWT. */
 const TOKEN_KEY = 'token';
 /** localStorage key of the signed-in user (JSON). */
@@ -160,7 +164,7 @@ const getHomeUrl = () => (isAdmin() ? ADMIN_HOME_URL : MENU_PAGE_URL);
  * @throws {ApiError} When the credentials are wrong or the request fails.
  */
 const login = async (email, password) => {
-    const response = await fetch(`${URL}/login`, {
+    const response = await fetch(`${USERS_URL}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password })
@@ -177,7 +181,7 @@ const login = async (email, password) => {
  * @throws {ApiError} When the email is taken, the data is invalid or the request fails.
  */
 const register = async (userData) => {
-    const response = await fetch(`${URL}/register`, {
+    const response = await fetch(`${USERS_URL}/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
