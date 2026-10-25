@@ -1,3 +1,7 @@
+/**
+ * @file Order details modal on the admin orders page: customer details,
+ * the order's items and the total.
+ */
 import { formatDate,getImageUrl,DEFAULT_IMAGE } from './utils/formatters.js';
 /**
  * Creates a DOM row element for an individual item inside the order details modal.
@@ -18,10 +22,9 @@ import { formatDate,getImageUrl,DEFAULT_IMAGE } from './utils/formatters.js';
 const createOrderItemRow = (item) => {
     const row = document.createElement('div');
     row.classList.add('order-item-row');
-    // א. תמונת המוצר
+    // א. תמונת המוצר (productId ריק כשהמוצר נמחק מאז ההזמנה)
     const img = document.createElement('img');
-    const product = item.productId;
-    img.src =  getImageUrl(product.imageUrl);
+    img.src = getImageUrl(item.productId?.imageUrl);
     img.alt = item.nameItem || 'מוצר';
     img.classList.add('order-item-thumb');
     img.onerror = () => { img.src = DEFAULT_IMAGE; };
@@ -35,10 +38,10 @@ const createOrderItemRow = (item) => {
         const choices = item.options.flatMap(opt => opt.selectedChoices || []).filter(Boolean).join(', ');
         if (choices) optionsText += `| תוספות: ${choices}`;
     }
-        const optionsEl = document.createElement('div');
-        optionsEl.classList.add('item-options-text');
-        optionsEl.textContent = `כמות: ${item.quantity || 1} ${optionsText ? `(${optionsText})` : ''}`;
-        textWrapper.append(nameEl, optionsEl);
+    const optionsEl = document.createElement('div');
+    optionsEl.classList.add('item-options-text');
+    optionsEl.textContent = `כמות: ${item.quantity || 1} ${optionsText ? `(${optionsText})` : ''}`;
+    textWrapper.append(nameEl, optionsEl);
     // ג. איגוד תמונה וטקסט לצד שמאל
     const leftContent = document.createElement('div');
     leftContent.classList.add('item-left-content');

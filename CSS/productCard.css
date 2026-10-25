@@ -100,3 +100,9 @@
   box-shadow: none;
   cursor: not-allowed;
 }
+
+/* The choose button is a link when the product is available */
+a.btn-select {
+  display: inline-block;
+  text-decoration: none;
+}

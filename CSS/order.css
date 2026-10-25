@@ -7,7 +7,7 @@
 .order-title {
     margin: 0 0 24px;
     font-size: 2.2rem;
-    color: #E25828;
+    color: var(--primary-orange);
     text-align: center;
 }
 .order-layout {
@@ -28,7 +28,7 @@
     grid-template-columns: 64px 1fr auto;
     padding: 10px;
     box-shadow: none;
-    border: 1px solid #f0e2d3;
+    border: 1px solid var(--border-soft);
 }
 .order-summary .cart-item-image {
     width: 64px;
@@ -43,12 +43,12 @@
 }
 .order-total strong {
     font-size: 1.6rem;
-    color: #E25828;
+    color: var(--primary-orange);
 }
 .order-edit-link {
     display: block;
     font-weight: 700;
-    color: #E25828;
+    color: var(--primary-orange);
     text-align: center;
 }
 
@@ -66,8 +66,8 @@
     font-weight: 700;
     color: #fff;
     text-decoration: none;
-    background: linear-gradient(to left, #e8673a, #f2b766);
-    border-radius: 999px;
+    background: var(--gradient-orange);
+    border-radius: var(--radius-pill);
 }
 
 /* Small screens: summary above the form */

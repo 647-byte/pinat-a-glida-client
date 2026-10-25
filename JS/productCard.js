@@ -1,4 +1,43 @@
 /**
+ * @file Product card component: image, name, description, starting price
+ * and a link to the product page. Used on the home page, the menu and the
+ * live preview in the add-product page.
+ */
+/** Absolute URL of the product page, resolved relative to this module. */
+const PRODUCT_PAGE_URL = new URL('../HTML/product.html', import.meta.url);
+/**
+ * Builds the link to a product's page, e.g. HTML/product.html?id=...
+ * @param {string} id - The product's id.
+ * @returns {string} Absolute URL.
+ */
+const getProductUrl = (id) => {
+    const url = new URL(PRODUCT_PAGE_URL);
+    url.searchParams.set('id', id);
+    return url.href;
+};
+/**
+ * Builds the card's action: a link to the product page, or a disabled
+ * "sold out" button when the product is unavailable. The live preview has
+ * no id yet, so its link has no destination.
+ * @param {Object} product - The product.
+ * @returns {HTMLElement} The link or the button.
+ */
+const createChooseAction = (product) => {
+    if (product.isAvailable === false) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'btn-select';
+        button.textContent = 'אזל';
+        button.disabled = true;
+        return button;
+    }
+    const link = document.createElement('a');
+    link.className = 'btn-select';
+    link.textContent = 'לבחירה';
+    if (product._id) link.href = getProductUrl(product._id);
+    return link;
+};
+/**
  * Creates a DOM product card element based on the provided product details.
  * 
  * @function createProductCard
@@ -40,18 +79,9 @@ const createProductCard = (product) => {
     div1.append(priceTitle, price);
     const div2 = document.createElement('div');
     div2.classList.add('product-actions');
-    const buttonChoose = document.createElement('button');
-    buttonChoose.textContent = 'לבחירה';
-    buttonChoose.disabled = product.isAvailable === false;
-    if (product.isAvailable === false) buttonChoose.textContent = 'אזל';
-    const base = window.location.pathname.includes('/HTML/') ? '' : 'HTML/';
-    buttonChoose.addEventListener('click', () => {
-        window.location.href = `${base}product.html?id=${product._id}`;
-    });
-    buttonChoose.classList.add('btn-select');
-    div2.append(div1, buttonChoose);
+    div2.append(div1, createChooseAction(product));
     contentDiv.append(nameProduct, desciptionProduct, div2);
     card.append(image, contentDiv);
     return card;
-}
+};
 export default createProductCard;

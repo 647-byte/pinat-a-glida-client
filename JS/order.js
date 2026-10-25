@@ -8,7 +8,7 @@
 import createHeader from './header.js';
 import createFooter from './footer.js';
 import createCartItem from './components/cartItem.js';
-import { getCart, getCartTotal, clearCart, toOrderItems } from '../services/cartService.js';
+import { getCart, getCartTotal, clearCart, toOrderItems } from './utils/cartStorage.js';
 import { requireLogin, getUser, logout } from '../services/authService.js';
 import { createOrder } from '../services/orderService.js';
 import { ApiError } from '../services/apiClient.js';

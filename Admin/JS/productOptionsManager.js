@@ -1,4 +1,5 @@
 import { getOptionGroups } from '../../services/optionGroupService.js';
+import { getErrorMessage } from './utils/statusMessage.js';
 import { createSizeRow, createOptionGroupCheckbox, createEmptyMessage } from './add-product-components.js';
 /**
  * Initializes the product options manager, handling dynamic size inputs and option group checkboxes.
@@ -29,14 +30,14 @@ export const initProductOptionsManager = () => {
 
     hasSizesCheckbox.addEventListener('change', toggleSizesSection);
     addSizeBtn.addEventListener('click', () => sizesListContainer.appendChild(createSizeRow()));
-/**
-     * Asynchronously fetches and renders option groups into the container.
-     * 
-     * @async
-     * @function loadOptionGroups
-     * @param {Array<string>} [selectedOptionIds=[]] - An array of pre-selected option group IDs.
-     * @returns {Promise<void>} Resolves when the option groups are successfully loaded and rendered.
-     */
+    /**
+         * Asynchronously fetches and renders option groups into the container.
+         * 
+         * @async
+         * @function loadOptionGroups
+         * @param {Array<string>} [selectedOptionIds=[]] - An array of pre-selected option group IDs.
+         * @returns {Promise<void>} Resolves when the option groups are successfully loaded and rendered.
+         */
     const loadOptionGroups = async (selectedOptionIds = []) => {
         try {
             const optionGroups = await getOptionGroups();
@@ -52,15 +53,17 @@ export const initProductOptionsManager = () => {
                 optionGroupsContainer.appendChild(createOptionGroupCheckbox(group, isChecked));
             });
         } catch (error) {
-            console.error("שגיאה בטעינת קבוצות אפשרויות:", error);
+            const message = createEmptyMessage(`לא ניתן לטעון את קבוצות האפשרויות: ${getErrorMessage(error)}`);
+            message.classList.add('error-message');
+            optionGroupsContainer.replaceChildren(message);
         }
     };
-/**
-     * Collects and validates size data from the DOM input rows if sizes are enabled.
-     * 
-     * @function collectSizesData
-     * @returns {Array<Object>} An array of size objects containing name, price, and optional maxChoices.
-     */
+    /**
+         * Collects and validates size data from the DOM input rows if sizes are enabled.
+         * 
+         * @function collectSizesData
+         * @returns {Array<Object>} An array of size objects containing name, price, and optional maxChoices.
+         */
     const collectSizesData = () => {
         let sizesData = [];
         if (hasSizesCheckbox.checked) {
@@ -75,12 +78,12 @@ export const initProductOptionsManager = () => {
         }
         return sizesData;
     };
-/**
-     * Collects the IDs of all currently selected option groups.
-     * 
-     * @function collectSelectedOptions
-     * @returns {Array<string>} An array of selected option group IDs.
-     */
+    /**
+         * Collects the IDs of all currently selected option groups.
+         * 
+         * @function collectSelectedOptions
+         * @returns {Array<string>} An array of selected option group IDs.
+         */
     const collectSelectedOptions = () => {
         const selectedOptions = [];
         optionGroupsContainer.querySelectorAll('.option-group-checkbox:checked').forEach(cb => {

@@ -24,6 +24,7 @@ const loadStyles = () => {
 /**
  * Hides everything on the page except the header and footer, and shows the
  * closed notice after the header. Runs once, even if several requests fail.
+ * Content is hidden with a CSS class, not inline styles.
  * @param {string} message - The server's message, e.g. the reopening time.
  */
 const showClosedNotice = (message) => {
@@ -31,7 +32,7 @@ const showClosedNotice = (message) => {
     loadStyles();
 
     [...document.body.children].forEach(element => {
-        if (!element.matches('header, footer')) element.style.display = 'none';
+        if (!element.matches('header, footer')) element.classList.add('closed-notice-hidden');
     });
 
     const notice = document.createElement('section');

@@ -1,3 +1,5 @@
+@import url('../../CSS/variables.css');
+@import url('./admin-status.css');
 @import url('./admin-header.css');
 @import url('../../CSS/productCard.css');
 body {
@@ -271,4 +273,81 @@ textarea:focus {
     border-radius: 8px;
     object-fit: contain;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Sizes and choices: rows of inputs with a remove button */
+.sizes-container,
+.choices-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.form-inline-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.form-inline-group input {
+    flex: 1;
+}
+.btn-danger {
+    flex-shrink: 0;
+    background-color: #fdecea;
+    color: #d32f2f;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.btn-danger:hover {
+    background-color: #f9d6d2;
+}
+button.btn-secondary {
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+/* Option groups list: one checkbox per group */
+.checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 4px 16px;
+    margin-bottom: 12px;
+}
+
+/* Modal for creating an option group */
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background-color: rgba(45, 37, 34, 0.55);
+}
+.modal-content {
+    width: 100%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+.modal-content h3 {
+    margin-top: 0;
+    font-size: 1.2rem;
+    color: #2d2522;
+}
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
 }

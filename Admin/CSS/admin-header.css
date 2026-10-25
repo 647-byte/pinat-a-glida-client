@@ -125,3 +125,45 @@
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(224, 105, 59, 0.35);
 }
+
+/* ==========================================
+   Small screens: the bars wrap instead of overflowing the page
+   ========================================== */
+@media (max-width: 768px) {
+    .admin-top-bar {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        padding: 8px 12px;
+    }
+
+    .admin-main-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        padding: 10px 12px;
+    }
+
+    .admin-main-nav .nav-list {
+        order: 3;
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .admin-main-nav .nav-list a {
+        display: inline-block;
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+
+    .admin-main-nav .header-logo {
+        height: 40px;
+    }
+
+    .btn-add-product {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+}

@@ -20,6 +20,7 @@
             <h1 id="page-title">הוספת מוצר חדש</h1>
             <p id="page-subtitle">מלא את הפרטים ליצירת מוצר חדש בתפריט</p>
         </header>
+        <p id="page-status" class="page-status" role="status"></p>
         <form id="product-form" class="form-grid" novalidate>
             <!-- טור מרכזי: פרטי המוצר -->
             <section class="form-main-card">
@@ -87,6 +88,7 @@
                     </div>
                     <div id="option-groups-container" class="checkbox-grid"></div>
                 </div>
+                <p id="form-status" class="page-status" role="status"></p>
                 <!-- כפתורי פעולה -->
                 <div class="form-actions">
                     <button type="submit" id="submit-btn" class="btn-primary">✨ שמירת מוצר</button>
@@ -118,7 +120,7 @@
                             </div>
                         </div>
 
-                        <span class="error-message" id="error-image"></span>
+                        <span class="error-message" id="error-imageUrl"></span>
                     </div>
                 </div>
                 <!-- תצוגה מקדימה בלייב של הכרטיס -->
@@ -129,7 +131,7 @@
                 </div>
             </aside>
         </form>
-        <!-- מודאל יצירת קבוצת אפשרויות חדשה -->
+               <!-- מודאל יצירת קבוצת אפשרויות חדשה -->
         <div id="option-group-modal" class="modal hidden">
             <div class="modal-content">
                 <h3>יצירת קבוצת תוספות חדשה</h3>
@@ -142,9 +144,17 @@
                         <label for="modal-group-max">מקסימום בחירות מותרות</label>
                         <input type="number" id="modal-group-max" min="1" value="1" required>
                     </div>
+                                        <div class="form-group">
+                        <label for="modal-group-price">מחיר לכל בחירה נוספת (₪)</label>
+                        <input type="number" id="modal-group-price" min="0" step="0.5" value="0" required>
+                    </div>
                     <div class="checkbox-group">
                         <input type="checkbox" id="modal-group-must">
                         <label for="modal-group-must">חובה לבחור לפחות פריט אחד מקבוצה זו</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="modal-group-limited">
+                        <label for="modal-group-limited">מספר הבחירות נקבע לפי הגודל שנבחר (למשל: טעמים)</label>
                     </div>
 
                     <!-- אזור בחירות דינמי -->
@@ -156,6 +166,7 @@
                         <button type="button" id="modal-add-choice-btn" class="btn-secondary">+ הוסף בחירה</button>
                     </div>
 
+                    <p class="error-message" id="modal-group-error" role="alert"></p>
                     <div class="modal-actions">
                         <button type="submit" class="btn-primary">שמור קבוצה</button>
                         <button type="button" id="close-option-modal-btn" class="btn-secondary">ביטול</button>

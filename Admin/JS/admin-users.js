@@ -1,15 +1,16 @@
 /**
  * @file Admin users page controller (Admin/HTML/admin-users.html).
  * Lists all users with a search and a role filter that are kept in the
- * URL, so refreshing the page keeps them. Lets the admin change a user's
- * role and delete users. The admin's own row is read-only; the server
- * enforces the same rule.
+ * URL (see utils/urlFilters.js), so refreshing the page keeps them. Lets
+ * the admin change a user's role and delete users. The admin's own row is
+ * read-only; the server enforces the same rule.
  */
 import initAdminPage from './adminPage.js';
 import { createUserRow, ROLE_LABELS } from './userRow.js';
 import { getAllUsers, changeRole, deleteUser } from '../../services/userService.js';
 import { getUser } from '../../services/authService.js';
-import { ApiError } from '../../services/apiClient.js';
+import { setStatus, getErrorMessage } from './utils/statusMessage.js';
+import initUrlFilters from './utils/urlFilters.js';
 
 /** All users loaded from the server. */
 let users = [];
@@ -34,44 +35,8 @@ const currentUserId = getUser()?._id;
  * @param {string} text - The message; an empty string clears it.
  * @param {boolean} [isError=false] - Whether to show it as an error.
  */
-const showStatus = (text, isError = false) => {
-    statusElement.textContent = text;
-    statusElement.classList.toggle('error', isError);
-};
-
-/**
- * Returns a message to display for a failed request.
- * @param {Error} err - The error.
- * @returns {string} The server's message, or a connection error message.
- */
-const getErrorMessage = (err) =>
-    err instanceof ApiError ? err.message : 'לא ניתן להתחבר לשרת. נסו שוב מאוחר יותר.';
-
-/* ---------- Filters (kept in the URL) ---------- */
-
-/**
- * Fills the search and role filter from the URL, e.g. ?q=cohen&role=admin.
- */
-const readFiltersFromUrl = () => {
-    const params = new URLSearchParams(window.location.search);
-    searchInput.value = params.get('q') || '';
-    roleFilter.value = params.get('role') || 'all';
-    if (!roleFilter.value) roleFilter.value = 'all';
-};
-
-/**
- * Writes the current filters to the URL without reloading the page, so a
- * refresh or a shared link shows the same filtered list.
- */
-const writeFiltersToUrl = () => {
-    const url = new URL(window.location.href);
-    const search = searchInput.value.trim();
-    if (search) url.searchParams.set('q', search);
-    else url.searchParams.delete('q');
-    if (roleFilter.value !== 'all') url.searchParams.set('role', roleFilter.value);
-    else url.searchParams.delete('role');
-    window.history.replaceState(null, '', url);
-};
+const showStatus = (text, isError = false) => setStatus(statusElement, text, isError);
+/* ---------- Filters ---------- */
 
 /**
  * Tells whether a user matches the current search and role filter.
@@ -97,23 +62,6 @@ const renderUsers = () => {
     tbody.replaceChildren(
         ...filtered.map(user => createUserRow(user, { isSelf: user._id === currentUserId }))
     );
-};
-
-/**
- * Applies a filter change: updates the URL and re-renders.
- */
-const handleFilterChange = () => {
-    writeFiltersToUrl();
-    renderUsers();
-};
-
-/**
- * Clears the search and the role filter.
- */
-const resetFilters = () => {
-    searchInput.value = '';
-    roleFilter.value = 'all';
-    handleFilterChange();
 };
 
 /**
@@ -211,13 +159,17 @@ const handleTableEvent = (event) => {
 /* ---------- Page setup ---------- */
 
 if (initAdminPage()) {
-    readFiltersFromUrl();
+    initUrlFilters({
+        filters: [
+            { element: searchInput, param: 'q', defaultValue: '' },
+            { element: roleFilter, param: 'role', defaultValue: 'all' }
+        ],
+        onChange: renderUsers,
+        resetButton: document.getElementById('reset-filters-btn')
+    });
     loadUsers();
     tbody.addEventListener('change', handleTableEvent);
     tbody.addEventListener('click', handleTableEvent);
-    searchInput.addEventListener('input', handleFilterChange);
-    roleFilter.addEventListener('change', handleFilterChange);
-    document.getElementById('reset-filters-btn').addEventListener('click', resetFilters);
     document.getElementById('cancel-delete-btn').addEventListener('click', closeDeleteModal);
     document.getElementById('confirm-delete-btn').addEventListener('click', handleConfirmDelete);
 }

@@ -1,21 +1,20 @@
 /**
  * @file Pricing rules for configurable products.
  * Pure functions with no DOM access. They mirror the server's calculation
- * so the page can show a live price; the server recalculates on checkout.
+ * (services/order.service.js) so the page can show a live price; the
+ * server recalculates on checkout.
  */
-
-/** Title of the option group whose limit is set by the selected size. Must match the server. */
-export const FLAVORS_TITLE = 'טעמים';
 
 /**
- * Returns the hard selection limit a size imposes on an option group.
- * Only the flavors group is limited, and only when the size defines maxChoices.
- * @param {Object} group - Option group ({ title, maxChoices, pricePer, ... }).
+ * Returns the number of choices the selected size allows in an option group.
+ * Applies only to groups marked limitedBySize (e.g. flavors), and only when
+ * the size defines maxChoices. Mirrors getSizeLimit on the server.
+ * @param {Object} group - Option group ({ limitedBySize, maxChoices, pricePer, ... }).
  * @param {Object|null} size - The selected size, or null.
- * @returns {number|null} The maximum number of choices, or null when there is no hard limit.
+ * @returns {number|null} The limit, or null when the size does not limit the group.
  */
-export const getFlavorLimit = (group, size) =>
-    group.title === FLAVORS_TITLE && size?.maxChoices ? size.maxChoices : null;
+export const getSizeLimit = (group, size) =>
+    group.limitedBySize && size?.maxChoices ? size.maxChoices : null;
 
 /**
  * Returns how many choices in a group are included in the base price.
@@ -23,7 +22,7 @@ export const getFlavorLimit = (group, size) =>
  * @param {Object|null} size - The selected size, or null.
  * @returns {number} Number of free choices.
  */
-export const getIncluded = (group, size) => getFlavorLimit(group, size) ?? group.maxChoices;
+export const getIncluded = (group, size) => getSizeLimit(group, size) ?? group.maxChoices;
 
 /**
  * Calculates the price of a single unit for the given selections:

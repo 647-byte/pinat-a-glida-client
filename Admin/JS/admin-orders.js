@@ -2,8 +2,12 @@ import { getAllOrders, updateOrderStatus } from '../../services/orderService.js'
 import initAdminPage from './adminPage.js';
 import { openOrderModal, setupOrderModal } from './orderModal.js';
 import { formatDate } from './utils/formatters.js';
+import { setStatus, showError } from './utils/statusMessage.js';
+import initUrlFilters from './utils/urlFilters.js';
 let orders = [];
 const tbody = document.getElementById('orders-tbody');
+/** Line above the table for loading, success and error messages. */
+const statusElement = document.getElementById('page-status');
 /**
  * Creates an order table row element from an HTML template, populated with order details securely.
  * 
@@ -56,11 +60,18 @@ const createOrderRowFromTemplate = (order) => {
  * @returns {Promise<void>} Resolves when orders are fetched and rendered.
  */
 // --- 3. טעינה ורינדור ---
+/**
+ * Loads all orders and renders the table. Shows a loading message while
+ * waiting, and the server's message if loading fails.
+ */
 const loadOrders = async () => {
+    setStatus(statusElement, 'טוען הזמנות...');
     try {
         orders = await getAllOrders();
+        setStatus(statusElement, '');
         renderOrders();
     } catch (error) {
+        showError(statusElement, error);
     }
 };
 /**
@@ -108,14 +119,28 @@ const renderOrders = () => {
  * @returns {Promise<void>} Resolves when the order status is updated.
  */
 // --- 4. עדכון סטטוס מהיר ---
+/**
+ * Saves the status chosen in a row's select. While saving, the select is
+ * disabled. On failure, the select returns to the previous status, so the
+ * table always shows what is saved on the server.
+ * @param {HTMLSelectElement} selectElement - The row's status select.
+ * @param {string} orderId - The order's id.
+ */
 const handleStatusChange = async (selectElement, orderId) => {
+    const order = orders.find(o => o._id === orderId);
+    const previousStatus = order?.statusOrder;
     const newStatus = selectElement.value;
+    selectElement.disabled = true;
     try {
         await updateOrderStatus(orderId, newStatus);
-        const order = orders.find(o => o._id === orderId);
         if (order) order.statusOrder = newStatus;
         selectElement.dataset.status = newStatus;
+        setStatus(statusElement, `הסטטוס של הזמנה #${orderId.slice(-6)} עודכן ל${selectElement.selectedOptions[0].textContent}`);
     } catch (error) {
+        selectElement.value = previousStatus;
+        showError(statusElement, error);
+    } finally {
+        selectElement.disabled = false;
     }
 };
 /**
@@ -145,17 +170,18 @@ const handleTableEvent = async (event) => {
         openOrderModal(order);
     }
 };
-// --- 6. אתחול העמוד ---
+// --- 6. Page setup ---
 if (initAdminPage()) {
+    initUrlFilters({
+        filters: [
+            { element: document.getElementById('search-input'), param: 'q', defaultValue: '' },
+            { element: document.getElementById('status-filter'), param: 'status', defaultValue: 'all' }
+        ],
+        onChange: renderOrders,
+        resetButton: document.getElementById('reset-filters-btn')
+    });
     setupOrderModal();
     loadOrders();
     tbody.addEventListener('click', handleTableEvent);
     tbody.addEventListener('change', handleTableEvent);
-    document.getElementById('search-input').addEventListener('input', renderOrders);
-    document.getElementById('status-filter').addEventListener('change', renderOrders);
-    document.getElementById('reset-filters-btn').addEventListener('click', () => {
-        document.getElementById('search-input').value = '';
-        document.getElementById('status-filter').value = 'all';
-        renderOrders();
-    });
 }

@@ -1,10 +1,22 @@
+@import url('./variables.css');
 @import url('./header.css');
 @import url(./footer.css);
+@import url('./productCard.css');
 /* רקע כללי של אזור התוכן */
 body {
     background-color: #faf7f2; /* גוון שמנת/אוף-ווייט רך כמו בתמונות */
     direction: rtl;
     font-family: 'Assistant', system-ui, -apple-system, sans-serif;
+}
+
+/* כותרת דף התפריט */
+.menu-title {
+    max-width: 1200px;
+    margin: 30px auto 0;
+    padding: 0 20px;
+    font-size: 2.2rem;
+    color: var(--primary-orange);
+    text-align: center;
 }
 
 /* רשת המוצרים (Grid של 4 עמודות) */
