@@ -1,5 +1,7 @@
+@import url('./variables.css');
 @import url('./header.css');
 @import url(./footer.css);
+@import url('./productCard.css');
 /* רקע כללי של אזור התוכן */
 body {
     background-color: #faf7f2; /* גוון שמנת/אוף-ווייט רך כמו בתמונות */
