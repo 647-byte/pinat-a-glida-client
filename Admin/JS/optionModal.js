@@ -126,4 +126,11 @@ export const setupOptionModal = (onGroupCreated) => {
                 : 'לא ניתן להתחבר לשרת. נסו שוב מאוחר יותר.';
         }
     });
+    // הוספת סגירה בלחיצה על Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            resetModal();
+            toggleModal(false);
+        }
+    });
 };

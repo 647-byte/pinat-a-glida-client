@@ -128,5 +128,11 @@ const setupOrderModal = () => {
     modal.addEventListener('click', (e) => {
         if (e.target === modal) closeModal();
     });
+    // הוספת סגירה בלחיצה על Escape
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+            closeModal();
+        }
+    });
 };
 export {openOrderModal,setupOrderModal};
