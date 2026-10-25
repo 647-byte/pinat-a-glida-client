@@ -1,11 +1,8 @@
+@import url('./variables.css');
 @import url('./header.css');
 @import url(./footer.css);
+/* About page tokens. Brand colors, text colors and the page background come from variables.css. */
 :root {
-    --primary-orange: #e05a2b;
-    --primary-orange-hover: #c8491c;
-    --text-dark: #2c2523;
-    --text-muted: #6b635e;
-    --bg-cream: #fdfbf7;
     --bg-warm-light: #fbeeda;
     --hero-grad-start: #a34821;
     --hero-grad-end: #27140b;
@@ -26,7 +23,7 @@ body {
     font-family: var(--font-main);
     color: var(--text-dark);
     direction: rtl;
-    background-color: var(--bg-cream);
+    background-color: var(--bg-page);
     line-height: 1.6;
 }
 
@@ -72,7 +69,7 @@ body {
    3. הסיפור שלנו - Story Section
    ========================================================================== */
 .story-section {
-    background-color: var(--bg-cream);
+    background-color: var(--bg-page);
     padding: 80px 0;
 }
 
@@ -176,7 +173,7 @@ body {
    4. סוד הקסם - Secret Section
    ========================================================================== */
 .secret-section {
-    background: linear-gradient(180deg, var(--bg-warm-light) 0%, var(--bg-cream) 100%);
+    background: linear-gradient(180deg, var(--bg-warm-light) 0%, var(--bg-page) 100%);
     padding: 70px 0;
 }
 
