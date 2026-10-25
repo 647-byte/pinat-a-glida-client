@@ -5,7 +5,7 @@ import { handleResponse } from './apiClient.js';
 import { getAuthHeaders } from './authService.js';
 import { SERVER_URL } from '../config.js';
 
-const URL = `${SERVER_URL}/upload`;
+const UPLOAD_URL = `${SERVER_URL}/upload`;
 
 /**
  * Uploads an image file and returns the server's response with its URL.
@@ -17,7 +17,7 @@ const URL = `${SERVER_URL}/upload`;
 const uploadImage = async (file) => {
     const formData = new FormData();
     formData.append('imageUrl', file); // Field name must match upload.single('imageUrl') on the server
-    const response = await fetch(URL, {
+    const response = await fetch(UPLOAD_URL, {
         method: 'POST',
         headers: getAuthHeaders(),
         body: formData

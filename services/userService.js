@@ -8,8 +8,8 @@ import { handleResponse } from './apiClient.js';
 import { getAuthHeaders, saveUser } from './authService.js';
 import { SERVER_URL } from '../config.js';
 
-const URL = `${SERVER_URL}/users`;
-const ME_URL = `${URL}/me`;
+const USERS_URL = `${SERVER_URL}/users`;
+const ME_URL = `${USERS_URL}/me`;
 
 /* ---------- Own profile ---------- */
 
@@ -46,7 +46,7 @@ const updateMe = async (changes) => {
  * @returns {Promise<Array<Object>>} All users, without passwords.
  */
 const getAllUsers = async () => {
-    const response = await fetch(URL, { headers: getAuthHeaders() });
+    const response = await fetch(USERS_URL, { headers: getAuthHeaders() });
     return await handleResponse(response);
 };
 
@@ -56,7 +56,7 @@ const getAllUsers = async () => {
  * @returns {Promise<Object>} The user.
  */
 const getUserById = async (id) => {
-    const response = await fetch(`${URL}/${id}`, { headers: getAuthHeaders() });
+    const response = await fetch(`${USERS_URL}/${id}`, { headers: getAuthHeaders() });
     return await handleResponse(response);
 };
 
@@ -66,7 +66,7 @@ const getUserById = async (id) => {
  * @returns {Promise<Object>} The deleted user.
  */
 const deleteUser = async (id) => {
-    const response = await fetch(`${URL}/${id}`, {
+    const response = await fetch(`${USERS_URL}/${id}`, {
         method: 'DELETE',
         headers: getAuthHeaders()
     });
@@ -81,7 +81,7 @@ const deleteUser = async (id) => {
  * @returns {Promise<Object>} The updated user.
  */
 const changeRole = async (id, role) => {
-    const response = await fetch(`${URL}/${id}/role`, {
+    const response = await fetch(`${USERS_URL}/${id}/role`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
         body: JSON.stringify({ role })

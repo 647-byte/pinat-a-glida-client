@@ -6,14 +6,14 @@ import { handleResponse } from './apiClient.js';
 import { getAuthHeaders } from './authService.js';
 import { SERVER_URL } from '../config.js';
 
-const URL = `${SERVER_URL}/products`;
+const PRODUCTS_URL = `${SERVER_URL}/products`;
 
 /**
  * Fetches all products.
  * @returns {Promise<Array<Object>>} All products.
  */
 const getAllProducts = async () => {
-    const response = await fetch(URL);
+    const response = await fetch(PRODUCTS_URL);
     return await handleResponse(response);
 };
 
@@ -22,7 +22,7 @@ const getAllProducts = async () => {
  * @returns {Promise<Array<Object>>} The popular products.
  */
 const getPopularProducts = async () => {
-    const response = await fetch(`${URL}/popular`);
+    const response = await fetch(`${PRODUCTS_URL}/popular`);
     return await handleResponse(response);
 };
 
@@ -32,7 +32,7 @@ const getPopularProducts = async () => {
  * @returns {Promise<Object>} The product.
  */
 const getProductById = async (id) => {
-    const response = await fetch(`${URL}/${id}`);
+    const response = await fetch(`${PRODUCTS_URL}/${id}`);
     return await handleResponse(response);
 };
 
@@ -42,7 +42,7 @@ const getProductById = async (id) => {
  * @returns {Promise<Object>} The created product.
  */
 const addProduct = async (productData) => {
-    const response = await fetch(URL, {
+    const response = await fetch(PRODUCTS_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
         body: JSON.stringify(productData)
@@ -57,7 +57,7 @@ const addProduct = async (productData) => {
  * @returns {Promise<Object>} The updated product.
  */
 const updateProduct = async (id, productData) => {
-    const response = await fetch(`${URL}/${id}`, {
+    const response = await fetch(`${PRODUCTS_URL}/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
         body: JSON.stringify(productData)
@@ -71,7 +71,7 @@ const updateProduct = async (id, productData) => {
  * @returns {Promise<Object>} The deleted product.
  */
 const deleteProduct = async (id) => {
-    const response = await fetch(`${URL}/${id}`, {
+    const response = await fetch(`${PRODUCTS_URL}/${id}`, {
         method: 'DELETE',
         headers: getAuthHeaders()
     });
@@ -85,7 +85,7 @@ const deleteProduct = async (id) => {
  * @returns {Promise<Object>} The updated product.
  */
 const updateQuantity = async (id, { quantity, isAvailable }) => {
-    const response = await fetch(`${URL}/${id}`, {
+    const response = await fetch(`${PRODUCTS_URL}/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
         body: JSON.stringify({ quantity, isAvailable })
