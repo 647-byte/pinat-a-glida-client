@@ -1,3 +1,4 @@
+import {createNavItem} from './utils/navigation.js';
 import listenForSiteClosed from './components/closedNotice.js';
 import { isLoggedIn, isAdmin } from '../services/authService.js';
 
@@ -74,20 +75,7 @@ const createMainNav = () => {
         { text: 'אירועים', href: '' },
         { text: 'צור קשר', href: '' }
     ];
-    navItems.forEach(item => {
-        const li = document.createElement('li');
-        const a = document.createElement('a');
-        a.textContent = item.text;
-        // בדיקה: אם יש כתובת אמיתית משתמשים בה, אם היא ריקה - עוצרים את המעבר
-        if (item.href) {
-            a.href = sitePath(item.href);
-        } else {
-            a.href = '#';
-            a.addEventListener('click', (e) => e.preventDefault());
-        }
-        li.appendChild(a);
-        navList.appendChild(li);
-    });
+    navItems.forEach(item => navList.appendChild(createNavItem(item, sitePath)));
     const orderButton = document.createElement('a');
     orderButton.href = sitePath('HTML/menu.html');
     orderButton.className = 'btn-order';

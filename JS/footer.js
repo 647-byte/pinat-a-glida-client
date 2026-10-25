@@ -1,3 +1,4 @@
+import {createNavItem} from './utils/navigation.js';
 const SITE_ROOT = new URL('../', import.meta.url);
 const sitePath = (path) => new URL(path, SITE_ROOT).href;
 const createTopBanner = () => {
@@ -40,20 +41,7 @@ const createFooterNav = () => {
         { text: 'צור קשר', href: '' },
         { text: 'שאלות ותשובות', href: '' }
     ];
-    navItems.forEach(item => {
-        const li = document.createElement('li');
-        const a = document.createElement('a');
-        a.textContent = item.text;
-        // בדיקה: אם יש כתובת אמיתית משתמשים בה, אם היא ריקה - עוצרים את המעבר
-        if (item.href) {
-            a.href = sitePath(item.href);
-        } else {
-            a.href = '#';
-            a.addEventListener('click', (e) => e.preventDefault());
-        }
-        li.appendChild(a);
-        navList.appendChild(li);
-    });
+    navItems.forEach(item => navList.appendChild(createNavItem(item, sitePath)));
     navCol.append(navTitle, navList)
     const extraCol = document.createElement('div');
     extraCol.classList.add('footer-col');
@@ -66,20 +54,7 @@ const createFooterNav = () => {
         { text: 'הצהרת נגישות', href: '' },
         { text: 'תקנון ומדיניות פרטיות', href: '' }
     ];
-    extraItems.forEach(item => {
-        const li = document.createElement('li');
-        const a = document.createElement('a');
-        a.textContent = item.text;
-        // בדיקה: אם יש כתובת אמיתית משתמשים בה, אם היא ריקה - עוצרים את המעבר
-        if (item.href) {
-            a.href = sitePath(item.href);
-        } else {
-            a.href = '#';
-            a.addEventListener('click', (e) => e.preventDefault());
-        }
-        li.appendChild(a);
-        extraList.appendChild(li);
-    });
+    extraItems.forEach(item => extraList.appendChild(createNavItem(item, sitePath)));
     extraCol.append(extraTitle, extraList);
     gridContainer.append(navCol, extraCol);
     footerMain.appendChild(gridContainer);
