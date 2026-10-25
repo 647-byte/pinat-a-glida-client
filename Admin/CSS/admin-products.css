@@ -285,3 +285,19 @@ body {
     padding: 40px;
     color: #777;
 }
+
+/* Small screens: the search box gets its own row, and the table scrolls
+   sideways inside its card instead of being cut off */
+@media (max-width: 768px) {
+    .toolbar-section {
+        flex-wrap: wrap;
+    }
+
+    .search-box {
+        flex: 1 1 100%;
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+}

@@ -138,3 +138,31 @@ html, body {
     white-space: nowrap;
 }
 .account-link:hover { text-decoration: underline; }
+
+/* Small screens: the page links move to their own centered row */
+@media (max-width: 600px) {
+    .top-bar {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 4px 12px;
+    }
+
+    .main-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px 16px;
+        padding: 10px 12px;
+    }
+
+    .header-logo {
+        height: 40px;
+    }
+
+    .nav-list {
+        order: 3;
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px 14px;
+    }
+}
