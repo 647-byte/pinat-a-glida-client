@@ -25,3 +25,7 @@
     line-height: 1.6;
     color: #555;
 }
+/* Page content hidden while the closed notice is shown */
+.closed-notice-hidden {
+    display: none !important;
+}
