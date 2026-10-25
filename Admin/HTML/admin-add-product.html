@@ -129,7 +129,7 @@
                 </div>
             </aside>
         </form>
-        <!-- מודאל יצירת קבוצת אפשרויות חדשה -->
+               <!-- מודאל יצירת קבוצת אפשרויות חדשה -->
         <div id="option-group-modal" class="modal hidden">
             <div class="modal-content">
                 <h3>יצירת קבוצת תוספות חדשה</h3>
@@ -146,6 +146,10 @@
                         <input type="checkbox" id="modal-group-must">
                         <label for="modal-group-must">חובה לבחור לפחות פריט אחד מקבוצה זו</label>
                     </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="modal-group-limited">
+                        <label for="modal-group-limited">מספר הבחירות נקבע לפי הגודל שנבחר (למשל: טעמים)</label>
+                    </div>
 
                     <!-- אזור בחירות דינמי -->
                     <div class="form-group">
@@ -156,6 +160,7 @@
                         <button type="button" id="modal-add-choice-btn" class="btn-secondary">+ הוסף בחירה</button>
                     </div>
 
+                    <p class="error-message" id="modal-group-error" role="alert"></p>
                     <div class="modal-actions">
                         <button type="submit" class="btn-primary">שמור קבוצה</button>
                         <button type="button" id="close-option-modal-btn" class="btn-secondary">ביטול</button>
