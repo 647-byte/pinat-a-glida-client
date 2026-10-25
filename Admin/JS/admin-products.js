@@ -2,6 +2,7 @@ import { getAllProducts, updateQuantity, deleteProduct } from '../../services/pr
 import initAdminPage from './adminPage.js';
 import { getImageUrl } from './utils/formatters.js';
 import { setStatus, showError } from './utils/statusMessage.js';
+import initUrlFilters from './utils/urlFilters.js';
 let products = [];
 let productIdToDelete = null;
 /** Line above the table for loading, success and error messages. */
@@ -168,19 +169,18 @@ const handleConfirmDelete = async () => {
         closeDeleteModal();
     }
 };
-// 6. אתחול העמוד
+// 6. Page setup
 if (initAdminPage()) {
-    loadProducts();
-    // אירועי סינון וחיפוש
-    document.getElementById('search-input').addEventListener('input', renderProducts);
-    document.getElementById('stock-filter').addEventListener('change', renderProducts);
-    // ניקוי מסננים
-    document.getElementById('reset-filters-btn').addEventListener('click', () => {
-        document.getElementById('search-input').value = '';
-        document.getElementById('stock-filter').value = 'all';
-        renderProducts();
+    initUrlFilters({
+        filters: [
+            { element: document.getElementById('search-input'), param: 'q', defaultValue: '' },
+            { element: document.getElementById('stock-filter'), param: 'stock', defaultValue: 'all' }
+        ],
+        onChange: renderProducts,
+        resetButton: document.getElementById('reset-filters-btn')
     });
-    // אירועי מודאל מחיקה
+    loadProducts();
+    // Delete confirmation modal
     document.getElementById('cancel-delete-btn').addEventListener('click', closeDeleteModal);
     document.getElementById('confirm-delete-btn').addEventListener('click', handleConfirmDelete);
 }

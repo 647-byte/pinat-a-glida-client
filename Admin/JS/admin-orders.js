@@ -3,6 +3,7 @@ import initAdminPage from './adminPage.js';
 import { openOrderModal, setupOrderModal } from './orderModal.js';
 import { formatDate } from './utils/formatters.js';
 import { setStatus, showError } from './utils/statusMessage.js';
+import initUrlFilters from './utils/urlFilters.js';
 let orders = [];
 const tbody = document.getElementById('orders-tbody');
 /** Line above the table for loading, success and error messages. */
@@ -123,17 +124,18 @@ const handleTableEvent = async (event) => {
         openOrderModal(order);
     }
 };
-// --- 6. אתחול העמוד ---
+// --- 6. Page setup ---
 if (initAdminPage()) {
+    initUrlFilters({
+        filters: [
+            { element: document.getElementById('search-input'), param: 'q', defaultValue: '' },
+            { element: document.getElementById('status-filter'), param: 'status', defaultValue: 'all' }
+        ],
+        onChange: renderOrders,
+        resetButton: document.getElementById('reset-filters-btn')
+    });
     setupOrderModal();
     loadOrders();
     tbody.addEventListener('click', handleTableEvent);
     tbody.addEventListener('change', handleTableEvent);
-    document.getElementById('search-input').addEventListener('input', renderOrders);
-    document.getElementById('status-filter').addEventListener('change', renderOrders);
-    document.getElementById('reset-filters-btn').addEventListener('click', () => {
-        document.getElementById('search-input').value = '';
-        document.getElementById('status-filter').value = 'all';
-        renderOrders();
-    });
 }
