@@ -182,8 +182,10 @@ const createGroupFieldset = (group) => {
 };
 
 /**
- * Builds the quantity input (1 to MAX_QUANTITY). Changes update `quantity`
- * and the displayed total.
+ * Builds the quantity input (1 to MAX_QUANTITY). While typing, `quantity`
+ * and the displayed total follow the input, kept within the limits. When
+ * the input loses focus, it shows the quantity actually used, so a value
+ * like 50 becomes 20 and an empty field becomes 1.
  * @returns {HTMLLabelElement} The labelled quantity input.
  */
 const createQuantityField = () => {
@@ -198,6 +200,9 @@ const createQuantityField = () => {
     input.addEventListener('input', () => {
         quantity = Math.min(MAX_QUANTITY, Math.max(1, parseInt(input.value) || 1));
         refresh();
+    });
+    input.addEventListener('change', () => {
+        input.value = String(quantity);
     });
     label.append(input);
     return label;
