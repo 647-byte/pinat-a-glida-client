@@ -1,3 +1,18 @@
+/**
+ * Creates a DOM product card element based on the provided product details.
+ * 
+ * @function createProductCard
+ * @param {Object} product - The product object containing its details.
+ * @param {string} product._id - The unique identifier of the product.
+ * @param {string} [product.name] - The name of the product.
+ * @param {string} [product.description] - A short description of the product.
+ * @param {string} [product.imageUrl] - The primary image URL of the product.
+ * @param {string} [product.image] - Fallback image URL if imageUrl is missing.
+ * @param {number} [product.price] - The base price of the product.
+ * @param {Array<{price: number}>} [product.size] - An optional array of sizes, each containing a price.
+ * @param {boolean} [product.isAvailable] - Flag indicating if the product is in stock.
+ * @returns {HTMLElement} The constructed `<article>` element representing the product card.
+ */
 const createProductCard = (product) => {
     const card = document.createElement('article');
     card.classList.add('product-card');

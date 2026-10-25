@@ -1,4 +1,11 @@
-// פונקציה ליצירת שורת קלט בודדת לבחירה (ללא innerHTML)
+/**
+ * Creates an individual choice input row with a text field and a delete button.
+ * 
+ * @function createChoiceRow
+ * @param {string} [value=''] - The initial value for the choice input field.
+ * @returns {HTMLElement} The constructed `<div>` element representing the choice row.
+ */
+// פונקציה ליצירת שורת קלט בודדת לבחירה
 const createChoiceRow = (value = '') => {
     const row = document.createElement('div');
     row.className = 'choice-row form-inline-group';
@@ -24,6 +31,13 @@ const createChoiceRow = (value = '') => {
     return row;
 };
 let choicesListContainer;
+/**
+ * Sets up the option group modal, handling opening, closing, dynamic choice rows, and form submission.
+ * 
+ * @function setupOptionModal
+ * @param {Function} [onGroupCreated] - Optional callback function triggered with the newly created group data upon successful submission.
+ * @returns {void}
+ */
 export const setupOptionModal = (onGroupCreated) => {
     const modal = document.getElementById('option-group-modal');
     const openBtn = document.getElementById('open-option-modal-btn');

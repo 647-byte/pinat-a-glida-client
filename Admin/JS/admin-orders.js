@@ -4,6 +4,22 @@ import { openOrderModal, setupOrderModal } from './orderModal.js';
 import { formatDate } from './utils/formatters.js';
 let orders = [];
 const tbody = document.getElementById('orders-tbody');
+/**
+ * Creates an order table row element from an HTML template, populated with order details securely.
+ * 
+ * @function createOrderRowFromTemplate
+ * @param {Object} order - The order object.
+ * @param {string} order._id - The unique identifier of the order.
+ * @param {string} [order.createdAt] - The creation timestamp of the order.
+ * @param {Object} [order.customerDetails] - Customer contact and personal details.
+ * @param {string} [order.customerDetails.firstName] - Customer's first name.
+ * @param {string} [order.customerDetails.lastName] - Customer's last name.
+ * @param {string} [order.customerDetails.phone] - Customer's phone number.
+ * @param {Array<Object>} [order.items] - Array of items included in the order.
+ * @param {number} [order.totalPrice] - Total price of the order.
+ * @param {string} [order.statusOrder] - Current status of the order.
+ * @returns {DocumentFragment} The cloned template content containing the order table row.
+ */
 // --- 2. יצירת שורה מתוך ה-Template (אבטחת XSS מלאה) ---
 const createOrderRowFromTemplate = (order) => {
     const template = document.getElementById('order-row-template');
@@ -32,6 +48,13 @@ const createOrderRowFromTemplate = (order) => {
     statusSelect.dataset.status = currentStatus;
     return clone;
 };
+/**
+ * Asynchronously fetches all orders from the server and triggers the rendering process.
+ * 
+ * @async
+ * @function loadOrders
+ * @returns {Promise<void>} Resolves when orders are fetched and rendered.
+ */
 // --- 3. טעינה ורינדור ---
 const loadOrders = async () => {
     try {
@@ -40,6 +63,12 @@ const loadOrders = async () => {
     } catch (error) {
     }
 };
+/**
+ * Filters the orders list based on search input and status filter criteria, then renders the table rows.
+ * 
+ * @function renderOrders
+ * @returns {void}
+ */
 const renderOrders = () => {
     const emptyState = document.getElementById('empty-state');
     const countBadge = document.getElementById('orders-count');
@@ -69,6 +98,15 @@ const renderOrders = () => {
     });
     tbody.appendChild(fragment);
 };
+/**
+ * Asynchronously updates an order's status via the API and updates local state and UI attributes.
+ * 
+ * @async
+ * @function handleStatusChange
+ * @param {HTMLSelectElement} selectElement - The status select dropdown element.
+ * @param {string} orderId - The unique identifier of the order.
+ * @returns {Promise<void>} Resolves when the order status is updated.
+ */
 // --- 4. עדכון סטטוס מהיר ---
 const handleStatusChange = async (selectElement, orderId) => {
     const newStatus = selectElement.value;
@@ -80,6 +118,14 @@ const handleStatusChange = async (selectElement, orderId) => {
     } catch (error) {
     }
 };
+/**
+ * Handles table interaction events using event delegation (clicks and status changes).
+ * 
+ * @async
+ * @function handleTableEvent
+ * @param {Event} event - The DOM event object.
+ * @returns {Promise<void>} Resolves when the table action has been handled.
+ */
 // --- 5. אירועים (Event Delegation) ---
 const handleTableEvent = async (event) => {
     // נועד כדי לזהות את האלמנט המדויק שנלחץ

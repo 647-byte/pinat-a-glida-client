@@ -1,3 +1,13 @@
+/**
+ * Creates an inline input row for a product size, including inputs for name, price, maximum free choices, and a delete button.
+ * 
+ * @function createSizeRow
+ * @param {string} [name=''] - The initial name of the size.
+ * @param {string|number} [price=''] - The initial price of the size.
+ * @param {string|number} [maxChoices=''] - The initial maximum number of free choices for this size.
+ * @param {Function} [onRemove] - Optional callback function triggered when the size row is deleted.
+ * @returns {HTMLElement} The constructed `<div>` element representing the size row.
+ */
 export const createSizeRow = (name = '', price = '', maxChoices = '', onRemove) => {
     const row = document.createElement('div');
     row.className = 'size-row form-inline-group';
@@ -32,6 +42,18 @@ export const createSizeRow = (name = '', price = '', maxChoices = '', onRemove) 
     row.append(nameInput, priceInput, maxChoicesInput, deleteBtn);
     return row;
 };
+/**
+ * Creates a checkbox wrapper element for a product option group, including a styled label with group details.
+ * 
+ * @function createOptionGroupCheckbox
+ * @param {Object} group - The option group object.
+ * @param {string} group._id - The unique identifier of the option group.
+ * @param {string} group.title - The title of the option group.
+ * @param {number} group.maxChoices - The maximum number of choices allowed for the group.
+ * @param {boolean} group.isMust - Flag indicating whether choosing from this group is mandatory.
+ * @param {boolean} [isChecked=false] - Flag indicating whether the checkbox should be pre-checked.
+ * @returns {HTMLElement} The constructed `<div>` element representing the option group checkbox wrapper.
+ */
 export const createOptionGroupCheckbox = (group, isChecked = false) => {
     const wrapper = document.createElement('div');
     wrapper.className = 'checkbox-group';
@@ -52,6 +74,13 @@ export const createOptionGroupCheckbox = (group, isChecked = false) => {
     wrapper.append(checkbox, label);
     return wrapper;
 };
+/**
+ * Creates a muted paragraph element to display an empty-state or informational message.
+ * 
+ * @function createEmptyMessage
+ * @param {string} messageText - The text content of the message.
+ * @returns {HTMLElement} The constructed `<p>` element representing the empty message.
+ */
 export const createEmptyMessage = (messageText) => {
     const p = document.createElement('p');
     p.className = 'text-muted';

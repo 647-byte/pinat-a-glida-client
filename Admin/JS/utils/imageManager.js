@@ -1,3 +1,11 @@
+/**
+ * Initializes image selection, drag-and-drop file upload, and object URL management for product forms.
+ * 
+ * @function initImageManager
+ * @param {HTMLFormElement} form - The product form element containing the image input.
+ * @param {Function} updateLivePreviewCallback - Callback function to update the live preview with the new image URL.
+ * @returns {Object} An object containing utility methods for the image manager.
+ */
 export const initImageManager = (form, updateLivePreviewCallback) => {
     let currentObjectUrl = null;
     const dropZone = document.getElementById('drop-zone');

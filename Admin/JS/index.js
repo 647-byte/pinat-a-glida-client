@@ -16,19 +16,25 @@ const metrics = {
     products: document.getElementById('active-products-count'),
     openOrders: document.getElementById('open-orders-count')
 };
-
 /**
- * Writes the same text to every metric, e.g. while loading or after an error.
- * @param {string} text - Text to show.
+ * Writes the same text to every metric element, e.g. while loading or after an error.
+ * 
+ * @function setAllMetrics
+ * @param {string} text - The text to display.
+ * @returns {void}
  */
 const setAllMetrics = (text) => {
     Object.values(metrics).forEach(element => {
         element.textContent = text;
     });
 };
-
 /**
- * Loads products and orders in parallel and fills in the metrics.
+ * Asynchronously loads products and orders in parallel and updates the admin dashboard metrics.
+ * Handles loading states and errors by displaying fallback indicators.
+ * 
+ * @async
+ * @function initDashboard
+ * @returns {Promise<void>} Resolves when metrics have been successfully loaded and rendered.
  */
 const initDashboard = async () => {
     setAllMetrics('...');

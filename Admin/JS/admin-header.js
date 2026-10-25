@@ -2,6 +2,8 @@ import { getUser, logout, SITE_HOME_URL } from '../../services/authService.js';
 /**
  * Resolves a path relative to this file (Admin/JS/admin-header.js), so the
  * links work from every admin page.
+ * 
+ * @function adminPath
  * @param {string} path - Path relative to the Admin/JS folder.
  * @returns {string} Absolute URL.
  */
@@ -16,7 +18,9 @@ const NAV_ITEMS = [
 ];
 /**
  * Builds the logout button: removes the session and returns to the customer site.
- * @returns {HTMLButtonElement} The logout button.
+ * 
+ * @function createLogoutButton
+ * @returns {HTMLButtonElement} The logout button element.
  */
 const createLogoutButton = () => {
     const button = document.createElement('button');
@@ -33,7 +37,9 @@ const createLogoutButton = () => {
 /**
  * Builds the top bar: a greeting with the admin's name, a link that opens
  * the customer site in a new tab, and the logout button.
- * @returns {HTMLDivElement} The top bar.
+ * 
+ * @function createAdminTopBar
+ * @returns {HTMLDivElement} The top bar element.
  */
 const createAdminTopBar = () => {
     const topBar = document.createElement('div');
@@ -61,7 +67,9 @@ const createAdminTopBar = () => {
 /**
  * Builds the main admin navigation: logo (to the dashboard), page links
  * with the current page highlighted, and the add-product button.
- * @returns {HTMLElement} The nav element.
+ * 
+ * @function createAdminMainNav
+ * @returns {HTMLElement} The `<nav>` element.
  */
 const createAdminMainNav = () => {
     const mainNav = document.createElement('nav');
@@ -100,6 +108,13 @@ const createAdminMainNav = () => {
     mainNav.append(linkLogo, navList, addProductBtn);
     return mainNav;
 };
+/**
+ * Assembles the complete admin header component (top bar and main navigation) 
+ * and prepends it to the beginning of the document body.
+ * 
+ * @function createAdminHeader
+ * @returns {void}
+ */
 // 3. יצירת ה-Header הכללי והזרקתו לתחילת ה-body
 const createAdminHeader = () => {
     const header = document.createElement('header');

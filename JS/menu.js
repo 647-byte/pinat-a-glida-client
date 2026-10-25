@@ -6,7 +6,14 @@ import createCartButton from './components/cartButton.js';
 createHeader();
 createFooter();
 createCartButton();  
-                                       
+/**
+ * Asynchronously fetches all products from the service and renders them into the menu container.
+ * Handles empty product lists and displays appropriate error messages if the fetch fails.
+ * 
+ * @async
+ * @function createMenu
+ * @returns {Promise<void>} Resolves when the menu has finished rendering or handling errors.
+ */                                       
 const createMenu = async () => {
     const container = document.getElementById('container');
     try {

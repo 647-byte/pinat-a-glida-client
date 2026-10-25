@@ -1,6 +1,21 @@
 import {createNavItem} from './utils/navigation.js';
 const SITE_ROOT = new URL('../', import.meta.url);
+/**
+ * Resolves a site path relative to the JS folder, so footer
+ * links work from any page, whether it lives in the root or in HTML/.
+ * 
+ * @function sitePath
+ * @param {string} path - Path relative to the JS folder.
+ * @returns {string} Absolute URL.
+ */
 const sitePath = (path) => new URL(path, SITE_ROOT).href;
+/**
+ * Builds the top Call-to-Action banner of the footer, including promotional text 
+ * and buttons for online ordering and finding a nearby branch.
+ * 
+ * @function createTopBanner
+ * @returns {HTMLElement} The constructed `<section>` element representing the CTA banner.
+ */
 const createTopBanner = () => {
     const section = document.createElement('section');
     section.classList.add('footer-cta');
@@ -22,6 +37,13 @@ const createTopBanner = () => {
     section.append(title, subtitle, buttonsDiv);
     return section;
 };
+/**
+ * Builds the main navigation and links columns of the footer 
+ * (quick links, additional pages, legal and institutional info).
+ * 
+ * @function createFooterNav
+ * @returns {HTMLDivElement} The main footer navigation container.
+ */
 const createFooterNav = () => {
     const footerMain = document.createElement('div');
     footerMain.classList.add('footer-main');

@@ -1,7 +1,12 @@
 import {createNavItem} from './utils/navigation.js';
 import listenForSiteClosed from './components/closedNotice.js';
 import { isLoggedIn, isAdmin } from '../services/authService.js';
-
+/**
+ * Creates the top informational bar element containing contact details, operating hours, and kashrut information.
+ * 
+ * @function createTopBar
+ * @returns {HTMLElement} The constructed `<div>` element representing the top bar.
+ */
 const createTopBar = () => {
     const topBar = document.createElement('div');
     topBar.className = 'top-bar';
@@ -86,6 +91,9 @@ const createMainNav = () => {
 /**
  * Adds the site header to the top of the page and starts listening for
  * the site-closed event, so every page that has a header reacts to it.
+ * 
+ * @function createHeader
+ * @returns {void}
  */
 const createHeader = () => {
     const header = document.createElement('header');

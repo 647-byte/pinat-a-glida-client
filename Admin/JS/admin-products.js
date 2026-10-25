@@ -3,6 +3,13 @@ import initAdminPage from './adminPage.js';
 import { getImageUrl } from './utils/formatters.js';
 let products = [];
 let productIdToDelete = null;
+/**
+ * Asynchronously loads all products from the server and triggers the rendering process.
+ * 
+ * @async
+ * @function loadProducts
+ * @returns {Promise<void>} Resolves when products are fetched and rendered.
+ */
 // 1. טעינת מוצרים מהשרת
 const loadProducts = async () => {
     try {
@@ -11,6 +18,20 @@ const loadProducts = async () => {
     } catch (error) {
     }
 };
+/**
+ * Creates a table row element (`<tr>`) representing a product in the admin products table.
+ * 
+ * @function createProductRow
+ * @param {Object} product - The product object.
+ * @param {string} product._id - The unique identifier of the product.
+ * @param {string} [product.name] - The name of the product.
+ * @param {number} [product.price] - The price of the product.
+ * @param {string} [product.imageUrl] - The image URL of the product.
+ * @param {number} [product.quantity] - Managed stock quantity, if applicable.
+ * @param {boolean} [product.isAvailable] - Availability flag.
+ * @param {boolean} [product.inStock] - Fallback stock flag.
+ * @returns {HTMLElement} The constructed `<tr>` element representing the product row.
+ */
 // 2. יצירת שורת מוצר בטבלה
 const createProductRow = (product) => {
     const id = product._id;
@@ -66,6 +87,12 @@ const createProductRow = (product) => {
     tr.append(tdImg, tdName, tdPrice, tdStock, tdActions);
     return tr;
 };
+/**
+ * Filters the product list based on search input and stock filter criteria, then renders the table rows.
+ * 
+ * @function renderProducts
+ * @returns {void}
+ */
 // 3. רינדור הטבלה והחלת המסננים
 const renderProducts = () => {
     const tbody = document.getElementById('products-tbody');
@@ -94,6 +121,15 @@ const renderProducts = () => {
         tbody.appendChild(fragment);
     }
 };
+/**
+ * Asynchronously toggles a product's stock availability status via the API and updates the UI button.
+ * 
+ * @async
+ * @function handleToggleStock
+ * @param {Object} product - The product object to update.
+ * @param {HTMLButtonElement} stockBtn - The stock toggle button element.
+ * @returns {Promise<void>} Resolves when stock status is updated.
+ */
 // 4. עדכון זמינות מלאי דרך שירות ה-API
 const handleToggleStock = async (product, stockBtn) => {
     const id = product._id;
@@ -116,6 +152,13 @@ const handleToggleStock = async (product, stockBtn) => {
 
     }
 };
+/**
+ * Opens the delete confirmation modal for a specific product.
+ * 
+ * @function openDeleteModal
+ * @param {Object} product - The product object to be deleted.
+ * @returns {void}
+ */
 // 5. ניהול ומחיקת מוצר דרך שירות ה-API
 const openDeleteModal = (product) => {
     productIdToDelete = product._id || product.id;
@@ -123,10 +166,23 @@ const openDeleteModal = (product) => {
     modalText.textContent = `האם למחוק את המוצר '${product.name}'? פעולה זו אינה ניתנת לביטול.`;
     document.getElementById('delete-modal').classList.remove('hidden');
 };
+/**
+ * Closes the delete confirmation modal and resets the stored product ID.
+ * 
+ * @function closeDeleteModal
+ * @returns {void}
+ */
 const closeDeleteModal = () => {
     productIdToDelete = null;
     document.getElementById('delete-modal').classList.add('hidden');
 };
+/**
+ * Asynchronously confirms and executes the deletion of the selected product via the API, then updates the UI.
+ * 
+ * @async
+ * @function handleConfirmDelete
+ * @returns {Promise<void>} Resolves when the product is deleted and the view is updated.
+ */
 const handleConfirmDelete = async () => {
     if (!productIdToDelete) return;
     try {

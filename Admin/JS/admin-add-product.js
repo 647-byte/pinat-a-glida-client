@@ -9,7 +9,6 @@ import { initImageManager } from './utils/imageManager.js';
 let productId = null;
 let existingImageUrl = null;
 let isSubmitting = false; // הגנה מפני לחיצות כפולות
-let currentObjectUrl = null;
 // 1. נגישות מרכזית לטופס ולרכיבי ה-UI המבניים בלבד
 const form = document.getElementById('product-form');
 const ui = {
@@ -23,6 +22,13 @@ const ui = {
 };
 // אתחול המנהלים המודולריים
 const optionsManager = initProductOptionsManager();
+/**
+ * Updates the live preview of the product card based on current form inputs and image URLs.
+ * 
+ * @function updateLivePreview
+ * @param {string} [currentObjectUrl=null] - Optional temporary URL for a newly selected image file.
+ * @returns {void}
+ */
 // עדכון פונקציית התצוגה המקדימה כך שתקבל את ה-URL מהמנהל של התמונות
 const updateLivePreview = (currentObjectUrl = null) => {
     const defaultImage = '../../assets/images/pinata-logo3.png';
@@ -42,6 +48,12 @@ const updateLivePreview = (currentObjectUrl = null) => {
     ui.previewWrapper.replaceChildren(createProductCard(tempProduct));
 };
 const imageManager = initImageManager(form, updateLivePreview);
+/**
+ * Toggles the visibility of inventory fields (quantity vs. availability switch) based on the hasQuantity checkbox state.
+ * 
+ * @function toggleInventoryFields
+ * @returns {void}
+ */
 // 3. תצוגה מותנית של שדות המלאי
 const toggleInventoryFields = () => {
     const isQuantityManaged = form.elements.hasQuantity.checked;
@@ -50,6 +62,14 @@ const toggleInventoryFields = () => {
     ui.quantityContainer.classList.toggle('hidden', !isQuantityManaged);
     ui.availabilityContainer.classList.toggle('hidden', isQuantityManaged);
 };
+/**
+ * Asynchronously loads an existing product's data into the form for editing.
+ * 
+ * @async
+ * @function loadExistingProduct
+ * @param {string} id - The unique identifier of the product to load.
+ * @returns {Promise<void>} Resolves when product details are populated.
+ */
 // 4. טעינת מוצר במצב עריכה
 const loadExistingProduct = async (id) => {
     try {
@@ -90,10 +110,22 @@ const loadExistingProduct = async (id) => {
     } catch (error) {
     }
 };
+/**
+ * Clears all error message text contents within the form.
+ * 
+ * @function clearErrors
+ * @returns {void}
+ */
 const clearErrors = () => {
     const errorElements = form.querySelectorAll('[id^="error-"]');
     errorElements.forEach(el => { el.textContent = ''; });
 };
+/**
+ * Validates required form fields and displays error messages if invalid.
+ * 
+ * @function validateForm
+ * @returns {boolean} True if the form is valid, false otherwise.
+ */
 const validateForm = () => {
     clearErrors();
     let isValid = true;
@@ -112,6 +144,14 @@ const validateForm = () => {
     }
     return isValid;
 };
+/**
+ * Handles form submission for creating a new product or updating an existing one.
+ * 
+ * @async
+ * @function handleSubmit
+ * @param {Event} event - The form submit event object.
+ * @returns {Promise<void>} Resolves when the product is saved and redirected.
+ */
 // 6. טיפול בהגשת הטופס
 const handleSubmit = async (event) => {
     event.preventDefault();
@@ -158,21 +198,6 @@ const handleSubmit = async (event) => {
     ui.submitBtn.textContent = productId ? '💾 עדכון מוצר' : '✨ שמירת מוצר';
 }
 };
-const hasSizesCheckbox = document.getElementById('hasSizes');
-const sizesSectionWrapper = document.getElementById('sizes-section-wrapper');
-const sizesListContainer = document.getElementById('sizes-list');
-const addSizeBtn = document.getElementById('add-size-btn');
-const optionGroupsContainer = document.getElementById('option-groups-container');
-// פונקציית הצגה/הסתרת אזור הגדלים
-const toggleSizesSection = () => {
-    const hasSizes = hasSizesCheckbox.checked;
-    sizesSectionWrapper.classList.toggle('hidden', !hasSizes);
-    if (hasSizes && sizesListContainer.children.length === 0) {
-        sizesListContainer.appendChild(createSizeRow());
-    }
-};
-hasSizesCheckbox.addEventListener('change', toggleSizesSection);
-addSizeBtn.addEventListener('click', () => sizesListContainer.appendChild(createSizeRow()));
 // 7. אתחול והאזנה לאירועים מרכזיים (Event Delegation)
 if (initAdminPage()) {
     const urlParams = new URLSearchParams(window.location.search);
