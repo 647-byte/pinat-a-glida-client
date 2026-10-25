@@ -9,6 +9,16 @@ body {
     font-family: 'Assistant', system-ui, -apple-system, sans-serif;
 }
 
+/* כותרת דף התפריט */
+.menu-title {
+    max-width: 1200px;
+    margin: 30px auto 0;
+    padding: 0 20px;
+    font-size: 2.2rem;
+    color: var(--primary-orange);
+    text-align: center;
+}
+
 /* רשת המוצרים (Grid של 4 עמודות) */
 #container {
     display: grid;
