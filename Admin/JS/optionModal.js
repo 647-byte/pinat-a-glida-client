@@ -107,6 +107,7 @@ export const setupOptionModal = (onGroupCreated) => {
         const newGroupData = {
             title: document.getElementById('modal-group-title').value.trim(),
             maxChoices: Number(document.getElementById('modal-group-max').value),
+            pricePer: Number(document.getElementById('modal-group-price').value),
             isMust: document.getElementById('modal-group-must').checked,
             limitedBySize: document.getElementById('modal-group-limited').checked,
             choices
