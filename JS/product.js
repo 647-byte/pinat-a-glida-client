@@ -11,7 +11,7 @@ import createHeader from './header.js';
 import createFooter from './footer.js';
 import { getProductById } from '../services/productService.js';
 import { addToCart } from '../services/cartService.js';
-import { getFlavorLimit, calcUnitPrice } from './utils/productPricing.js';
+import { getSizeLimit, calcUnitPrice } from './utils/productPricing.js';
 import createCartButton from './components/cartButton.js';  
 
 createHeader();
@@ -125,7 +125,7 @@ const createSizesFieldset = () => {
         input.checked = index === 0;
         input.addEventListener('change', () => {
             selectedSize = size;
-            trimFlavors();
+            trimToSizeLimits();
             refresh();
         });
         const price = document.createElement('span');
@@ -231,13 +231,13 @@ const createSummary = () => {
 // ---------------------------------------------------------------------------
 
 /**
- * Updates each option group's hint and disables flavor checkboxes
- * once the size limit is reached.
+ * Updates each option group's hint, and disables the remaining checkboxes
+ * of a size-limited group once the size's limit is reached.
  */
 const refreshOptions = () => {
     product.options.forEach(group => {
         const chosen = selections.get(group._id);
-        const limit = getFlavorLimit(group, selectedSize);
+        const limit = getSizeLimit(group, selectedSize);
         let hint = limit ? `ניתן לבחור עד ${limit}` : `${group.maxChoices} כלולים במחיר`;
         if (!limit && group.pricePer > 0) hint += `, כל בחירה נוספת ₪${group.pricePer}`;
         hint += ` (נבחרו ${chosen.size})`;
@@ -264,12 +264,12 @@ const refresh = () => {
 };
 
 /**
- * Clears flavor selections that exceed the limit of a newly selected size,
- * both in the state and on screen.
+ * Clears the selections of size-limited groups that exceed the limit of a
+ * newly selected size, both in the state and on screen.
  */
-const trimFlavors = () => {
+const trimToSizeLimits = () => {
     product.options.forEach(group => {
-        const limit = getFlavorLimit(group, selectedSize);
+        const limit = getSizeLimit(group, selectedSize);
         const chosen = selections.get(group._id);
         if (limit && chosen.size > limit) {
             chosen.clear();
