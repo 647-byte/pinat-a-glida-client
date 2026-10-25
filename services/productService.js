@@ -79,9 +79,13 @@ const deleteProduct = async (id) => {
 };
 
 /**
- * Updates a product's stock (admin only).
+ * Updates a product's stock (admin only). Send one of the two fields:
+ * - quantity: the number of units to ADD to the current stock (negative to
+ *   remove); availability is then set by the server from the new quantity.
+ * - isAvailable: for products without a managed quantity, marks the
+ *   product as available or sold out.
  * @param {string} id - Product id.
- * @param {{ quantity?: number, isAvailable?: boolean }} stock - New stock values.
+ * @param {{ quantity?: number, isAvailable?: boolean }} stock - The change to apply.
  * @returns {Promise<Object>} The updated product.
  */
 const updateQuantity = async (id, { quantity, isAvailable }) => {
