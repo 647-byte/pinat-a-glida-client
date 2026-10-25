@@ -6,6 +6,7 @@ import { createSizeRow } from './add-product-components.js';
 import { setupOptionModal } from './optionModal.js';
 import { initProductOptionsManager } from './productOptionsManager.js';
 import { initImageManager } from './utils/imageManager.js';
+import { setStatus, showError } from './utils/statusMessage.js';
 let productId = null;
 let existingImageUrl = null;
 let isSubmitting = false; // הגנה מפני לחיצות כפולות
@@ -14,6 +15,8 @@ const form = document.getElementById('product-form');
 const ui = {
     pageTitle: document.getElementById('page-title'),
     pageSubtitle: document.getElementById('page-subtitle'),
+    pageStatus: document.getElementById('page-status'),
+    formStatus: document.getElementById('form-status'),
     submitBtn: document.getElementById('submit-btn'),
     thumbImg: document.getElementById('thumb-img'),
     previewWrapper: document.getElementById('card-preview-wrapper'),
@@ -22,7 +25,7 @@ const ui = {
 };
 // אתחול המנהלים המודולריים
 const optionsManager = initProductOptionsManager();
-// עדכון פונקציית התצוגה המקדימה כך שתקבל את ה-URL מהמנהל של התמונות
+
 /**
  * Renders the live preview card from the current form values. Uses the newly
  * chosen image when there is one, otherwise the product's existing image,
@@ -57,7 +60,14 @@ const toggleInventoryFields = () => {
     ui.availabilityContainer.classList.toggle('hidden', isQuantityManaged);
 };
 // 4. טעינת מוצר במצב עריכה
+/**
+ * Loads a product into the form for editing. Shows a loading message at the
+ * top of the page while waiting, and the server's message if loading fails
+ * (for example, when the product was deleted).
+ * @param {string} id - The product's id, from the URL.
+ */
 const loadExistingProduct = async (id) => {
+    setStatus(ui.pageStatus, 'טוען את פרטי המוצר...');
     try {
         const product = await getProductById(id);
         if (!product) return;
@@ -93,7 +103,9 @@ const loadExistingProduct = async (id) => {
         const selectedOptionIds = product.options ? product.options.map(opt => typeof opt === 'object' ? opt._id : opt) : [];
         await optionsManager.loadOptionGroups(selectedOptionIds);
         updateLivePreview();
+        setStatus(ui.pageStatus, '');
     } catch (error) {
+        showError(ui.pageStatus, error);
     }
 };
 const clearErrors = () => {
@@ -119,10 +131,17 @@ const validateForm = () => {
     return isValid;
 };
 // 6. טיפול בהגשת הטופס
+/**
+ * Validates the form, uploads a newly chosen image, then creates or updates
+ * the product and returns to the products list. On failure, the button is
+ * restored and the server's message is shown next to it.
+ * @param {SubmitEvent} event - The submit event.
+ */
 const handleSubmit = async (event) => {
     event.preventDefault();
     if (isSubmitting) return; //  מניעת שליחה מחדש אם הבקשה כבר רצה
     if (!validateForm()) return;
+    setStatus(ui.formStatus, '');
     try {
         isSubmitting = true;
         ui.submitBtn.disabled = true;
@@ -151,18 +170,19 @@ const handleSubmit = async (event) => {
             size: optionsManager.collectSizesData(),         // קריאה לפונקציה מהמודול
             options: optionsManager.collectSelectedOptions() // קריאה לפונקציה מהמודול
         };
-    // 3. שמירת המוצר דרך ה-Service
-    if (productId) {
-        await updateProduct(productId, productData);
-    } else {
-        await addProduct(productData);
+        // 4. שמירת המוצר דרך ה-Service
+        if (productId) {
+            await updateProduct(productId, productData);
+        } else {
+            await addProduct(productData);
+        }
+        window.location.href = 'admin-products.html';
+    } catch (error) {
+        isSubmitting = false;
+        ui.submitBtn.disabled = false;
+        ui.submitBtn.textContent = productId ? '💾 עדכון מוצר' : '✨ שמירת מוצר';
+        showError(ui.formStatus, error);
     }
-    window.location.href = 'admin-products.html';
-} catch (error) {
-    isSubmitting = false;
-    ui.submitBtn.disabled = false;
-    ui.submitBtn.textContent = productId ? '💾 עדכון מוצר' : '✨ שמירת מוצר';
-}
 };
 
 // 7. אתחול והאזנה לאירועים מרכזיים (Event Delegation)
