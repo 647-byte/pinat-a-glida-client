@@ -1,15 +1,6 @@
-/* ===== Admin users page - additions to admin-products.css ===== */
+@import url('./admin-status.css');
 
-/* Status line for loading, success and error messages */
-.page-status {
-    min-height: 1.4em;
-    margin: 0 0 12px;
-    font-weight: 600;
-    color: #2e7d32;
-}
-.page-status.error {
-    color: #c62828;
-}
+/* ===== Admin users page - additions to admin-products.css ===== */
 
 /* "You" tag on the signed-in admin's row */
 .self-tag {

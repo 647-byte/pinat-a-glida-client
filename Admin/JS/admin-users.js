@@ -9,7 +9,7 @@ import initAdminPage from './adminPage.js';
 import { createUserRow, ROLE_LABELS } from './userRow.js';
 import { getAllUsers, changeRole, deleteUser } from '../../services/userService.js';
 import { getUser } from '../../services/authService.js';
-import { ApiError } from '../../services/apiClient.js';
+import { setStatus, getErrorMessage } from './utils/statusMessage.js';
 
 /** All users loaded from the server. */
 let users = [];
@@ -34,19 +34,7 @@ const currentUserId = getUser()?._id;
  * @param {string} text - The message; an empty string clears it.
  * @param {boolean} [isError=false] - Whether to show it as an error.
  */
-const showStatus = (text, isError = false) => {
-    statusElement.textContent = text;
-    statusElement.classList.toggle('error', isError);
-};
-
-/**
- * Returns a message to display for a failed request.
- * @param {Error} err - The error.
- * @returns {string} The server's message, or a connection error message.
- */
-const getErrorMessage = (err) =>
-    err instanceof ApiError ? err.message : 'לא ניתן להתחבר לשרת. נסו שוב מאוחר יותר.';
-
+const showStatus = (text, isError = false) => setStatus(statusElement, text, isError);
 /* ---------- Filters (kept in the URL) ---------- */
 
 /**
