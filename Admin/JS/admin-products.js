@@ -1,14 +1,24 @@
 import { getAllProducts, updateQuantity, deleteProduct } from '../../services/productService.js';
 import initAdminPage from './adminPage.js';
 import { getImageUrl } from './utils/formatters.js';
+import { setStatus, showError } from './utils/statusMessage.js';
 let products = [];
 let productIdToDelete = null;
+/** Line above the table for loading, success and error messages. */
+const statusElement = document.getElementById('page-status');
 // 1. טעינת מוצרים מהשרת
+/**
+ * Loads all products and renders the table. Shows a loading message while
+ * waiting, and the server's message if loading fails.
+ */
 const loadProducts = async () => {
+    setStatus(statusElement, 'טוען מוצרים...');
     try {
         products = await getAllProducts();
+        setStatus(statusElement, '');
         renderProducts();
     } catch (error) {
+        showError(statusElement, error);
     }
 };
 // 2. יצירת שורת מוצר בטבלה
@@ -95,10 +105,18 @@ const renderProducts = () => {
     }
 };
 // 4. עדכון זמינות מלאי דרך שירות ה-API
+/**
+ * Toggles a product's availability (products without a managed quantity).
+ * The button is disabled while saving and changes only after the server
+ * confirms; on failure, the server's message is shown.
+ * @param {Object} product - The product in this row.
+ * @param {HTMLButtonElement} stockBtn - The row's stock button.
+ */
 const handleToggleStock = async (product, stockBtn) => {
     const id = product._id;
     const currentStatus = product.isAvailable !== undefined ? product.isAvailable : product.inStock;
     const newStatus = !currentStatus;
+    stockBtn.disabled = true;
     try {
         const updateData = { isAvailable: newStatus };
         if (product.quantity !== undefined && product.quantity !== null) {
@@ -112,8 +130,11 @@ const handleToggleStock = async (product, stockBtn) => {
         // 3. עדכון נקודתי של הכפתור בלבד – ללא רענון של כל הטבלה!
         stockBtn.className = `btn-stock-toggle ${newStatus ? 'in-stock' : 'out-of-stock'}`;
         stockBtn.textContent = newStatus ? '🟢 במלאי' : '🟠 אזל המלאי';
+        setStatus(statusElement, `המוצר '${product.name}' סומן כ${newStatus ? 'זמין במלאי' : 'אזל מהמלאי'}`);
     } catch (error) {
-
+        showError(statusElement, error);
+    } finally {
+        stockBtn.disabled = false;
     }
 };
 // 5. ניהול ומחיקת מוצר דרך שירות ה-API
@@ -127,14 +148,24 @@ const closeDeleteModal = () => {
     productIdToDelete = null;
     document.getElementById('delete-modal').classList.add('hidden');
 };
+/**
+ * Deletes the product waiting for confirmation and removes it from the
+ * table. The confirmation closes either way; on failure, the server's
+ * message is shown.
+ */
 const handleConfirmDelete = async () => {
     if (!productIdToDelete) return;
+    const deletedId = productIdToDelete;
+    const deletedName = products.find(p => (p._id || p.id) === deletedId)?.name || '';
     try {
-        await deleteProduct(productIdToDelete);
-        products = products.filter(p => (p._id || p.id) !== productIdToDelete);
+        await deleteProduct(deletedId);
+        products = products.filter(p => (p._id || p.id) !== deletedId);
         renderProducts();
-        closeDeleteModal();
+        setStatus(statusElement, `המוצר '${deletedName}' נמחק`);
     } catch (error) {
+        showError(statusElement, error);
+    } finally {
+        closeDeleteModal();
     }
 };
 // 6. אתחול העמוד
