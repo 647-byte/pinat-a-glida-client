@@ -123,6 +123,15 @@ const closeDeleteModal = () => {
     deleteModal.classList.add('hidden');
 };
 
+
+/**
+ * Closes the delete confirmation when Escape is pressed while it is open.
+ * @param {KeyboardEvent} event - A keydown event from the document.
+ */
+const handleModalKeydown = (event) => {
+    if (event.key === 'Escape' && !deleteModal.classList.contains('hidden')) closeDeleteModal();
+};
+
 /**
  * Deletes the user waiting for confirmation and removes them from the table.
  */
@@ -172,4 +181,5 @@ if (initAdminPage()) {
     tbody.addEventListener('click', handleTableEvent);
     document.getElementById('cancel-delete-btn').addEventListener('click', closeDeleteModal);
     document.getElementById('confirm-delete-btn').addEventListener('click', handleConfirmDelete);
+    document.addEventListener('keydown', handleModalKeydown);
 }
