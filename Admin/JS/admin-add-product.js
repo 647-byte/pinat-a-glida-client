@@ -158,21 +158,7 @@ const handleSubmit = async (event) => {
     ui.submitBtn.textContent = productId ? '💾 עדכון מוצר' : '✨ שמירת מוצר';
 }
 };
-const hasSizesCheckbox = document.getElementById('hasSizes');
-const sizesSectionWrapper = document.getElementById('sizes-section-wrapper');
-const sizesListContainer = document.getElementById('sizes-list');
-const addSizeBtn = document.getElementById('add-size-btn');
-const optionGroupsContainer = document.getElementById('option-groups-container');
-// פונקציית הצגה/הסתרת אזור הגדלים
-const toggleSizesSection = () => {
-    const hasSizes = hasSizesCheckbox.checked;
-    sizesSectionWrapper.classList.toggle('hidden', !hasSizes);
-    if (hasSizes && sizesListContainer.children.length === 0) {
-        sizesListContainer.appendChild(createSizeRow());
-    }
-};
-hasSizesCheckbox.addEventListener('change', toggleSizesSection);
-addSizeBtn.addEventListener('click', () => sizesListContainer.appendChild(createSizeRow()));
+
 // 7. אתחול והאזנה לאירועים מרכזיים (Event Delegation)
 if (initAdminPage()) {
     const urlParams = new URLSearchParams(window.location.search);
