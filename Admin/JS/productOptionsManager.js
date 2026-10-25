@@ -1,5 +1,6 @@
 import { getOptionGroups } from '../../services/optionGroupService.js';
 import { createSizeRow, createOptionGroupCheckbox, createEmptyMessage } from './add-product-components.js';
+import { getErrorMessage } from './utils/statusMessage.js';
 
 export const initProductOptionsManager = () => {
     const hasSizesCheckbox = document.getElementById('hasSizes');
@@ -19,6 +20,12 @@ export const initProductOptionsManager = () => {
     hasSizesCheckbox.addEventListener('change', toggleSizesSection);
     addSizeBtn.addEventListener('click', () => sizesListContainer.appendChild(createSizeRow()));
 
+    /**
+     * Loads all option groups and shows them as checkboxes, checking the
+     * groups that belong to the product. If loading fails, shows the
+     * server's message in place of the list.
+     * @param {Array<string>} [selectedOptionIds=[]] - Ids of the groups to check.
+     */
     const loadOptionGroups = async (selectedOptionIds = []) => {
         try {
             const optionGroups = await getOptionGroups();
@@ -34,7 +41,9 @@ export const initProductOptionsManager = () => {
                 optionGroupsContainer.appendChild(createOptionGroupCheckbox(group, isChecked));
             });
         } catch (error) {
-            console.error("שגיאה בטעינת קבוצות אפשרויות:", error);
+            const message = createEmptyMessage(`לא ניתן לטעון את קבוצות האפשרויות: ${getErrorMessage(error)}`);
+            message.classList.add('error-message');
+            optionGroupsContainer.replaceChildren(message);
         }
     };
 
