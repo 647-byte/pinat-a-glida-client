@@ -133,38 +133,26 @@ const renderProducts = () => {
     }
 };
 /**
- * Asynchronously toggles a product's stock availability status via the API and updates the UI button.
- * 
- * @async
- * @function handleToggleStock
- * @param {Object} product - The product object to update.
- * @param {HTMLButtonElement} stockBtn - The stock toggle button element.
- * @returns {Promise<void>} Resolves when stock status is updated.
- */
-// 4. עדכון זמינות מלאי דרך שירות ה-API
-/**
- * Toggles a product's availability (products without a managed quantity).
+ * Toggles a product's availability. Used only for products without a
+ * managed quantity: their availability is set by hand. Products with a
+ * managed quantity get a disabled button, since the server sets their
+ * availability from the stock. Only isAvailable is sent, because the
+ * server ADDS any quantity it receives to the current stock.
  * The button is disabled while saving and changes only after the server
  * confirms; on failure, the server's message is shown.
  * @param {Object} product - The product in this row.
  * @param {HTMLButtonElement} stockBtn - The row's stock button.
  */
 const handleToggleStock = async (product, stockBtn) => {
-    const id = product._id;
     const currentStatus = product.isAvailable !== undefined ? product.isAvailable : product.inStock;
     const newStatus = !currentStatus;
     stockBtn.disabled = true;
     try {
-        const updateData = { isAvailable: newStatus };
-        if (product.quantity !== undefined && product.quantity !== null) {
-            updateData.quantity = product.quantity;
-        }
-        // 1. קריאת API לשרת
-        await updateQuantity(id, updateData);
-        // 2. עדכון האובייקט המקומי בזיכרון
+        await updateQuantity(product._id, { isAvailable: newStatus });
+        // Keep the local copy in sync, so filtering shows the new status
         if (product.isAvailable !== undefined) product.isAvailable = newStatus;
         if (product.inStock !== undefined) product.inStock = newStatus;
-        // 3. עדכון נקודתי של הכפתור בלבד – ללא רענון של כל הטבלה!
+        // Update only this row's button, without re-rendering the whole table
         stockBtn.className = `btn-stock-toggle ${newStatus ? 'in-stock' : 'out-of-stock'}`;
         stockBtn.textContent = newStatus ? '🟢 במלאי' : '🟠 אזל המלאי';
         setStatus(statusElement, `המוצר '${product.name}' סומן כ${newStatus ? 'זמין במלאי' : 'אזל מהמלאי'}`);
