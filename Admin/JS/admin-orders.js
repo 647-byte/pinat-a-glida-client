@@ -2,8 +2,11 @@ import { getAllOrders, updateOrderStatus } from '../../services/orderService.js'
 import initAdminPage from './adminPage.js';
 import { openOrderModal, setupOrderModal } from './orderModal.js';
 import { formatDate } from './utils/formatters.js';
+import { setStatus, showError } from './utils/statusMessage.js';
 let orders = [];
 const tbody = document.getElementById('orders-tbody');
+/** Line above the table for loading, success and error messages. */
+const statusElement = document.getElementById('page-status');
 // --- 2. יצירת שורה מתוך ה-Template (אבטחת XSS מלאה) ---
 const createOrderRowFromTemplate = (order) => {
     const template = document.getElementById('order-row-template');
@@ -33,11 +36,18 @@ const createOrderRowFromTemplate = (order) => {
     return clone;
 };
 // --- 3. טעינה ורינדור ---
+/**
+ * Loads all orders and renders the table. Shows a loading message while
+ * waiting, and the server's message if loading fails.
+ */
 const loadOrders = async () => {
+    setStatus(statusElement, 'טוען הזמנות...');
     try {
         orders = await getAllOrders();
+        setStatus(statusElement, '');
         renderOrders();
     } catch (error) {
+        showError(statusElement, error);
     }
 };
 const renderOrders = () => {
@@ -70,14 +80,28 @@ const renderOrders = () => {
     tbody.appendChild(fragment);
 };
 // --- 4. עדכון סטטוס מהיר ---
+/**
+ * Saves the status chosen in a row's select. While saving, the select is
+ * disabled. On failure, the select returns to the previous status, so the
+ * table always shows what is saved on the server.
+ * @param {HTMLSelectElement} selectElement - The row's status select.
+ * @param {string} orderId - The order's id.
+ */
 const handleStatusChange = async (selectElement, orderId) => {
+    const order = orders.find(o => o._id === orderId);
+    const previousStatus = order?.statusOrder;
     const newStatus = selectElement.value;
+    selectElement.disabled = true;
     try {
         await updateOrderStatus(orderId, newStatus);
-        const order = orders.find(o => o._id === orderId);
         if (order) order.statusOrder = newStatus;
         selectElement.dataset.status = newStatus;
+        setStatus(statusElement, `הסטטוס של הזמנה #${orderId.slice(-6)} עודכן ל${selectElement.selectedOptions[0].textContent}`);
     } catch (error) {
+        selectElement.value = previousStatus;
+        showError(statusElement, error);
+    } finally {
+        selectElement.disabled = false;
     }
 };
 // --- 5. אירועים (Event Delegation) ---
