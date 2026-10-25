@@ -9,7 +9,6 @@ import { initImageManager } from './utils/imageManager.js';
 let productId = null;
 let existingImageUrl = null;
 let isSubmitting = false; // הגנה מפני לחיצות כפולות
-let currentObjectUrl = null;
 // 1. נגישות מרכזית לטופס ולרכיבי ה-UI המבניים בלבד
 const form = document.getElementById('product-form');
 const ui = {
@@ -24,10 +23,17 @@ const ui = {
 // אתחול המנהלים המודולריים
 const optionsManager = initProductOptionsManager();
 // עדכון פונקציית התצוגה המקדימה כך שתקבל את ה-URL מהמנהל של התמונות
-const updateLivePreview = (currentObjectUrl = null) => {
+/**
+ * Renders the live preview card from the current form values. Uses the newly
+ * chosen image when there is one, otherwise the product's existing image,
+ * otherwise the logo.
+ * @param {string|null} [objectUrl] - Temporary URL of a newly chosen image.
+ *   Defaults to the image manager's current one, so updates caused by typing
+ *   keep the chosen image.
+ */
+const updateLivePreview = (objectUrl = imageManager.getCurrentObjectUrl()) => {
     const defaultImage = '../../assets/images/pinata-logo3.png';
-    // שימוש ב-currentObjectUrl הקיים במקום יצירת קישור זמני חדש בכל הקלדה
-    const finalImage = currentObjectUrl || existingImageUrl || defaultImage;
+    const finalImage = objectUrl || existingImageUrl || defaultImage;
     // עדכון ה-src רק במידה והשתנה בפועל
     if (ui.thumbImg.getAttribute('src') !== finalImage) {
         ui.thumbImg.src = finalImage;
