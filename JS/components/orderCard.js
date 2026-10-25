@@ -4,28 +4,36 @@
 import { formatOrderNumber, formatStatus, formatDate } from '../utils/orderFormat.js';
 
 /**
- * Returns an item's product name when the server includes it.
+ * Returns the item's product name, as saved in the order when it was placed.
+ * The name is kept in the order itself, so it stays correct even if the
+ * product is renamed or deleted later.
  * @param {Object} item - Order item.
- * @returns {string|undefined} The product name.
+ * @returns {string} The product name, or a generic label for old orders without one.
  */
-const getItemName = (item) => item.productId?.name || item.name;
+const getItemName = (item) => item.nameItem || 'מוצר';
 
 /**
- * Builds the list of the order's items. When the server returns product
- * names, each item is listed by name; otherwise the number of units is shown.
+ * Builds the display line of one order item: name, size (when the product
+ * has sizes) and quantity, e.g. "גביע (גדול) × 2".
+ * @param {Object} item - Order item ({ nameItem, size?, quantity }).
+ * @returns {string} The item line.
+ */
+const formatItemLine = (item) => {
+    const size = item.size?.name ? ` (${item.size.name})` : '';
+    return `${getItemName(item)}${size} × ${item.quantity}`;
+};
+
+/**
+ * Builds the list of the order's items, one line per item.
  * @param {Array<Object>} [items] - The order's items.
  * @returns {HTMLUListElement} The items list.
  */
 const createItemsList = (items = []) => {
     const list = document.createElement('ul');
     list.className = 'order-card-items';
-    const allNamed = items.length > 0 && items.every(getItemName);
-    const lines = allNamed
-        ? items.map(item => `${getItemName(item)} × ${item.quantity}`)
-        : [`${items.reduce((sum, item) => sum + (item.quantity || 0), 0)} פריטים`];
-    lines.forEach(line => {
+    items.forEach(item => {
         const listItem = document.createElement('li');
-        listItem.textContent = line;
+        listItem.textContent = formatItemLine(item);
         list.append(listItem);
     });
     return list;
