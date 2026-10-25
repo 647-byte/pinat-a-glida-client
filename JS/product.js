@@ -5,12 +5,12 @@
  * customer's selections, and adds the configured item to the cart.
  *
  * Server access goes through productService, cart storage through
- * cartService, and price rules live in utils/productPricing.
+ * utils/cartStorage, and price rules live in utils/productPricing.
  */
 import createHeader from './header.js';
 import createFooter from './footer.js';
 import { getProductById } from '../services/productService.js';
-import { addToCart } from '../services/cartService.js';
+import { addToCart } from './utils/cartStorage.js';
 import { getSizeLimit, calcUnitPrice } from './utils/productPricing.js';
 import createCartButton from './components/cartButton.js';  
 

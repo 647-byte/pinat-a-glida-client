@@ -7,7 +7,7 @@
  * Paths are resolved relative to this module, so the button works the same
  * from the site root (index.html) and from pages inside /HTML.
  */
-import { getCartCount, CART_KEY, CART_UPDATED_EVENT } from '../../services/cartService.js';
+import { getCartCount, CART_KEY, CART_UPDATED_EVENT } from '../utils/cartStorage.js';
 
 /** Absolute URL of the cart page. */
 const CART_PAGE_URL = new URL('../../HTML/cart.html', import.meta.url).href;

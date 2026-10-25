@@ -3,11 +3,11 @@
  * Shows the items stored in the cart, their estimated total and the
  * navigation actions (back to the menu, proceed to checkout), and lets the
  * customer remove items. Re-renders whenever the cart changes, including
- * changes made in other tabs. Cart data comes from cartService.
+ * changes made in other tabs. Cart data comes from utils/cartStorage.
  */
 import createHeader from './header.js';
 import createFooter from './footer.js';
-import { CART_KEY, CART_UPDATED_EVENT, getCart, getCartTotal, removeFromCart } from '../services/cartService.js';
+import { CART_KEY, CART_UPDATED_EVENT, getCart, getCartTotal, removeFromCart } from './utils/cartStorage.js';
 import createCartItem from './components/cartItem.js';
 
 createHeader();
